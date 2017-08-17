@@ -29,7 +29,7 @@ if( $_POST["status"] == "del_data" ):
 	extract(utilLib::getRequestParams("post",array(8,7,1,4,5)));
 
 	// 削除対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$schedule_id) || empty($schedule_id)){die("致命的エラー：不正な処理データが送信されましたので強制終了します！");}
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$schedule_id) || empty($schedule_id)){die("致命的エラー：不正な処理データが送信されましたので強制終了します！");}
 
 	/////////////////////////////////////
 	// 該当データの完全削除用SQL組立て

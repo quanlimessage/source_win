@@ -8,6 +8,7 @@ S系表示用プログラム コントローラー
 // 共通ライブラリ読み込み
 require_once('../common/config_N3_S7.php');
 require_once('util_lib.php');
+require_once('dbOpe.php');
 require_once('tmpl2.class.php');// テンプレートクラスライブラリ
 require_once('../common/imgOpe2.php');					// 画像アップロードクラスライブラリ
 
@@ -32,7 +33,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #------------------------------------------------------------------------
 #	ページネーション情報の取得
@@ -47,7 +48,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 	";
 
 	// ＳＱＬを実行
-	$fetch_page = $PDO -> fetch($sql_page);
+	$fetch_page = dbOpe::fetch($sql_page,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$page = $fetch_page[0]['PAGE_FLG'];
 	if($page == 0){

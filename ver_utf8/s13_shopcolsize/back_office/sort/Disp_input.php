@@ -39,7 +39,7 @@ WHERE
 	(DEL_FLG = '0')
 ";
 
-$fetchCateList = $PDO -> fetch($cate_sql);
+$fetchCateList = dbOpe::fetch($cate_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -59,7 +59,7 @@ for($i=0;$i<count($fetchCateList);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

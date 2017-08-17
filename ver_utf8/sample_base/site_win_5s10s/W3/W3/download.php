@@ -9,7 +9,7 @@ Logic：GETで取得したファイル名をダウンロードする
 $prm_FILE = (isset($_GET["prm"]))?$_GET["prm"]:"";
 $prm_path = "./up_img/".$prm_FILE;
 
-if(!$prm_FILE || !preg_match("/^([0-9]{10,})-([0-9]{6}).*$/", $prm_FILE)){
+if(!$prm_FILE || !ereg("^([0-9]{10,})-([0-9]{6})$", $prm_FILE)){
 	//prm_FILEが無い、IDの並びに違いがある場合エラー
 	header("HTTP/1.0 404 Not Found");exit();
 }

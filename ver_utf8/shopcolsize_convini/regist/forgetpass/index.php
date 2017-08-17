@@ -37,7 +37,7 @@ require_once("util_lib.php");						// 汎用処理クラスライブラリ
 require_once("tmpl2.class.php");					// PHPテンプレートクラスライブラリ
 
 // パスワードをcrypt → 半角英数字化する為の匿名関数
-$cryptPass = create_function('$pw','return preg_replace("/[^a-zA-Z0-9]/","",crypt($pw,"AP"));');
+$cryptPass = create_function('$pw','return ereg_replace("[^a-zA-Z0-9]","",crypt($pw,"AP"));');
 
 #================================================================================
 # $_POST['status']の内容により処理をコントロール

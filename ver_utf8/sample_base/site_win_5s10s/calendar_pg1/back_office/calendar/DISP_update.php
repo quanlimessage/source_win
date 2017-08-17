@@ -162,7 +162,7 @@ input#update_btn {
 
 <br>
 <!--<form action="./" method="post" enctype="multipart/form-data" onSubmit="return inputChk(this);" style="margin:0px;">-->
-<?php
+<?
 // カレンダー表示
 require_once 'Calendar/Month/Weekdays.php';
 

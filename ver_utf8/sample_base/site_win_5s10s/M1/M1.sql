@@ -1,5 +1,5 @@
 
-CREATE TABLE M1_INFO (
+CREATE TABLE M1_PRODUCT_LST (
   RES_ID int(10) unsigned NOT NULL auto_increment,
   ID tinytext,
   PW tinytext,
@@ -7,4 +7,4 @@ CREATE TABLE M1_INFO (
   PRIMARY KEY  (RES_ID)
 ) TYPE=MyISAM;
 
-INSERT INTO M1_INFO VALUES('1','test','pass','0');
+INSERT INTO M1_PRODUCT_LST VALUES('1','test','pass','0');

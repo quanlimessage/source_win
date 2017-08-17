@@ -26,10 +26,11 @@ if( !$injustice_access_chk){
 		if($nio_stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nio_stock[$i]) && !empty($nio_stock[$i])){
+			if(ereg("^([0-9]{10,})-([0-9]{6})$",$nio_stock[$i]) && !empty($nio_stock[$i])){
 
 				//送信にチェックの処理をする
-				$PDO -> regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '1' WHERE(MEMBER_ID = '".$nio_stock[$i]."')");
+				$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '1' WHERE(MEMBER_ID = '".$nio_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 			}
 
@@ -47,10 +48,11 @@ if( !$injustice_access_chk){
 		if($nin_stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nin_stock[$i]) && !empty($nin_stock[$i])){
+			if(ereg("^([0-9]{10,})-([0-9]{6})$",$nin_stock[$i]) && !empty($nin_stock[$i])){
 
 				//送信にチェックなしの処理をする
-				$PDO -> regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '0' WHERE(MEMBER_ID = '".$nin_stock[$i]."')");
+				$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '0' WHERE(MEMBER_ID = '".$nin_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 			}
 
@@ -68,7 +70,10 @@ UPDATE
 SET
 	OLD_SENDMAIL_FLG = SENDMAIL_FLG
 ";
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+}
 
 #=================================================================================
 # メールを送信する件数を調べる
@@ -87,6 +92,6 @@ $PDO -> regist($sql);
 	";
 
 // DBの取得データをセッションに格納
-$fetchCNT = $PDO -> fetch($sql_cnt);
+$fetchCNT = dbOpe::fetch($sql_cnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

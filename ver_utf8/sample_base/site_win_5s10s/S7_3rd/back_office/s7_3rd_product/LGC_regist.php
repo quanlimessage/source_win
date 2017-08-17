@@ -11,9 +11,6 @@ Logic：DB登録・更新処理
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
 }
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-//	header("Location: ../index.php");exit();
-}
 // 不正アクセスチェック（直接このファイルにアクセスした場合）
 if(!$accessChk){
 	header("Location: ../");exit();
@@ -32,7 +29,7 @@ if(!$accessChk){
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=================================================================================
 # POSTデータの受取と文字列処理（共通処理）	※汎用処理クラスライブラリを使用
@@ -89,6 +86,8 @@ endfor;
 // MySQLにおいて危険文字をエスケープしておく
 	$title = utilLib::strRep($title,5);
 	$title_tag = utilLib::strRep($title_tag,5);
+	//$content = utilLib::strRep($content,5);
+	//$detail_content = utilLib::strRep($detail_content,5);
 
 //ＨＴＭＬタグの有効化の処理（【utilLib::getRequestParams】の文字処理を行う前の情報を使用するためPOSTを使用する）
 	$content = html_tag($_POST['content']);
@@ -128,7 +127,7 @@ case "update":
 // 対象IDのデータ更新
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -160,7 +159,7 @@ case "new":
 
 	// 現在の登録件数が設定した件数未満の場合のみDBに格納
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".S7_3_PRODUCT_LST." WHERE(".S7_3_PRODUCT_LST.".DEL_FLG = '0')";
-	$fetchCNT = $PDO -> fetch($cnt_sql);
+	$fetchCNT = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//最大登録件数に達していない、そして、カテゴリーが存在している場合登録をする
 	if($fetchCNT[0]["CNT"] < DBMAX_CNT):
@@ -182,9 +181,11 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-	$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
-
+}
 
 #==================================================================
 # カテゴリーごとでの並び順を制御する
@@ -213,7 +214,7 @@ endswitch;
 				";
 
 				// データの取得
-				$fetchVList = $PDO -> fetch($sqlCL);
+				$fetchVList = dbOpe::fetch($sqlCL,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			//取得したデータを扱いやすいようにカテゴリー番号を連想配列にして入れなおす
 				for($i=0;$i < count($fetchVList);$i++){//連想配列にC_IDを入れる
@@ -243,7 +244,7 @@ endswitch;
 					";
 
 					// データの取得
-					$fetchVList = $PDO -> fetch($sqlCL);
+					$fetchVList = dbOpe::fetch($sqlCL,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 				//取得したデータを扱いやすいようにカテゴリー番号を連想配列にして入れなおす
 					for($i=0;$i < count($fetchVList);$i++){//連想配列にC_IDを入れる
@@ -268,7 +269,15 @@ endswitch;
 
 					//複製の場合それぞれのカテゴリーの順番をずらす。
 					if($_POST["copy_flg"] == "1"){
-						$reg_vo_val = $ca_list_reg[$target_ca[$i]]['VIEW_ORDER']+1;
+						$set_copy_view_value = $ca_list_reg[$target_ca[$i]]['VIEW_ORDER']+1;
+						$reg_vo_sql[$i] = "
+							INSERT INTO
+								".S7_3_VIEW_ORDER_LIST."
+							SET
+								C_ID	= '".$target_ca[$i]."',
+								RES_ID	= '".$res_id."',
+								VIEW_ORDER	= '".$set_copy_view_value."'
+						";
 
 						array_push($reg_vo_move_sql,"
 							UPDATE
@@ -281,19 +290,28 @@ endswitch;
 								(VIEW_ORDER >= '".$set_copy_view_value."')
 						");
 					}else{
-                        $reg_vo_val = $ca_list_reg[$target_ca[$i]]['VIEW_ORDER'];
+						$reg_vo_sql[$i] = "
+						INSERT INTO
+							".S7_3_VIEW_ORDER_LIST."
+						SET
+							C_ID	= '".$target_ca[$i]."',
+							RES_ID	= '".$res_id."',
+							VIEW_ORDER	= '".$ca_list_reg[$target_ca[$i]]['VIEW_ORDER']."'
+					";
 					}
 
 				///ここまで
 
+					/*
 					$reg_vo_sql[$i] = "
 						INSERT INTO
 							".S7_3_VIEW_ORDER_LIST."
 						SET
 							C_ID	= '".$target_ca[$i]."',
 							RES_ID	= '".$res_id."',
-							VIEW_ORDER	= '".$reg_vo_val."'
+							VIEW_ORDER	= '".$ca_list_reg[$target_ca[$i]]['VIEW_ORDER']."'
 					";
+					*/
 
 				//無い場合は新規に登録
 					}else{
@@ -327,6 +345,7 @@ endswitch;
 
 							//入れ子で最後の数値に1足した番号で登録
 							//mysqlのバージョンが4.0.14以降だと使用できる（自身にinsert select）
+							/*
 							$reg_vo_sql[$i] = "
 								INSERT INTO
 									".S7_3_VIEW_ORDER_LIST." (C_ID,RES_ID,VIEW_ORDER)
@@ -340,6 +359,24 @@ endswitch;
 										END AS VIEW_ORDER
 									FROM
 										".S7_3_VIEW_ORDER_LIST."
+
+							";
+							*/
+
+							//mysqlのバージョンが4.0.14前の対応バージョン（補佐用のテーブルからinsert select）
+							$reg_vo_sql[$i] = "
+								INSERT INTO
+									".S7_3_VIEW_ORDER_LIST." (C_ID,RES_ID,VIEW_ORDER)
+									SELECT
+										'".$target_ca[$i]."' AS C_ID,
+										'".$res_id."' AS RES_ID,
+										CASE
+
+											WHEN COUNT(C_ID = '".$target_ca[$i]."') != '' THEN MAX(CASE WHEN (C_ID = '".$target_ca[$i]."') THEN VIEW_ORDER + 1 ELSE 1 END)
+											ELSE 1
+										END AS VIEW_ORDER
+									FROM
+										".S7_3_VIEW_ORDER_LIST2."
 
 							";
 						}
@@ -368,7 +405,7 @@ endswitch;
 			";
 
 			// データの取得
-			$fetchVList_ALL = $PDO -> fetch($sqlCL_ALL);
+			$fetchVList_ALL = dbOpe::fetch($sqlCL_ALL,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			$set_copy_view_value = $fetchVList_ALL[0]['VIEW_ORDER']+1;
 
@@ -415,7 +452,7 @@ endswitch;
 
 				// データの取得
 				$fetchVList = array();//初期化
-				$fetchVList = $PDO -> fetch($sqlCL);
+				$fetchVList = dbOpe::fetch($sqlCL,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			$reg_vo_all = "
 				INSERT INTO
@@ -470,7 +507,7 @@ endswitch;
 
 						// データの取得
 						$fetchVList = array();//初期化
-						$fetchVList = $PDO -> fetch($sqlCL);
+						$fetchVList = dbOpe::fetch($sqlCL,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 					$reg_vo_all = "
 						INSERT INTO
@@ -484,6 +521,7 @@ endswitch;
 				}else{
 					//入れ子で最後の数値に1足した番号で登録
 					//mysqlのバージョンが4.0.14以降だと使用できる（自身にinsert select）
+					/*
 					$reg_vo_all = "
 						INSERT INTO
 							".S7_3_VIEW_ORDER_LIST." (C_ID,RES_ID,VIEW_ORDER)
@@ -497,6 +535,23 @@ endswitch;
 								END AS VIEW_ORDER
 							FROM
 								".S7_3_VIEW_ORDER_LIST."
+					";
+					*/
+
+					//mysqlのバージョンが4.0.14前の対応バージョン（補佐用のテーブルからinsert select）
+					$reg_vo_all = "
+						INSERT INTO
+							".S7_3_VIEW_ORDER_LIST." (C_ID,RES_ID,VIEW_ORDER)
+							SELECT
+								'' AS C_ID,
+								'".$res_id."' AS RES_ID,
+								CASE
+
+									WHEN COUNT(C_ID = '') != '' THEN MAX(CASE WHEN (C_ID = '') THEN VIEW_ORDER + 1 ELSE 1 END)
+									ELSE 1
+								END AS VIEW_ORDER
+							FROM
+								".S7_3_VIEW_ORDER_LIST2."
 					";
 
 				}
@@ -518,20 +573,32 @@ endswitch;
 
 		// 一旦既に入っている同じRES_IDデータを削除
 			if(!empty($sqlVODel)){
-				$PDO -> regist($sqlVODel);
+				$db_result = dbOpe::regist($sqlVODel,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 			}
 
 		//並び順をずらすSQL文があれば実行
 			if(!empty($reg_vo_move_sql)){
-				foreach ($reg_vo_move_sql as $sql) {
-					$PDO -> regist($sql);
-				}
+				$db_result = dbOpe::regist($reg_vo_move_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
 			}
 
 		//最後に登録するSQL文を実行
 			if(!empty($reg_vo_sql)){
-				foreach ($reg_vo_sql as $sql) {
-					$PDO -> regist($sql);
-				}
+
+				$db_result3 = dbOpe::regist($reg_vo_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result3)die("DB登録失敗しました<hr>{$db_result3}");
+
 			}
+
+	//mysqlのバージョンが4.0.14前の対応バージョン　S7_3_VIEW_ORDER_LISTとS7_3_VIEW_ORDER_LIST2の差分を無くす為
+	//S7_3_VIEW_ORDER_LIST2を全削除してS7_3_VIEW_ORDER_LISTを入れて差分を無くす
+		//補佐テーブルのデータ削除
+			$db_result3 = dbOpe::regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST2,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+
+		//補佐テーブルにS7_3_VIEW_ORDER_LISTのデータを入れる
+			$db_result3 = dbOpe::regist("INSERT INTO ".S7_3_VIEW_ORDER_LIST2." SELECT * FROM ".S7_3_VIEW_ORDER_LIST,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+
+?>

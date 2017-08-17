@@ -87,10 +87,11 @@ default:
 				if($nio_stock[$i]){//データが存在すれば処理を行う
 
 				// 対象記事IDデータのチェック
-					if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nio_stock[$i]) && !empty($nio_stock[$i])){
+					if(ereg("^([0-9]{10,})-([0-9]{6})$",$nio_stock[$i]) && !empty($nio_stock[$i])){
 
 						//送信にチェックの処理をする
-						$PDO -> regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '1' WHERE(MEMBER_ID = '".$nio_stock[$i]."')");
+						$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '1' WHERE(MEMBER_ID = '".$nio_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+						if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 					}
 
@@ -108,10 +109,11 @@ default:
 				if($nin_stock[$i]){//データが存在すれば処理を行う
 
 				// 対象記事IDデータのチェック
-					if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nin_stock[$i]) && !empty($nin_stock[$i])){
+					if(ereg("^([0-9]{10,})-([0-9]{6})$",$nin_stock[$i]) && !empty($nin_stock[$i])){
 
 						//送信にチェックなしの処理をする
-						$PDO -> regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '0' WHERE(MEMBER_ID = '".$nin_stock[$i]."')");
+						$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '0' WHERE(MEMBER_ID = '".$nin_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+						if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 					}
 
@@ -165,8 +167,8 @@ ORDER BY
 LIMIT
 	0," . MEMBER_DBMAX_CNT . "
 ";
+$fetchMISS = dbOpe::fetch($sqlMISS,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
-$fetchMISS = $PDO -> fetch($sqlMISS);
 
 /////////////////
 // 不正メールアドレスを省く
@@ -198,7 +200,7 @@ LIMIT
 		(EMAIL REGEXP '" . $email_pattern . "')
 	";
 
-	$fetchCNT = $PDO -> fetch($sqlcnt);
+	$fetchCNT = dbOpe::fetch($sqlcnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 /////////////////
 // 検索に該当しなかった人はメール送信拒否にしておく
@@ -212,19 +214,21 @@ LIMIT
 					SENDMAIL_FLG = OLD_SENDMAIL_FLG
 				";
 
-			$PDO -> regist($sqlng);
+			$db_result = dbOpe::regist($sqlng,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			//検索に該当しなかった人はフラグを落とす
-			$sqlwhere = ($sqlwhere)?"WHERE !(".preg_replace('/AND/', '',$sqlwhere ,1).")":"";
 				$sqlng = "
 				UPDATE
 					" . MEMBER_LST . "
 				SET
 					SENDMAIL_FLG   = '0'
-					{$sqlwhere}
+			    WHERE
+			     !(
+			     ".preg_replace('/AND/', '',$sqlwhere ,1)."
+			     )
 				";
 
-			$PDO -> regist($sqlng);
+			$db_result = dbOpe::regist($sqlng,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	}
 
@@ -241,8 +245,8 @@ LIMIT
 	break;
 
 endswitch;
-
-
+	
+	
 	//ここの時点で不正メールアドレスの人は配信しないにデータベースを変更させる。
 	//前回のOLD_SENDMAIL_FLGの処理前だと送る判定になってしまう。
 	for($i=0;$i<count($fetchMISS);$i++){
@@ -259,7 +263,10 @@ endswitch;
 		#=================================================================================
 		# SQL実行
 		#=================================================================================
-		$PDO -> regist($sqlng);
+		if(!empty($sqlng)){
+			$db_result = dbOpe::regist($sqlng,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+		}
 	}
 
 // 新しく指定された検索条件をセッションに格納
@@ -271,7 +278,7 @@ $_SESSION["search_cond"]["generation"] = $generation;
 $_SESSION["search_cond"]["mailmag"] = $mailmag;
 
 // DBの取得データをセッションに格納
-$fetchCustList = $PDO -> fetch($sql);
+$fetchCustList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if(count($fetchCustList) > MEMBER_DBMAX_CNT){
 	$error_msg = "最大送信可能件数を超えております。<br>検索条件を絞って". MEMBER_DBMAX_CNT . "件以内に減らしてください。";

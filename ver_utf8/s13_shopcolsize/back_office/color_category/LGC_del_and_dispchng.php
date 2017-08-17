@@ -43,9 +43,9 @@ case "del_data":
 	// SQL実行
 	//完全削除を行う場合
 	//カテゴリーの登録データを削除
-	$PDO -> regist("DELETE FROM COLOR_MST WHERE (COLOR_CODE = '$cate')");
+	$db_result = dbOpe::regist("DELETE FROM COLOR_MST WHERE (COLOR_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
-	$PDO -> regist("DELETE FROM SIZE_MST WHERE (COLOR_CODE = '$cate')");
+	$db_result2 = dbOpe::regist("DELETE FROM SIZE_MST WHERE (COLOR_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 case "display_change":
@@ -56,7 +56,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE COLOR_MST SET DISPLAY_FLG = '$up_display' WHERE(COLOR_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE COLOR_MST SET DISPLAY_FLG = '$up_display' WHERE(COLOR_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

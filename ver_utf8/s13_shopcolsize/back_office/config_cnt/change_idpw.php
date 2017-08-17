@@ -19,6 +19,8 @@ if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_config.php");	// 設定情報
+require_once("dbOpe.php");					// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 #=============================================================
 # HTTPヘッダーを出力
@@ -79,7 +81,7 @@ if($_POST["action"] == "update"):
 	if(empty($new_id)){
 		$error_message.="新IDが未入力です。<br>\n";
 	}
-	elseif(!preg_match("/^[0-9A-Za-z]{4,8}$/",$new_id)){
+	elseif(!ereg("^[0-9A-Za-z]{4,8}$",$new_id)){
 		$error_message.="IDは半角英数字で4文字以上8文字以内で入力してください。<br>\n";
 	}
 
@@ -87,7 +89,7 @@ if($_POST["action"] == "update"):
 	if(empty($new_pw)){
 		$error_message.="新パスワードが未入力です。<br>\n";
 	}
-	elseif(!preg_match("/^[0-9A-Za-z]{4,8}$/",$new_pw)){
+	elseif(!ereg("^[0-9A-Za-z]{4,8}$",$new_pw)){
 		$error_message.="パスワードは半角英数字で4文字以上8文字以内で入力してください。<br>\n";
 	}
 
@@ -115,11 +117,12 @@ if($_POST["action"] == "update"):
 		WHERE
 			(RES_ID = '2')
 		";
-		$PDO -> regist($sql);
+		$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if($db_result)die("DB更新に失敗しました<hr>{$db_result}");
 
 		// 管理情報（EMAIL）を取得
 		$sql = "SELECT EMAIL1 FROM APP_INIT_DATA WHERE(RES_ID = '1')";
-		$fetch = $PDO -> fetch($sql);
+		$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		$mailbody = "\nホームページの管理用ID/管理パスワードが変更されました。\n\n";
 

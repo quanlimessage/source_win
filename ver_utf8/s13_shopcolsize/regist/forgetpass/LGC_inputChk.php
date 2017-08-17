@@ -34,10 +34,10 @@ if ( $_GET['cid'] && $_GET['did'] ):
 	$did = mb_convert_kana($did, "a");
 
 	// データ形式チェック（不正があればショッピングトップページへ飛ばして終了）
-	if ( !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $cid) ){
+	if ( !ereg("^([0-9]{10,})-([0-9]{6})$", $cid) ){
 		header("Location: ../../");	exit();
 	}
-	elseif ( preg_match("/[^a-zA-Z0-9]/", $did) ){
+	elseif ( ereg("[^a-zA-Z0-9]", $did) ){
 		header("Location: ../../");	exit();
 	}
 
@@ -58,7 +58,7 @@ if ( $_GET['cid'] && $_GET['did'] ):
 	AND
 		(EXISTING_CUSTOMER_FLG = '1')
 	";
-	$fetchCust = $PDO -> fetch($sql);
+	$fetchCust = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	// チェック
 	if ( $fetchCust[0]['CUSTOMER_ID'] == "" || $fetchCust[0]['CUSTOMER_ID'] == NULL ){
@@ -96,7 +96,7 @@ else:
 		# POSTデータの受け取りと共通な文字列処理
 		#========================================================================
 		if($_POST){extract(utilLib::getRequestParams("post",array(8,7,1,4)));}
-
+		
 		if ($npwd != $npwd2):
 			$error_message .= "パスワードが一致しません<br>\n";
 		elseif (preg_match("/^(\s|　)+$/", $npwd)):
@@ -107,7 +107,7 @@ else:
 			$error_message .= '大変申し訳ございませんが“\”という文字をパスワードに使用するのはご遠慮いただけますよう何卒お願い申し上げます'."<br>\n";
 		else:
 
-			if ($_SESSION['authOK'] && !$error_message) {
+			if($_SESSION['authOK'] && !$error_message):
 
 				// パスワードの更新（CUSTOMER_LST）
 				$sql = "
@@ -127,7 +127,11 @@ else:
 				";
 
 				// ＳＱＬを実行し、パスワード更新ＯＫならメール送信する
-				$PDO -> regist($sql);
+				$update_result_mes = dbOpe::regist($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
+				if ( $update_result_mes ){
+					$error_message .= "更新に失敗しました。<br>大変申し訳ございませんがこちらまでお問い合わせください<br>".WEBMST_SHOP_MAIL."<hr>{$error_message}<hr>{$update_result_mes}";
+				}
+				else{
 
 					// 本文雛形を読み込み（文字列差し替え無し）
 					$mailbody = file_get_contents(dirname(__FILE__)."/../mail_tmpl/INI_mailbody_ChangedPass.dat");
@@ -146,10 +150,12 @@ else:
 					$send_mail_result = mb_send_mail($_SESSION['authOK']['EMAIL'], $subject, $mailbody, $headers);
 					if ( !$send_mail_result )die("お客様へのメール送信に失敗しました。。。<br>\n誠に申し訳ございませんがこちらまでご連絡ください“".WEBMST_SHOP_MAIL."”");
 
-			} else {
+				}
+
+			else:
 				// 認証のセッションデータないならトップへすっ飛ばす
 				header("Location: ../../");	exit();
-			}
+			endif;
 
 		endif;
 
@@ -198,7 +204,7 @@ else:
 			AND
 				(EXISTING_CUSTOMER_FLG = '1')
 			";
-			$fetchCust = $PDO -> fetch($sql);
+			$fetchCust = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 			if ( $fetchCust[0]['EMAIL'] == "" || $fetchCust[0]['EMAIL'] == NULL ){
 				$error_message .= "お客様の情報はご登録されていません。<br>\n";

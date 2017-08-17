@@ -86,7 +86,7 @@ for ( $i = 0; $i < count($cart_list); $i++ ){
 			PRODUCT_ID = '".$product_id."'
 		";
 
-		$fetchCnt = $PDO -> fetch($sql);
+		$fetchCnt = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// 在庫数が購入個数以上の場合
 	if($fetchCnt[0]["STOCK_QUANTITY"] > $quantity){

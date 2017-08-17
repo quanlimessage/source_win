@@ -70,6 +70,6 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

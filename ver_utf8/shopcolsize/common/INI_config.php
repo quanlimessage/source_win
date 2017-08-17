@@ -135,11 +135,10 @@ mb_internal_encoding("UTF-8");
 # 2.ＤＢ接続の情報（定数化）
 #=================================================================================
 define('DB_SERVER','localhost');
-define('DB_NAME','win_sample2');
-define('DB_USER','win_sample2');
-define('DB_PASS','718JcvX8');
-define('DB_DSN',"mysql:dbname=".DB_NAME.";host=".DB_SERVER.";charset=utf8;");
-$PDO = new dbOpe(DB_DSN,DB_USER,DB_PASS);
+define('DB_NAME','shopwin_sample01');
+define('DB_USER','shopwin_sample01');
+define('DB_PASS','zeekdemo');
+define('DSN',"mysql://shopwin_sample01:zeekdemo@localhost/shopwin_sample01");	// PEAR用
 
 #=================================================================================
 # 3.ＤＢテーブル情報（定数化）
@@ -197,7 +196,7 @@ $makeID = create_function('','return date("U")."-".sprintf("%06d",(microtime() *
 $makeID2 = create_function('','return date("U").sprintf("%06d",(microtime() * 1000000));');
 
 // パスワード作成
-$makePass = create_function('','$pass = crypt(mt_rand(0,99999999),"CP");return preg_replace("/[^a-zA-Z0-9]/","",$pass);');
+$makePass = create_function('','$pass = crypt(mt_rand(0,99999999),"CP");return ereg_replace("[^a-zA-Z0-9]","",$pass);');
 
 #=================================================================================
 # “htmlspecialchars()”でエンティティ化したHTML特殊文字を
@@ -221,11 +220,23 @@ function h14s_han2zen(&$str){
 #	メソッド名：getInitData("カラム名")
 #=================================================================================
 function getInitData($colum = ""){
-	global $PDO;
+
 	if(!$colum)$colum = "EMAIL2";
+
 	$sql = "SELECT {$colum} FROM CONFIG_MST WHERE(CONFIG_ID = '1')";
-	$fetch = $PDO->fetch($sql);
-		return $fetch[0][$colum];
+	$con = mysql_connect(DB_SERVER,DB_USER,DB_PASS);
+	mysql_select_db(DB_NAME,$con);
+
+	if($query = mysql_query($sql)):
+
+		$fetch = mysql_result($query,0,$colum);
+		mysql_free_result($query);
+		mysql_close($con);
+
+		return $fetch;
+
+	endif;
+
 }
 
 #=================================================================================
@@ -233,11 +244,22 @@ function getInitData($colum = ""){
 #	メソッド名：getPermitIPList("ID名")
 #=================================================================================
 function getPermitIPList($bo_id){
-	global $PDO;
+
 	if(!$bo_id || empty($bo_id)) return false;
+
 	$sql = "SELECT PERMIT_IP_LST FROM CONFIG_MST WHERE(BO_ID = '".utilLib::strRep($bo_id,5)."')";
-	$fetch = $PDO -> fetch($sql);
-	return explode(",",$fetch[0]["PERMIT_IP_LST"]);
+	$con = mysql_connect(DB_SERVER,DB_USER,DB_PASS);
+	mysql_select_db(DB_NAME,$con);
+
+	if($query = mysql_query($sql)):
+
+		$fetch = mysql_result($query,0,"PERMIT_IP_LST");
+		mysql_free_result($query);
+		mysql_close($con);
+	endif;
+
+	return explode(",",$fetch);
+
 }
 
 #=================================================================================

@@ -31,7 +31,7 @@ extract(utilLib::getRequestParams("post",array(4)));
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
 //////////////////////////////////////////////
@@ -174,7 +174,7 @@ else:
 	";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//画像
 	for($i=1;$i<=IMG_CNT;$i++):

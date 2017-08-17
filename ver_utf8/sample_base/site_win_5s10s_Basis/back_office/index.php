@@ -8,6 +8,7 @@ session_start();
 // 設定＆ライブラリファイル読み込み
 require_once("../common/config.php");
 require_once('util_lib.php');
+require_once('dbOpe.php');
 require_once('authOpe.php');
 
 #---------------------------------------------------------------------
@@ -15,7 +16,7 @@ require_once('authOpe.php');
 
 #---------------------------------------------------------------------
 	function login($login_id,$login_pass){
-		global $PDO;
+
 		if($login_id && $login_pass){
 		// SQLite操作ライブラリのインスタンスを作成しておく（インスタンスは1個のみ作成可）
 		//	$dbh = new sqliteOpe(ID_PW_FILEPATH,CREATE_ID_PW_SQL);
@@ -32,7 +33,7 @@ require_once('authOpe.php');
 			";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//	$fetch = $dbh->fetch($sql);
 			if(count($fetch) == 0){

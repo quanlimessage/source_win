@@ -84,7 +84,7 @@ case "update":
 // 対象IDのデータ更新
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -119,7 +119,7 @@ case "new":
 
 	// 現在の登録件数が設定した件数未満の場合のみDBに格納
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".N3_2WHATSNEW." WHERE(DEL_FLG = '0')";
-	$fetch = $PDO -> fetch($cnt_sql);
+	$fetch = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	if($fetch[0]["CNT"] < N3_2DBMAX_CNT){
 
@@ -140,7 +140,11 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
+}
 
 #=================================================================================
 # 共通処理；画像アップロード処理

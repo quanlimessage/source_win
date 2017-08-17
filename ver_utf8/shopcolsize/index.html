@@ -8,6 +8,8 @@
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("./common/INI_config.php");		// 共通設定情報
 require_once("./common/INI_ShopConfig.php");	// ショップ用設定情報
+require_once('util_lib.php');
+require_once('dbOpe.php');
 
 // DBよりデータを取得（開始位置と終了位置を指定）
 $sql = "
@@ -32,7 +34,7 @@ ORDER BY
 LIMIT
 	0 , ".RECOMMEND_DBMAX_CNT."
 ";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #-------------------------------------------------------------
 # HTTPヘッダーを出力

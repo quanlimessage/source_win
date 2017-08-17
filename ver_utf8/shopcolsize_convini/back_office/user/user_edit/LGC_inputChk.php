@@ -31,7 +31,7 @@ if(!$injustice_access_chk){
 extract(utilLib::getRequestParams("post",array(8,7,1,4,5),true));
 
 // 不正パラメーターチェック(修正する顧客ID)
-if( !isset($_POST['customer_id']) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_POST['customer_id']) ){
+if( !isset($_POST['customer_id']) || !ereg("^([0-9]{10,})-([0-9]{6})$", $_POST['customer_id']) ){
 	header("Location: ./");	exit();
 }
 
@@ -107,20 +107,20 @@ if((mb_strlen($email, 'UTF-8') != strlen($email)) || mb_ereg("[ｱ-ﾝ]", $email
 }
 
 // 電話番号チェック
-	if(preg_match("/[^0-9]/",$tel1) or preg_match("/[^0-9]/",$tel2) or preg_match("/[^0-9]/",$tel3)){
+	if(ereg("[^0-9]",$tel1) or ereg("[^0-9]",$tel2) or ereg("[^0-9]",$tel3)){
 	$error_message.="電話番号を正しく入力してください。<br>\n";
 	}
 /*
-if(!preg_match("/^[0-9]{1,3}[0-9]$/i",$tel1) or !preg_match("/^[0-9]{1,3}[0-9]$/i",$tel2) or !preg_match("/^[0-9]{1,3}[0-9]$/i",$tel3)){
+if(!eregi("^[0-9]{1,3}[0-9]$",$tel1) or !eregi("^[0-9]{1,3}[0-9]$",$tel2) or !eregi("^[0-9]{1,3}[0-9]$",$tel3)){
 	$error_message.="電話番号を正しく入力してください。<br>\n";
 }
 */
 // 郵便番号チェック
-	if(preg_match("/[^0-9]/",$zip1) or preg_match("/[^0-9]/",$zip2)){
+	if(ereg("[^0-9]",$zip1) or ereg("[^0-9]",$zip2)){
 	$error_message.="郵便番号を正しく入力してください。<br>\n";
 	}
 /*
-if(!preg_match("/^[0-9]{2,2}[0-9]$/i",$zip1) or !preg_match("/^[0-9]{3,3}[0-9]$/i",$zip2)){
+if(!eregi("^[0-9]{2,2}[0-9]$",$zip1) or !eregi("^[0-9]{3,3}[0-9]$",$zip2)){
 	$error_message.="郵便番号を正しく入力してください。<br>\n";
 }
 */

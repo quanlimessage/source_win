@@ -35,7 +35,7 @@ if ( $_SESSION['setParam']['emailChg_Auth_flg'] ):
 	AND
 		( DEL_FLG = '0' )
 	";
-	$fetchAgainAuth = $PDO -> fetch($sql);
+	$fetchAgainAuth = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	// データがあればＯＫ（なければ書き換わったので不正→トップページへ転送）
 	if ( !$fetchAgainAuth ){
@@ -60,12 +60,14 @@ if ( $_SESSION['setParam']['emailChg_Auth_flg'] ):
 	";
 
 	// ＳＱＬを実行（ｸ敗栫Fエラーメッセージを格納）
-	$PDO -> regist($sql);
+	$error_message = dbOpe::regist($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
+	if ( $error_message )
+		die("更新に失敗しました。<br>大変申し訳ございませんがこちらまでお問い合わせください<br>".WEBMST_SHOP_MAIL."<hr>{$error_message}");
 
 	#---------------------------------------------------------------------------
 	# ユーザーへメール送信（変更お知らせ）※ＳＱＬ実行結果がＯＫな場合のみ
 	#---------------------------------------------------------------------------
-	if ( $error_message ){
+	if ( !$error_message ){
 
 		// 本文雛形を読み込み
 		$mailbody = file_get_contents(dirname(__FILE__)."/../mail_tmpl/INI_mailbody_ChangedEmail.dat");

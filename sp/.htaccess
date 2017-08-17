@@ -1,13 +1,40 @@
+AddType application/x-httpd-php .php .html
+
+php_value session.gc_maxlifetime 3600
+
+php_value session.gc_probability 1
+php_value session.gc_divisor 100
+
+php_value error_reporting 6135
+php_flag allow_call_time_pass_reference on
+
+ErrorDocument 404 /404/
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^(XXXXX)(:80)? [NC]
+RewriteRule ^(.*) http://www.XXXXX/$1 [R=301,QSA,L]
+
+RewriteCond %{HTTP_HOST} ^(^.*-https.all-internet.jp)(:80)? [NC]
+RewriteCond %{SERVER_PORT} !^443$
+RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R=301,QSA,L]
+
+RewriteCond %{THE_REQUEST} (^.*/index\.php|^.*/index\.html)
+RewriteCond %{REQUEST_METHOD} !=POST
+RewriteRule ^(.*)index\.(php|html) /$1 [R=301,QSA,L]
+
 SetEnvIf User-Agent "iPhone" UA=sp
 SetEnvIf User-Agent "iPod" UA=sp
 SetEnvIf User-Agent "Android.*Mobile" UA=sp
+
 RewriteCond %{DOCUMENT_ROOT}/sp%{REQUEST_URI} -f [OR]
 RewriteCond %{DOCUMENT_ROOT}/sp%{REQUEST_URI} -d
+
 RewriteCond %{ENV:UA} ^sp$
 RewriteCond %{HTTP_COOKIE} !mode=pc [NC]
 RewriteCond %{REQUEST_URI} !^/sp/.*$ [NC]
+
 RewriteCond %{QUERY_STRING} !mode=pc [NC]
 RewriteCond %{QUERY_STRING} !mode=sp [NC]
-RewriteCond %{SCRIPT_FILENAME} !/common_img/ [NC]
 RewriteCond %{REQUEST_FILENAME} !^(.*)\.(js|css)$ [NC]
+
 RewriteRule ^(.*) /sp/$1 [R,QSA,L]

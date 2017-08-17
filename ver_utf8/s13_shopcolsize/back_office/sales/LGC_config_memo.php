@@ -30,7 +30,7 @@ extract(utilLib::getRequestParams("post",array(8,7,1,4,5)));
 $config_memo	= mb_convert_kana($config_memo,"KV");		// メモ内容
 
 // 更新処理指示受注IDチェック
-if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$target_order_id))exit("不正なパラメータが送信されました。処理を中止します。");
+if(!ereg("^([0-9]{10,})-([0-9]{6})$",$target_order_id))exit("不正なパラメータが送信されました。処理を中止します。");
 
 #=================================================================================
 # SQL組立
@@ -49,5 +49,8 @@ WHERE
 #=================================================================================
 # SQL実行
 #=================================================================================
-$PDO -> regist($config_memo_sql);
+if(!empty($config_memo_sql)){
+	$db_result = dbOpe::regist($config_memo_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB更新失敗しました<hr>{$db_result}");
+}
 ?>

@@ -13,6 +13,7 @@ SiteWiN20 20 30（MySQL版）N3_2
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../common/config.php");		// 共通設定情報
 require_once("../common/config_N3_2.php");		// 共通設定情報
+require_once("dbOpe.php");				// DB操作クラスライブラリ
 require_once("util_lib.php");			// 汎用処理クラスライブラリ
 require_once('../common/imgOpe2.php');					// 画像アップロードクラスライブラリ
 
@@ -28,7 +29,7 @@ FROM
 	".N3_2WHATSNEW_PAGE."
 	";
 
-$fetch_page = $PDO -> fetch($sql_page);
+$fetch_page = dbOpe::fetch($sql_page,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 $page = $fetch_page[0]['PAGE_FLG'];
 if($page == 0){
 	$page = N3_2DBMAX_CNT;

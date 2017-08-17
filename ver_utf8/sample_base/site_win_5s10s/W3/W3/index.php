@@ -8,6 +8,7 @@ W系表示用プログラム コントローラー
 // 共通ライブラリ読み込み
 require_once('../common/config_W3.php');
 require_once('util_lib.php');
+require_once('dbOpe.php');
 
 	// 不正アクセスチェックのフラグ
 	$injustice_access_chk = 1;

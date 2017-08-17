@@ -12,8 +12,8 @@ INSERT INTO APP_INIT_DATA(EMAIL1,EMAIL2)VALUES('','');
 //会員情報
 CREATE TABLE H1A_MEMBER_NEW (
   MEMBER_ID varchar(25) NOT NULL,
-  UPD_DATE timestamp NOT NULL,
-  INS_DATE timestamp NOT NULL,
+  UPD_DATE timestamp(14) NOT NULL,
+  INS_DATE timestamp(14) NOT NULL,
   DEL_FLG char(1) default '0',
   SENDMAIL char(1) default '0',
   SENDMAIL_FLG char(1) default '0',
@@ -40,7 +40,7 @@ CREATE TABLE MAIL_HISTORY(
   CONTENT text,
   MEMBER_ID text,
   SEND_NUMBER int,
-  INS_DATE timestamp NOT NULL,
+  INS_DATE timestamp(14) NOT NULL,
   DEL_FLG char(1) default '0',
   PRIMARY KEY(RES_ID)
 );

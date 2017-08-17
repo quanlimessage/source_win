@@ -48,7 +48,7 @@ case "history_detail":
 		(RES_ID = '".$res_id."')
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//「|」をデリミタとして、取得したIDを配列にする
 	$id_list = explode('|',$fetch[0][MEMBER_ID]);
@@ -69,7 +69,7 @@ case "history_detail":
 			".MEMBER_LST.".MEMBER_ID = '".$id_list[$i]."'
 		";
 
-		$fetchLST = $PDO -> fetch($sql);
+		$fetchLST = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		//得られた値を$fetchCustListに格納
 		$fetchCustList[] = $fetchLST[0];
@@ -100,7 +100,7 @@ default:
 		INS_DATE DESC
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	/*
 	//「|」をデリミタとして、取得したIDを配列にする

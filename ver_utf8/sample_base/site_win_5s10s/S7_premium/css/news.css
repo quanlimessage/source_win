@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/*新着情報CSS・本来は外部記述*/
+#nProgram {
+	width:336px;
+	height:120px;
+	overflow:auto;
+	background-color:#f0f0f0;
+}
+h4 {
+	width:410px;
+	padding:3px 5px;
+	background-color:#333333;
+
+	color:#ffffff;
+	font-weight:bold;
+}
+
+#nProgram dl {
+	margin:5px;
+}
+
+#nProgram dl dt {
+	margin:0;
+	padding:0;
+}
+
+#nProgram dl dt a{
+	font-weight:normal;
+}
+
+#nProgram dl dd {
+	margin:0 0 6px;
+	padding:0 6px 6px 6px;
+	border-bottom:1px dashed #999999;
+}
+/*新着情報CSSここまで*/

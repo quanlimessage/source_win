@@ -8,13 +8,8 @@ SiteWiN 10 20 30（MySQL版）N1
 *******************************************************************************/
 
 // 設定ファイル＆共通ライブラリの読み込み
-if(file_exists('./common/config.php')){
-	$com_path = './common/';
-}
-else{
-	$com_path = '../common/';
-}
-require_once($com_path."config_N1.php");		// 共通設定情報
+require_once("./common/config_N1.php");		// 共通設定情報
+require_once("dbOpe.php");				// DB操作クラスライブラリ
 require_once("util_lib.php");	// 汎用処理クラスライブラリ
 
 if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
@@ -55,7 +50,7 @@ LIMIT
 ";
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 else:
 ///////////////////////////////
@@ -87,7 +82,7 @@ LIMIT
 ";
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 endif;
 

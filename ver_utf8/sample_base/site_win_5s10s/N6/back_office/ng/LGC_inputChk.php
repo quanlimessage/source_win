@@ -11,7 +11,7 @@ if(!$injustice_access_chk){
 	header("HTTP/1.0 404 Not Found");exit();
 }
 
-if(preg_match("/\.$|\/$|\@$|,$/",$words)){
+if(ereg("\.$|\/$|\@$|,$",$words)){
 	$error_mes .= "<br><b><font color=#ff0000>エラー：最後の文字に不正な文字が使われている</font></b>\n";	# 最後の文字に不正な文字が使われているかどうか
 }
 ?>

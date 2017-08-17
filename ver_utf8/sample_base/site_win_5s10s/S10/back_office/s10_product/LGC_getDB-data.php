@@ -9,14 +9,11 @@ Logic：ＤＢ情報取得処理ファイル
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
 #	※厳しく行う場合はIDとPWも一致するかまで行う
 #---------------------------------------------------------------
-if( !$_SESSION['LOGIN'] ){
-	header("Location: ../err.php");exit();
-}
 if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-//	header("Location: ../");exit();
+	header("Location: ../");exit();
 }
 if(!$accessChk){
-	header("HTTP/1.0 404 Not Found");exit();
+	header("Location: ../");exit();
 }
 
 #--------------------------------------------------------------------------------
@@ -31,7 +28,7 @@ case "update":
 	extract(utilLib::getRequestParams("post",array(8,7,1,4)));
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -68,6 +65,6 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

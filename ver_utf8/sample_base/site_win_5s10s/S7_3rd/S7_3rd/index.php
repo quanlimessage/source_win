@@ -32,7 +32,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		//簡単にカテゴリー名を取得できるように連想配列名を設定した配列を作る
 			$fetchCA2 = array();
@@ -58,7 +58,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 
 	// 商品IDが送信されパラメーターが不正でなければ商品詳細を表示
 	// $_POST['act']の値に"prev_d"を受け取った場合は詳細プレビューを表示
-	if( ( isset($_GET['id']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_GET['id']) ) || $_POST['act']=="prev_d" ){
+	if( ( isset($_GET['id']) && ereg("^([0-9]{10,})-([0-9]{6})$", $_GET['id']) ) || $_POST['act']=="prev_d" ){
 
 		include("DISP_detail.php");
 

@@ -20,6 +20,7 @@ if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_S8.php");	// 設定情報
+require_once("dbOpe.php");			// ＤＢ操作クラスライブラリ
 require_once("util_lib.php");			// 汎用処理クラスライブラリ
 
 #--------------------------------------------------------------------------------
@@ -37,7 +38,7 @@ ORDER BY
 	VIEW_ORDER ASC
 
 ";
-$fetchPCA = $PDO -> fetch($sqlPCA);
+$fetchPCA = dbOpe::fetch($sqlPCA,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -56,7 +57,7 @@ for($i=0;$i<count($fetchPCA);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchPCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchPCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 
 	// 送信される可能性のあるパラメーターはデコードする
@@ -97,7 +98,7 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 	for($i=0;$i<count($vo);$i++){
 
-		$sql = "
+		$sql[$i] = "
 		UPDATE
 			".S8_CATEGORY_MST."
 		SET
@@ -110,9 +111,11 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 			(DEL_FLG = '0')
 		";
-		// ＳＱＬを実行
-		$PDO -> regist($sql);
+
 	}
+	// ＳＱＬを実行
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 最後に並び替えのトップへ飛ばす
 	//header("Location: ./sort.php");
@@ -136,7 +139,7 @@ AND
 ORDER BY
 	VIEW_ORDER ASC
 ";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力

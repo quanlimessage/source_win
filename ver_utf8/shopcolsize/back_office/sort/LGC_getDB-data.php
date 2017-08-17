@@ -49,5 +49,5 @@ ORDER BY
 	".PRODUCT_LST.".VIEW_ORDER
 ";
 
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 ?>

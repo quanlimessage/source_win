@@ -45,5 +45,6 @@ AND
 ";
 
 // SQL実行
-$PDO -> regist($up_sql);
+$db_result = dbOpe::regist($up_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+if($db_result)die("更新に失敗しました<hr>{$db_result}");
 ?>

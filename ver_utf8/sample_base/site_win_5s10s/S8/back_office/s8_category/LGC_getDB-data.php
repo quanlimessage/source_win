@@ -36,7 +36,7 @@ ORDER BY
 	VIEW_ORDER ASC
 
 ";
-$fetchPCA = $PDO -> fetch($sql);
+$fetchPCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -55,7 +55,7 @@ for($i=0;$i<count($fetchPCA);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchPCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchPCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 
 #--------------------------------------------------------------------------------
@@ -135,6 +135,6 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

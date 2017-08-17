@@ -1,0 +1,89 @@
+MVAClient||偽装 or 注意 or 詳細不明
+Trend Micro tmdr||偽装 or 注意 or 詳細不明
+Microsoft URL Control||偽装 or 注意 or 詳細不明
+Microsoft Data Access Internet Publishing Provider Protocol Discovery||偽装 or 注意 or 詳細不明
+Indy Library||偽装 or 注意 or 詳細不明
+^([0-9]\.?)+$||偽装 or 注意 or 詳細不明
+MSIE 3.||InternetExplorer||3.x
+MSIE 4.||InternetExplorer||4.x
+MSIE 5.||InternetExplorer||5.x
+MSIE 6.||InternetExplorer||6.x
+Mozilla/3||Netscape||3.x
+Mozilla/4.||Netscape||4.x
+Netscape6||Netscape||6.x
+Netscape/7||Netscape||7.x
+Firefox/0.||Firefox||0.x
+Firefox/1.||Firefox||1.x
+Firefox/2.||Firefox||2.x
+Firefox
+Opera/8||Opera||8.x
+Opera 8||Opera||8.x
+Opera/7||Opera||7.x
+Opera 7||Opera||7.x
+Opera/6||Opera||6.x
+Opera 6||Opera||6.x
+Opera
+Safari
+Sleipnir Version 1.||Sleipnir||1.x
+Sleipnir
+Gecko||Mozilla
+PHP/||PHP
+Konqueror/3.||Konqueror||3.x
+Konqueror/2.||Konqueror||2.x
+PerMan||波乗野郎
+Pockey||GetHTMLW
+MSProxy||ProxyServer
+SpaceBison||Proxomitron
+msnbot||MSNbot
+Lynx
+w3m
+DreamPassport
+WWWC
+WWWD
+Asahina-Antenna||朝日奈アンテナ
+NetCaptor
+iCab
+Cuam
+OmniWeb
+WebTV
+DoCoMo
+J-PHONE
+UP.Browser
+Googlebot
+Mediapartners-Google||Googlebot
+Yahoo! Slurp
+InfoSeek
+NaverBot
+FlashGet
+WebBooster
+Ninja
+MIDown
+moget
+InternetLinkAgent
+Wget
+InterGet
+WebFetch
+WebCrawler
+ArchitextSpider
+Scooter
+WebAuto
+InfoNaviRobot
+httpdown
+Inetdown
+WiseWire-Spider
+Slurp
+Lycos_Spider
+Iron33
+fetch
+PageDown
+BMChecker
+Jerky
+Nutscrape
+MacNetwork/1.0||azur
+moget||goo
+ZyBorg||InfoSeek
+ArchitextSpider||Excite
+Hatena Antenna||はてなアンテナ
+ia_archiver||Robot
+Ask Jeeves||Robot
+Scooter/2.0||Robot

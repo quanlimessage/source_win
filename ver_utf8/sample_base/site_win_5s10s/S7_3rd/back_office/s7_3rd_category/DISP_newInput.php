@@ -10,10 +10,7 @@ View：新規登録画面表示
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
+}
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -32,6 +29,7 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,true);
 <title></title>
 <script type="text/javascript" src="inputcheck.js"></script>
 <link href="../for_bk.css" rel="stylesheet" type="text/css">
+</head>
 </head>
 <body>
 <div class="header"></div>

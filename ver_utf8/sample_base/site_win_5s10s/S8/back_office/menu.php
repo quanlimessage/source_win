@@ -5,6 +5,7 @@
 
 	メニュー画面
 
+2005/4/12 tanaka
 *******************************************************************************/
 session_start();
 require_once("../common/config.php");
@@ -17,10 +18,10 @@ require_once("util_lib.php");		// 汎用処理クラスライブラリ
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ./err.php");exit();
 }
+/*
 if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
-//	header("Location: ../");exit();
-}
-
+	header("HTTP/1.0 404 Not Found");exit();
+}*/
 #=============================================================
 # HTTPヘッダーを出力
 #	文字コードと言語：utf8で日本語
@@ -52,6 +53,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 		<tr>
 			<td class="subtitle">
 			・<a href="s8_product/" target="main">商品紹介の更新</a><br>
@@ -65,11 +67,13 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 		<tr>
 			<td class="subtitle">
 			・<a href="./s8_pcategory" target="main">親カテゴリーの更新</a>
 			</td>
 		</tr>
+
 		<tr>
   		<td class="explanation"> 商品紹介親カテゴリーの新規登録や既存データの更新などを行います。<br>
 			また、表示順番の変更等の管理もできます。
@@ -78,11 +82,13 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 		<tr>
 			<td class="subtitle">
 			・<a href="./s8_category" target="main">子カテゴリーの更新</a>
 			</td>
 		</tr>
+
 		<tr>
   		<td class="explanation"> 商品紹介子カテゴリーの新規登録や既存データの更新などを行います。<br>
 			また、表示順番の変更等の管理もできます。
@@ -91,6 +97,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 	</table>
 	<div class="largespace"></div>
 	<!--メニューテーブルここまで-->

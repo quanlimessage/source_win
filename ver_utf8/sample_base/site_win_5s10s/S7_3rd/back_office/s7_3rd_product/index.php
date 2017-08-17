@@ -12,11 +12,7 @@ Sx系プログラム バックオフィス（MySQL対応版）
 session_start();
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
-
+}
 
 // 不正アクセスチェックのフラグ
 $accessChk = 1;
@@ -24,6 +20,7 @@ $accessChk = 1;
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_S7_3rd.php");	// 共通設定情報
 require_once("../tag_pg/LGC_color_table.php");	// タグ処理のプログラム
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 //require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 require_once('../../common/imgOpe2.php');	// 画像アップロードクラスライブラリ(gif・png対応)

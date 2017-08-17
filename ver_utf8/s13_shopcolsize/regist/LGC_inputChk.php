@@ -37,7 +37,7 @@ case "confirm":
 
 		// コンビに決済時(スマートピットの場合)
 		if($payment_method == '4'):
-			if(!preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no1) || !preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no2) || !preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no3) || !preg_match("/^[0-9]{3,3}[0-9]$/i",$card_no4)){
+			if(!eregi("^[0-9]{2,2}[0-9]$",$card_no1) || !eregi("^[0-9]{2,2}[0-9]$",$card_no2) || !eregi("^[0-9]{2,2}[0-9]$",$card_no3) || !eregi("^[0-9]{3,3}[0-9]$",$card_no4)){
 				$error_message.="お手持ちのカード番号を正しく入力してください。<br>\n";
 			}
 		endif;
@@ -108,7 +108,7 @@ case "confirm":
 
 	// 既存のが登録されてないか確認してＯＫならメールアドレスを
 	$emailchksql = "SELECT EMAIL FROM ".CUSTOMER_LST." WHERE ( EMAIL = '".addslashes($email)."' ) AND ( DEL_FLG = '0' ) AND  (EXISTING_CUSTOMER_FLG = '1')";
-	$chk_email_result = $PDO -> fetch($emailchksql);
+	$chk_email_result = dbOpe::fetch($emailchksql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 	if ( !empty($chk_email_result) && !$_SESSION['cust']['auth'] ){
 		$error_message .=<<< EDIT
 		 入力されたＥメールアドレスは既に登録されています。<br>前画面に戻り、Ｅメールアドレスとパスワードを入力してください。<br>
@@ -317,7 +317,7 @@ case "step1":
 			AND
 				(EXISTING_CUSTOMER_FLG = '1')
 			";
-			$fetchCust = $PDO -> fetch($sql);
+			$fetchCust = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 			if ( $fetchCust[0]['CUSTOMER_ID'] == "" || $fetchCust[0]['CUSTOMER_ID'] == NULL ){
 				//$error_message .= "お客様の情報はご登録されていません。<br>\n";

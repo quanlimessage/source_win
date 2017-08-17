@@ -171,7 +171,7 @@ input#update_btn {
 </form>
 
 <br>
-<?php
+<?
 // カレンダー表示
 require_once 'Calendar/Month/Weekdays.php';
 

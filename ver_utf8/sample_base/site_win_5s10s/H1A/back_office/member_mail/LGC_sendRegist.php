@@ -27,7 +27,10 @@ UPDATE
 SET
 	SENDMAIL_FLG   = '0'
 ";
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+}
 
 #=================================================================================
 # SQL組立
@@ -54,7 +57,10 @@ for($i=0;$i<count($member_id);$i++):
 #=================================================================================
 # SQL実行
 #=================================================================================
-	$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+}
 endfor;
 
 ?>

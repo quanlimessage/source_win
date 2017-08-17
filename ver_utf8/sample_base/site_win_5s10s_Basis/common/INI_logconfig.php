@@ -56,7 +56,6 @@ $date_name = date('Y_m');
 $access_path = str_replace("/common","",dirname(__FILE__))."/db/";
 define('ACCESS_PATH',$access_path);
 define('DB_FILEPATH',ACCESS_PATH.$date_name."_access_log_db");
-define('SQLITE','sqlite:'.DB_FILEPATH);
 define('CREATE_SQL',"CREATE TABLE ACCESS_LOG(ID INTEGER PRIMARY KEY,REMOTE_ADDR,USER_AGENT,REFERER,QUERY_STRING,ENGINE,OS,BROWSER,PAGE_URL,STATE,UNIQUE_FLG,USER_FLG,INS_DATE,TIME,DEL_FLG DEFAULT 0);");
 
 #==================================================================================
@@ -118,15 +117,4 @@ function get_keyword($query ,$query_key){
 	return $keyword;
 }
 
-
-function access_log_start($filename) {
-        $filename = (!$filename)?date('Y_m')."_access_log_db":$filename;
-	$SQLITE = new dbOpe("sqlite:".ACCESS_PATH.$filename);
-	$sql_chk = "SELECT COUNT(*) AS CNT FROM sqlite_master WHERE TYPE='table' and NAME='ACCESS_LOG';";
-	$chk = $SQLITE -> fetch($sql_chk);
-	if ($chk[0]["CNT"] < 1) {
-		$SQLITE -> exec(CREATE_SQL);
-    }
-	return $SQLITE;
-}
 ?>

@@ -22,7 +22,7 @@ case 3:
 
 	$_SESSION['shopping_step_flg'] = "default";//カート商品を変更した場合はデフォルトに来たデータを入れる
 	// 不正パラメーターチェック
-	if( !isset($_POST['pid']) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_POST['pid']) ){
+	if( !isset($_POST['pid']) || !ereg("^([0-9]{10,})-([0-9]{6})$", $_POST['pid']) ){
 		header("Location: ./");	exit();
 	}
 
@@ -48,7 +48,7 @@ case 2:
 
 	$_SESSION['shopping_step_flg'] = "default";//カート商品を変更した場合はデフォルトに来たデータを入れる
 	// 不正パラメーターチェック
-	if( !isset($_POST['pid']) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_POST['pid']) ){
+	if( !isset($_POST['pid']) || !ereg("^([0-9]{10,})-([0-9]{6})$", $_POST['pid']) ){
 		header("Location: ./");	exit();
 	}
 	# PRODUCT_PROPERTY_DATAテーブルのDSC_ID
@@ -74,7 +74,7 @@ case 1:
 	$_SESSION['shopping_step_flg'] = "default";//カート商品を変更した場合はデフォルトに来たデータを入れる
 	// 不正パラメーターチェック
 	# 商品番号
-	if( !isset($_POST['pid']) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_POST['pid']) ){
+	if( !isset($_POST['pid']) || !ereg("^([0-9]{10,})-([0-9]{6})$", $_POST['pid']) ){
 		header("Location: ./");	exit();
 	}
 	# PRODUCT_PROPERTY_DATAテーブルのDSC_ID

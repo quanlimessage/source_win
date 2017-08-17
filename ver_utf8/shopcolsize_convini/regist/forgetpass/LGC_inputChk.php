@@ -34,10 +34,10 @@ if ( $_GET['cid'] && $_GET['did'] ):
 	$did = mb_convert_kana($did, "a");
 
 	// データ形式チェック（不正があればショッピングトップページへ飛ばして終了）
-	if ( !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $cid) ){
+	if ( !ereg("^([0-9]{10,})-([0-9]{6})$", $cid) ){
 		header("Location: ../../");	exit();
 	}
-	elseif ( preg_match("/[^a-zA-Z0-9]/", $did) ){
+	elseif ( ereg("[^a-zA-Z0-9]", $did) ){
 		header("Location: ../../");	exit();
 	}
 

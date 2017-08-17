@@ -47,7 +47,7 @@ case "del_data":
 
 	//DEL_FLGで表示を行わないようにする場合（カテゴリーのデータを復元できるように）
 	//カテゴリーのDELフラグを設定
-	$PDO -> regist("UPDATE SIZE_MST SET DEL_FLG = '1' WHERE(SIZE_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE SIZE_MST SET DEL_FLG = '1' WHERE(SIZE_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 case "display_change":
@@ -58,8 +58,9 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE SIZE_MST SET DISPLAY_FLG = '$up_display' WHERE(SIZE_CODE = '$cate')");
-	
+	$db_result = dbOpe::regist("UPDATE SIZE_MST SET DISPLAY_FLG = '$up_display' WHERE(SIZE_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
 endswitch;
 
 ?>

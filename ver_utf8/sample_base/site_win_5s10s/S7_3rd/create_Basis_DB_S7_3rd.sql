@@ -33,3 +33,9 @@ CREATE TABLE S7_3_VIEW_ORDER_LIST (
   RES_ID varchar(25) NOT NULL default '',
   VIEW_ORDER int(10) unsigned default NULL
 );
+
+CREATE TABLE S7_3_VIEW_ORDER_LIST2 (
+  C_ID varchar(25) default '',
+  RES_ID varchar(25) NOT NULL default '',
+  VIEW_ORDER int(10) unsigned default NULL
+);

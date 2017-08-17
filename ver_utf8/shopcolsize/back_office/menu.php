@@ -7,6 +7,7 @@
 session_start();
 require_once("../common/INI_config.php");		// 共通設定情報
 require_once("../common/INI_ShopConfig.php");	// ショップ用設定情報
+require_once("util_lib.php");		// 汎用処理クラスライブラリ
 
 #---------------------------------------------------------------
 # 不正アクセスチェック（直接このファイルにアクセスした場合）

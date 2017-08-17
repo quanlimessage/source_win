@@ -70,14 +70,14 @@ if(empty($pid)):
 			VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$sql .= "
 		LIMIT
 			".$st.",".S10_DISP_MAXROW."
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// 商品が何も登録されていない場合に表示
 	if(count($fetch) == 0):

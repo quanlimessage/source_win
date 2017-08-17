@@ -19,6 +19,7 @@ $injustice_access_chk = 1;
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_H1A.php");	// 共通設定情報
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
 require_once("util_lib.php");						// 汎用処理クラスライブラリ
 
 // POSTデータの受け取りと共通な文字列処理

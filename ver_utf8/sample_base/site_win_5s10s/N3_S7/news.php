@@ -15,6 +15,7 @@ else{
 	$com_path = '../common/';
 }
 require_once($com_path."config_N3_S7.php");		// 共通設定情報
+require_once("dbOpe.php");				// DB操作クラスライブラリ
 require_once("util_lib.php");	// 汎用処理クラスライブラリ
 
 #------------------------------------------------------------------------
@@ -29,7 +30,7 @@ FROM
 	".N3_S7_WHATSNEW_PAGE."
 	";
 
-$fetch_page = $PDO -> fetch($sql_page);
+$fetch_page = dbOpe::fetch($sql_page,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 // 1ページ辺りの表示件数
 $page = $fetch_page[0]['PAGE_FLG'];
@@ -57,7 +58,7 @@ LIMIT
 ";
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		for($i=0;$i<count($fetch);$i++):
 

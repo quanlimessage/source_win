@@ -46,6 +46,7 @@ AND
 	(DEL_FLG = '0')
 ";
 // ＳＱＬを実行（失敗時：エラーメッセージを格納）
-$PDO -> regist($up_sql);
+$upResult = dbOpe::regist($up_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+if($upResult)die("更新に失敗しました");
 
 ?>

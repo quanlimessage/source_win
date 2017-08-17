@@ -28,7 +28,7 @@ if(!$accessChk){
 extract(utilLib::getRequestParams("post",array(8,7,1,4)));
 
 // 対象記事IDデータのチェック
-if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 	die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 }
 
@@ -46,7 +46,8 @@ case "del_data":
 	}
 
 	// SQL実行
-	$PDO -> regist("DELETE FROM ".W3_DOWNLOAD." WHERE(RES_ID = '$res_id')");
+	$db_result = dbOpe::regist("DELETE FROM ".W3_DOWNLOAD." WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	break;
 case "display_change":
@@ -57,7 +58,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE ".W3_DOWNLOAD." SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')");
+	$db_result = dbOpe::regist("UPDATE ".W3_DOWNLOAD." SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

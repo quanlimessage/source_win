@@ -43,19 +43,19 @@ $error_mes .= utilLib::strCheck($kana,0,"フリガナを入力してください
 
 $zip = $zip1 . $zip2;
 if(!empty($zip)){
-	if(preg_match("/[^0-9]/",$zip)){
+	if(ereg("[^0-9]",$zip)){
 		$error_mes .= "郵便番号は半角数字のみで入力してください。<br><br>\n";
 	}
 }
 
 if(!empty($tel)){
-	if(preg_match("/[^-0-9]/",$tel)){
+	if(ereg("[^-0-9]",$tel)){
 		$error_mes .= "TELは半角数字とハイフンのみで入力してください。<br><br>\n";
 	}
 }
 
 if(!empty($fax)){
-	if(preg_match("/[^-0-9]/",$fax)){
+	if(ereg("[^-0-9]",$fax)){
 		$error_mes .= "FAXは半角数字とハイフンのみで入力してください。<br><br>\n";
 	}
 }
@@ -80,7 +80,7 @@ if($email){
 //ただし、更新の場合はこの処理をしない
 if($regist_type != "update"){
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".MEMBER_LST." WHERE(EMAIL = '$email') AND (DEL_FLG = '0')";
-	$fetch = $PDO -> fetch($cnt_sql);
+	$fetch = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	if($fetch[0]['CNT'] > 0){
 	$error_mes .= "入力されましたメールアドレスは既に登録済みです。<br>\n";

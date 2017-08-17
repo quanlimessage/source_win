@@ -25,6 +25,8 @@ $injustice_access_chk = 1;
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_config.php");		// 共通設定情報
 require_once("../../common/INI_ShopConfig.php");	// ショップ用設定情報
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");						// 汎用処理クラスライブラリ
 require_once("../../common/INI_pref_list.php");		// 都道府県＆送料データ（配列）
 
 #===============================================================================

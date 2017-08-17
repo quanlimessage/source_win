@@ -20,12 +20,14 @@ session_start();
 require_once("../common/INI_config.php");		  // 設定ファイル
 require_once("../common/INI_ShopConfig.php");	// ショップ用設定ファイル
 require_once("../common/LGC_confDB.php");	    // 認証用ファイル
+require_once("util_lib.php");
+require_once('authOpe.php');
 
 #---------------------------------------------------------------------
 # 認証ライブラリを使ってsession認証を行う
 #---------------------------------------------------------------------
 	function login($login_id,$login_pass){
-		global $PDO;
+
 		if($login_id && $login_pass){
 		// SQLite操作ライブラリのインスタンスを作成しておく（インスタンスは1個のみ作成可）
 		//	$dbh = new sqliteOpe(ID_PW_FILEPATH,CREATE_ID_PW_SQL);
@@ -42,7 +44,7 @@ require_once("../common/LGC_confDB.php");	    // 認証用ファイル
 			";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//	$fetch = $dbh->fetch($sql);
 			if(count($fetch) == 0){

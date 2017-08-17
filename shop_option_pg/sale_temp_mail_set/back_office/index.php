@@ -143,7 +143,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,true,true,true);
 		</frameset>
 		<?php }else{ ?>
 				<frame src="login.php<?=($result !== true) ? "?err=".urlencode($result) : "";?>" name="main" frameborder="no" title="main">
-		<?php } ?>
+		<?} ?>
 </frameset>
 <noframes><body>
 </body></noframes>

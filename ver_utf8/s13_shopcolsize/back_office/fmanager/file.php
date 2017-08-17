@@ -1,9 +1,10 @@
 <?php
 // 設定ファイル＆共通ライブラリの読み込み
 	session_start();
+
 	require_once("../../common/INI_logconfig.php");		// 設定ファイル
 	require_once("util_lib.php");					// 汎用処理クラスライブラリ
-	require_once("dbOpe.php");					// SQLite操作クラスライブラリ
+	require_once("sqliteOpe.php");					// SQLite操作クラスライブラリ
 
 #---------------------------------------------------------------
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
@@ -22,7 +23,8 @@
 	// $filename = "2010_05_access_log_db";
 
 // 月別データの取得
-	$SQLITE = access_log_start($filename);
+	$db_filepath = ACCESS_PATH.$filename;
+	$dbh = new sqliteOpe($db_filepath,CREATE_SQL);
 
 /*
 // 日別ユニークアクセス数取得
@@ -44,7 +46,7 @@
 		strftime('%Y%m%d', INS_DATE) ASC
 	";
 
-	$fetch_day_u = $SQLITE -> fetch($day_u_sql);
+	$fetch_day_u = $dbh->fetch($day_u_sql);
 
 // 時間別ユニークアクセス数取得
 	$time_u_sql = "
@@ -61,7 +63,7 @@
 		TIME ASC
 	";
 
-	$cnt_time = $SQLITE -> fetch($time_u_sql);
+	$cnt_time = $dbh->fetch($time_u_sql);
 
 	// 時間(1〜24)をインデックスキーに置き換え(表示用に24個要素配列に)
 	foreach($cnt_time as $k => $v){
@@ -87,7 +89,7 @@
 		strftime('%w', INS_DATE) ASC
 	";
 
-	$cnt_dayofweek = $SQLITE -> fetch($dayofweek_u_sql);
+	$cnt_dayofweek = $dbh->fetch($dayofweek_u_sql);
 
 	// 曜日(0〜6)をインデックスキーに置き換え(表示用に7個要素配列に)
 	foreach($cnt_dayofweek as $k => $v){
@@ -96,12 +98,6 @@
 	}
 */
 
-#-------------------------------------------------------------
-# HTTPヘッダーを出力
-#	文字コードと言語：EUCで日本語
-#	他：ＪＳとＣＳＳの設定／キャッシュ拒否／ロボット拒否
-#-------------------------------------------------------------
-utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -165,11 +161,11 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			";
 
 			//$total_u_sql = $total_sql."WHERE (UNIQUE_FLG == '1')";
-			//$fetch_u = $SQLITE -> fetch($total_u_sql);
+			//$fetch_u = $dbh->fetch($total_u_sql);
 
 		//表示
 		  ?><td align="left" valign="bottom" colspan="3"><span class="style2"><strong>PV（ページビュー）：</strong><?php
-			$fetch = $SQLITE -> fetch($total_sql);
+			$fetch = $dbh->fetch($total_sql);
 			echo count($fetch);
 
 		//もう不必要なデータを削除
@@ -182,7 +178,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 //来訪者数
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$total_uu_sql = $total_sql."WHERE (USER_FLG == '1')";
-		$fetch_uu = $SQLITE -> fetch($total_uu_sql);
+		$fetch_uu = $dbh->fetch($total_uu_sql);
 
 	    ?><strong>来訪者数：</strong><?php
 	    echo count($fetch_uu);
@@ -212,7 +208,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				strftime('%Y%m%d', INS_DATE) ASC
 			";
 
-			$fetch_day = $SQLITE -> fetch($day_sql);
+			$fetch_day = $dbh->fetch($day_sql);
 
 			$fetch_max = 0;
 			for($i=0;$i<count($fetch_day);$i++){
@@ -243,7 +239,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					strftime('%Y%m%d', INS_DATE) ASC
 				";
 
-				$fetch_day_uu = $SQLITE -> fetch($day_uu_sql);
+				$fetch_day_uu = $dbh->fetch($day_uu_sql);
 
 		?>
 		<tr style="margin-top:10px;">
@@ -283,12 +279,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					ACCESS_LOG
 				".$where_term."
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";
 
-				$cnt_time = $SQLITE -> fetch($time_sql);
+				$cnt_time = $dbh->fetch($time_sql);
 
 				// 時間(1〜24)をインデックスキーに置き換え(表示用に24個要素配列に)
 				foreach($cnt_time as $k => $v){
@@ -321,12 +317,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				WHERE
 					(USER_FLG == '1')
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";
 
-				$cnt_time = $SQLITE -> fetch($time_uu_sql);
+				$cnt_time = $dbh->fetch($time_uu_sql);
 
 				// 時間(1〜24)をインデックスキーに置き換え(表示用に24個要素配列に)
 				foreach($cnt_time as $k => $v){
@@ -383,7 +379,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 						strftime('%w', INS_DATE) ASC
 					";
 
-					$cnt_dayofweek = $SQLITE -> fetch($dayofweek_sql);
+					$cnt_dayofweek = $dbh->fetch($dayofweek_sql);
 
 					// 曜日(0〜6)をインデックスキーに置き換え(表示用に7個要素配列に)
 					foreach($cnt_dayofweek as $k => $v){
@@ -417,7 +413,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 						strftime('%w', INS_DATE) ASC
 					";
 
-					$cnt_dayofweek = $SQLITE -> fetch($dayofweek_uu_sql);
+					$cnt_dayofweek = $dbh->fetch($dayofweek_uu_sql);
 
 					// 曜日(0〜6)をインデックスキーに置き換え(表示用に7個要素配列に)
 					foreach($cnt_dayofweek as $k => $v){
@@ -502,7 +498,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 5
 			";
 
-			$fetchENGINE = $SQLITE -> fetch($engine_sql);
+			$fetchENGINE = $dbh->fetch($engine_sql);
 
 		for($i=0;$i<count($fetchENGINE);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetchENGINE[$i]['ENGINE'];?>（<?php echo $fetchENGINE[$i]['CNT'];?>件）<br>
@@ -534,7 +530,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 10
 				";
 
-				$fetchQuery = $SQLITE -> fetch($q_sql);
+				$fetchQuery = $dbh->fetch($q_sql);
 
 		for($i=0;$i<count($fetchQuery);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetchQuery[$i]['QUERY_STRING'];?>（<?php echo $fetchQuery[$i]['CNT'];?>件）<br>
@@ -564,7 +560,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 3
 			";
 
-			$fetch_bro = $SQLITE -> fetch($bro_sql);
+			$fetch_bro = $dbh->fetch($bro_sql);
 
 		for($i=0;$i<count($fetch_bro);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetch_bro[$i]['BROWSER'];?>（<?php echo $fetch_bro[$i]['CNT'];?>件）<br>
@@ -594,7 +590,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 3
 				";
 
-				$fetch_os = $SQLITE -> fetch($os_sql);
+				$fetch_os = $dbh->fetch($os_sql);
 
 		for($i=0;$i<count($fetch_os);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetch_os[$i]['OS'];?>（<?php echo $fetch_os[$i]['CNT'];?>件）<br>
@@ -624,7 +620,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 10
 				";
 
-				$fetch_state = $SQLITE -> fetch($state_sql);
+				$fetch_state = $dbh->fetch($state_sql);
 
 			for($i=0;$i<count($fetch_state);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetch_state[$i]['STATE'];?>（<?php echo $fetch_state[$i]['CNT'];?>件）<br>
@@ -658,7 +654,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 3
 			";
 
-			$fetchURL_b = $SQLITE -> fetch($url_b_sql);
+			$fetchURL_b = $dbh->fetch($url_b_sql);
 
 			for($i=0;$i<count($fetchURL_b);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetchURL_b[$i]['PAGE_URL'];?>（<?php echo $fetchURL_b[$i]['CNT'];?>件）<br>
@@ -688,7 +684,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 3
 				";
 
-				$fetchURL_w = $SQLITE -> fetch($url_w_sql);
+				$fetchURL_w = $dbh->fetch($url_w_sql);
 
 		for($i=0;$i<count($fetchURL_w);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetchURL_w[$i]['PAGE_URL'];?>（<?php echo $fetchURL_w[$i]['CNT'];?>件）<br>
@@ -724,7 +720,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			LIMIT 1 , 3
 			";
 
-			$fetch_ref = $SQLITE -> fetch($ref_sql);
+			$fetch_ref = $dbh->fetch($ref_sql);
 
 		for($i=0;$i<count($fetch_ref);$i++):?>
 		<?php echo ($i + 1);?>：<?php echo $fetch_ref[$i]['REFERER'];?>（<?php echo $fetch_ref[$i]['CNT'];?>件）<br>

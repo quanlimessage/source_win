@@ -22,23 +22,16 @@ if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
 	#（管理画面での入力項目を反映してください）
 	#==================================================================
 	//ID
-	// $fetch[0]['RES_ID'] = $res_id;
+	$fetch[0]['RES_ID'] = $res_id;
 
 	//タイトル
-	// $fetch[0]['TITLE'] = $title;
+	$fetch[0]['TITLE'] = $title;
 
 	//コメント
-	// $fetch[0]['CONTENT'] = $content;
+	$fetch[0]['CONTENT'] = $content;
 
 	//詳細コメント
-	// $fetch[0]['DETAIL_CONTENT'] = $detail_content;
-
-	//小文字の変数名を大文字に変換して入れる、データベースに入れるカラム名が変数名と違う場合は個々対応させる
-		foreach($_POST as $key => $val){
-			if(!is_array($val)){//配列以外は入れる。（データベースに入れる性質上　文字列の為、配列はありえない）
-				$fetch[0][strtoupper($key)] = utilLib::strRep($val,4);//データベースに入れないのでエスケープ処理をはずす
-			}
-		}
+	$fetch[0]['DETAIL_CONTENT'] = $detail_content;
 
 	#==================================================================
 	# プレビュー画像に関する処理
@@ -138,7 +131,7 @@ else:
 	";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//画像
 	for($i=1;$i<=IMG_CNT;$i++):

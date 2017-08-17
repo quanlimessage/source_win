@@ -1,56 +1,50 @@
 <?php
 /*******************************************************************************
-„Ç¢„ÇØ„Çª„ÇπËß£Êûê
+•¢•Ø•ª•π≤Ú¿œ
 
-	„Ç¢„ÇØ„Çª„ÇπËß£ÊûêË°®Á§∫„Éá„Éº„ÇøÂèñÂæóÁî®Ôº§Ôº¢„Ç¢„ÇØ„Çª„Çπ
-	Ë°®Á§∫Êù°‰ª∂„Å´„Çà„Å£„Å¶„Éá„Éº„Çø„Éô„Éº„ÇπË°®Á§∫„ÇíÂ§âÊõ¥
+	•¢•Ø•ª•π≤Ú¿œ…Ωº®•«°º•øºË∆¿Õ—£ƒ£¬•¢•Ø•ª•π
+	…Ωº®æÚ∑Ô§À§Ë§√§∆•«°º•ø•Ÿ°º•π…Ωº®§Ú —ππ
 
-	SQLiteÂØæÂøúÁâà
+	SQLite¬–±˛»«
 
 *******************************************************************************/
 
-// ‰∏çÊ≠£„Ç¢„ÇØ„Çª„Çπ„ÉÅ„Çß„ÉÉ„ÇØÔºàÁõ¥Êé•„Åì„ÅÆ„Éï„Ç°„Ç§„É´„Å´„Ç¢„ÇØ„Çª„Çπ„Åó„ÅüÂ†¥ÂêàÔºâ
+// …‘¿µ•¢•Ø•ª•π•¡•ß•√•Ø° ƒæ¿‹§≥§Œ•’•°•§•Î§À•¢•Ø•ª•π§∑§øæÏπÁ°À
 if(!$injustice_access_chk){
 	header("Location: ../err.php");exit();
 }
 
-// POST„Éá„Éº„Çø„ÅÆÂèó„ÅëÂèñ„Çä„Å®ÂÖ±ÈÄö„Å™ÊñáÂ≠óÂàóÂá¶ÁêÜ
+// POST•«°º•ø§Œºı§±ºË§Í§»∂¶ƒÃ§  ∏ª˙ŒÛΩËÕ˝
 if($_POST)extract(utilLib::getRequestParams("post",array(8,7,1,4),true));
 
-$filename = ($term)?$term."_access_log_tb_db":"";
-$SQLITE = access_log_start($filename);
-// ÂÖ®„Éá„Éº„ÇøÂèñÂæó
-$total_sql = "
-SELECT
-	ID
-FROM
-".ACCESS_LOG."
-".$where_term."
-";
-
-$fetch = $SQLITE -> fetch($total_sql);
+if(empty($term)){
+$dbh = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term.FILE_SUFFIX;
+$dbh = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 #---------------------------------------------------------------
-# Êóß„Éá„Éº„Çø„ÅÆÂâäÈô§(4„É∂Êúà‰ª•‰∏äÁµåÈÅé„Åó„Åü„ÇÇ„ÅÆ)
+# µÏ•«°º•ø§Œ∫ÔΩ¸(4•ˆ∑Ó∞ æÂ∑–≤·§∑§ø§‚§Œ)
 #---------------------------------------------------------------
 /*$DEL_limit = date('Ym', mktime(0,0,0,(date("n")-4),date("j"),date("Y")));
 
 $del_sql = "
 DELETE FROM
-	ACCESS_LOG
+	" . ACCESS_LOG . "
 WHERE
 	( strftime('%Y%m', INS_DATE) <= '$DEL_limit' )
 ";
 $delResult = $dbh->regist($del_sql);
-if($delResult)die("„Éá„Éº„ÇøÂâäÈô§„Å´Â§±Êïó„Åó„Åæ„Åó„Åü<br>\n{$delResult}<br>\n");
+if($delResult)die("•«°º•ø∫ÔΩ¸§Àº∫«‘§∑§ﬁ§∑§ø<br>\n{$delResult}<br>\n");
 */
 $i = 6;
 while(1){
 	//$DEL_limit = date('Y_m', mktime(0,0,0,(date("n")-$i),date("j"),date("Y")));
 	$DEL_limit = date('Y_m', mktime(0,0,0,(date("n")-$i),'1',date("Y")));
 
-	if(file_exists(ACCESS_PATH.$DEL_limit."_access_log_db")){
-		unlink(ACCESS_PATH.$DEL_limit."_access_log_db") or die("Êóß„Éá„Éº„Çø„ÅÆÂâäÈô§„Å´Â§±Êïó„Åó„Åæ„Åó„Åü„ÄÇ");
+	if(file_exists(ACCESS_PATH.$DEL_limit.FILE_SUFFIX)){
+		unlink(ACCESS_PATH.$DEL_limit.FILE_SUFFIX) or die("µÏ•«°º•ø§Œ∫ÔΩ¸§Àº∫«‘§∑§ﬁ§∑§ø°£");
 	}
 	else{
 		break;
@@ -59,19 +53,18 @@ while(1){
 }
 
 #---------------------------------------------------------------
-# „Éá„Éº„ÇøÂèñÂæó
+# •«°º•øºË∆¿
 #---------------------------------------------------------------
 
-// ÂÖ®„Éá„Éº„ÇøÂèñÂæó
+// ¡¥•«°º•øºË∆¿
 $total_sql = "
 SELECT
 	ID
 FROM
-".ACCESS_LOG."
+ " . ACCESS_LOG . "
 ".$where_term."
 ";
-
-$fetch = $SQLITE -> fetch($total_sql);
+$fetch = $dbh->fetch($total_sql);
 
 //if($where_term){$total_u_sql =  $total_sql."AND (UNIQUE_FLG == '1')";}else{$total_u_sql = $total_sql."WHERE (UNIQUE_FLG == '1')";}
 
@@ -79,25 +72,25 @@ $fetch = $SQLITE -> fetch($total_sql);
 
 if($where_term){$total_uu_sql =  $total_sql."AND (USER_FLG == '1')";}else{$total_uu_sql = $total_sql."WHERE (USER_FLG == '1')";}
 
-$fetch_uu = $SQLITE -> fetch($total_uu_sql);
+$fetch_uu = $dbh->fetch($total_uu_sql);
 
-// ‰ªäÊó•„ÅÆ„Ç¢„ÇØ„Çª„Çπ‰ª∂Êï∞
+// ∫£∆¸§Œ•¢•Ø•ª•π∑ÔøÙ
 $today_day_time = date('Ymd', mktime(0,0,0,date("n"),date("j"),date("Y")));
 
 $today_sql = "
 SELECT
 	ID
 FROM
-".ACCESS_LOG."
+ " . ACCESS_LOG . "
 WHERE
 	( strftime('%Y%m%d', INS_DATE) = '".$today_day_time."')
 ";
-$TodayCnt = $SQLITE->fetch($today_sql);
+$TodayCnt = $dbh->fetch($today_sql);
 
 #---------------------------------------------------------------
-# ÂêÑ„Éá„Éº„ÇøÂèñÂæóÈñ¢Êï∞„ÅÆÂÆöÁæ©
+# ≥∆•«°º•øºË∆¿¥ÿøÙ§ŒƒÍµ¡
 #---------------------------------------------------------------
-// Êó•Âà•„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ∆¸ Ã•¢•Ø•ª•πøÙºË∆¿
 function day_access($where_term,$dbins){
 	$day_sql = "
 	SELECT
@@ -107,7 +100,7 @@ function day_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -119,7 +112,7 @@ function day_access($where_term,$dbins){
 	return $fetch_day;
 }
 
-// Êó•Âà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ∆¸ Ã•Ê•À°º•Ø•¢•Ø•ª•πøÙºË∆¿
 function day_u_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -132,7 +125,7 @@ function day_u_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -144,7 +137,7 @@ function day_u_access($where_term,$dbins){
 	return $fetch_day_u;
 }
 
-// Êó•Âà•Ë®™ÂïèËÄÖÊï∞ÂèñÂæó
+// ∆¸ ÃÀ¨Ã‰º‘øÙºË∆¿
 function day_uu_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (USER_FLG == '1')";}else{$where_term .= "WHERE (USER_FLG == '1')";}
@@ -157,7 +150,7 @@ function day_uu_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -169,7 +162,7 @@ function day_uu_access($where_term,$dbins){
 	return $fetch_day_uu;
 }
 
-// ÊúàÂà•„Ç¢„ÇØ„Çª„ÇπÂèñÂæóÈñ¢Êï∞
+// ∑Ó Ã•¢•Ø•ª•πºË∆¿¥ÿøÙ
 function mon_access($where_term,$dbins){
 	$mon_sql = "
 	SELECT
@@ -177,7 +170,7 @@ function mon_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -187,7 +180,7 @@ function mon_access($where_term,$dbins){
 
 	$cnt_month = $dbins->fetch($mon_sql);
 
-	// Êúà(1„Äú12)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´12ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ∑Ó(1°¡12)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À12∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_month as $k => $v){
 		$key = (int)$v["M"];
 		$MonCnt[$key] = $v["CNT"];
@@ -195,7 +188,7 @@ function mon_access($where_term,$dbins){
 	return $MonCnt;
 }
 
-// ÊúàÂà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÂèñÂæóÈñ¢Êï∞
+// ∑Ó Ã•Ê•À°º•Ø•¢•Ø•ª•πºË∆¿¥ÿøÙ
 function mon_u_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -206,7 +199,7 @@ function mon_u_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -216,7 +209,7 @@ function mon_u_access($where_term,$dbins){
 
 	$cnt_month = $dbins->fetch($mon_sql);
 
-	// Êúà(1„Äú12)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´12ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ∑Ó(1°¡12)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À12∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_month as $k => $v){
 		$key = (int)$v["M"];
 		$MonCnt_u[$key] = $v["CNT"];
@@ -224,7 +217,7 @@ function mon_u_access($where_term,$dbins){
 	return $MonCnt_u;
 }
 
-// ÊúàÂà•Ë®™ÂïèËÄÖÊï∞ÂèñÂæóÈñ¢Êï∞
+// ∑Ó ÃÀ¨Ã‰º‘øÙºË∆¿¥ÿøÙ
 function mon_uu_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (USER_FLG == '1')";}else{$where_term .= "WHERE (USER_FLG == '1')";}
@@ -235,7 +228,7 @@ function mon_uu_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -245,7 +238,7 @@ function mon_uu_access($where_term,$dbins){
 
 	$cnt_month = $dbins->fetch($mon_sql);
 
-	// Êúà(1„Äú12)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´12ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ∑Ó(1°¡12)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À12∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_month as $k => $v){
 		$key = (int)$v["M"];
 		$MonCnt_uu[$key] = $v["CNT"];
@@ -253,24 +246,24 @@ function mon_uu_access($where_term,$dbins){
 	return $MonCnt_uu;
 }
 
-// ÊôÇÈñìÂà•„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ª˛¥÷ Ã•¢•Ø•ª•πøÙºË∆¿
 function hour_access($where_term,$dbins){
 	$time_sql = "
 	SELECT
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
 
 	$cnt_time = $dbins->fetch($time_sql);
 
-	// ÊôÇÈñì(1„Äú24)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´24ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ª˛¥÷(1°¡24)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À24∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_time as $k => $v){
 		$key = $v["TIME"];
 
@@ -282,7 +275,7 @@ function hour_access($where_term,$dbins){
 	return $fetch_time;
 }
 
-// ÊôÇÈñìÂà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ª˛¥÷ Ã•Ê•À°º•Ø•¢•Ø•ª•πøÙºË∆¿
 function hour_u_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -292,17 +285,17 @@ function hour_u_access($where_term,$dbins){
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
 
 	$cnt_time = $dbins->fetch($time_sql);
 
-	// ÊôÇÈñì(1„Äú24)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´24ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ª˛¥÷(1°¡24)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À24∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_time as $k => $v){
 		$key = $v["TIME"];
 
@@ -314,7 +307,7 @@ function hour_u_access($where_term,$dbins){
 	return $fetch_time_u;
 }
 
-// ÊôÇÈñìÂà•Ë®™ÂïèËÄÖÊï∞ÂèñÂæó
+// ª˛¥÷ ÃÀ¨Ã‰º‘øÙºË∆¿
 function hour_uu_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (USER_FLG == '1')";}else{$where_term .= "WHERE (USER_FLG == '1')";}
@@ -324,17 +317,17 @@ function hour_uu_access($where_term,$dbins){
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
 
 	$cnt_time = $dbins->fetch($time_sql);
 
-	// ÊôÇÈñì(1„Äú24)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´24ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ª˛¥÷(1°¡24)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À24∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_time as $k => $v){
 		$key = $v["TIME"];
 
@@ -346,14 +339,14 @@ function hour_uu_access($where_term,$dbins){
 	return $fetch_time_uu;
 }
 
-// „Éö„Éº„Ç∏Âà•„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// •⁄°º•∏ Ã•¢•Ø•ª•πøÙºË∆¿
 function page_access($where_term,$dbins){
 	$url_sql = "
 	SELECT
 		PAGE_URL,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		PAGE_URL
@@ -366,7 +359,7 @@ function page_access($where_term,$dbins){
 	return $fetchURL;
 }
 
-// „Éö„Éº„Ç∏Âà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// •⁄°º•∏ Ã•Ê•À°º•Ø•¢•Ø•ª•πøÙºË∆¿
 function page_u_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -376,7 +369,7 @@ function page_u_access($where_term,$dbins){
 		PAGE_URL,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		PAGE_URL
@@ -389,14 +382,14 @@ function page_u_access($where_term,$dbins){
 	return $fetchURL_u;
 }
 
-// Ê§úÁ¥¢„Ç®„É≥„Ç∏„É≥Êï∞ÂèñÂæó
+// ∏°∫˜•®•Û•∏•ÛøÙºË∆¿
 function engine_access($where_term,$dbins){
 	$engine_sql = "
 	SELECT
 		ENGINE,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		ENGINE
@@ -411,14 +404,14 @@ function engine_access($where_term,$dbins){
 	return $fetchENGINE;
 }
 
-// Ê§úÁ¥¢ÊñáÂ≠óÂàóÂèñÂæó
+// ∏°∫˜ ∏ª˙ŒÛºË∆¿
 function access_query($where_term,$dbins,$kensu){
 	$q_sql = "
 	SELECT
 		ENGINE,QUERY_STRING,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		QUERY_STRING, ENGINE
@@ -436,14 +429,14 @@ function access_query($where_term,$dbins,$kensu){
 	return $fetchQuery;
 }
 
-// ÊõúÊó•Âà•„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ÕÀ∆¸ Ã•¢•Ø•ª•πøÙºË∆¿
 function dayofweek_access($where_term,$dbins){
 	$dayofweek_sql = "
 	SELECT
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -453,7 +446,7 @@ function dayofweek_access($where_term,$dbins){
 
 	$cnt_dayofweek = $dbins->fetch($dayofweek_sql);
 
-	// ÊõúÊó•(0„Äú6)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´7ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ÕÀ∆¸(0°¡6)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À7∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_dayofweek as $k => $v){
 		$key = $v["DAYOFWEEK"];
 		$fetch_dayofweek[$key] = $v["CNT"];
@@ -462,7 +455,7 @@ function dayofweek_access($where_term,$dbins){
 	return $fetch_dayofweek;
 }
 
-// ÊõúÊó•Âà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ÕÀ∆¸ Ã•Ê•À°º•Ø•¢•Ø•ª•πøÙºË∆¿
 function dayofweek_u_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -472,7 +465,7 @@ function dayofweek_u_access($where_term,$dbins){
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -482,7 +475,7 @@ function dayofweek_u_access($where_term,$dbins){
 
 	$cnt_dayofweek = $dbins->fetch($dayofweek_sql);
 
-	// ÊõúÊó•(0„Äú6)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´7ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ÕÀ∆¸(0°¡6)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À7∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_dayofweek as $k => $v){
 		$key = $v["DAYOFWEEK"];
 		$fetch_dayofweek_u[$key] = $v["CNT"];
@@ -491,7 +484,7 @@ function dayofweek_u_access($where_term,$dbins){
 	return $fetch_dayofweek_u;
 }
 
-// ÊõúÊó•Âà•Ë®™ÂïèËÄÖÊï∞ÂèñÂæó
+// ÕÀ∆¸ ÃÀ¨Ã‰º‘øÙºË∆¿
 function dayofweek_uu_access($where_term,$dbins){
 
 	if($where_term){$where_term .= "AND (USER_FLG == '1')";}else{$where_term .= "WHERE (USER_FLG == '1')";}
@@ -501,7 +494,7 @@ function dayofweek_uu_access($where_term,$dbins){
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -511,7 +504,7 @@ function dayofweek_uu_access($where_term,$dbins){
 
 	$cnt_dayofweek = $dbins->fetch($dayofweek_sql);
 
-	// ÊõúÊó•(0„Äú6)„Çí„Ç§„É≥„Éá„ÉÉ„ÇØ„Çπ„Ç≠„Éº„Å´ÁΩÆ„ÅçÊèõ„Åà(Ë°®Á§∫Áî®„Å´7ÂÄãË¶ÅÁ¥†ÈÖçÂàó„Å´)
+	// ÕÀ∆¸(0°¡6)§Ú•§•Û•«•√•Ø•π•≠°º§À√÷§≠¥π§®(…Ωº®Õ—§À7∏ƒÕ◊¡««€ŒÛ§À)
 	foreach($cnt_dayofweek as $k => $v){
 		$key = $v["DAYOFWEEK"];
 		$fetch_dayofweek_uu[$key] = $v["CNT"];
@@ -520,14 +513,14 @@ function dayofweek_uu_access($where_term,$dbins){
 	return $fetch_dayofweek_uu;
 }
 
-// „Éñ„É©„Ç¶„Ç∂ÂèñÂæóÁî®
+// •÷•È•¶•∂ºË∆¿Õ—
 function bro_access($where_term,$dbins){
 	$bro_sql = "
 	SELECT
 		BROWSER,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		BROWSER
@@ -539,14 +532,14 @@ function bro_access($where_term,$dbins){
 	return $fetch_bro;
 }
 
-// OSÂèñÂæóÁî®
+// OSºË∆¿Õ—
 function os_access($where_term,$dbins){
 	$os_sql = "
 	SELECT
 		OS,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		OS
@@ -558,7 +551,7 @@ function os_access($where_term,$dbins){
 	return $fetch_os;
 }
 
-// „É™„Éï„Ç°„É©„ÉºÂèñÂæóÁî®
+// •Í•’•°•È°ººË∆¿Õ—
 function ref_access($where_term,$dbins){
 
 if($where_term){$where_term .= " AND ( REFERER != \"\" )";}else{$where_term = "WHERE ( REFERER != \"\" )";}
@@ -568,7 +561,7 @@ if($where_term){$where_term .= " AND ( REFERER != \"\" )";}else{$where_term = "W
 		REFERER,
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		REFERER
@@ -582,7 +575,7 @@ if($where_term){$where_term .= " AND ( REFERER != \"\" )";}else{$where_term = "W
 	return $fetch_ref;
 }
 
-// ÁúåÂà•„É¶„Éã„Éº„ÇØ„Ç¢„ÇØ„Çª„ÇπÊï∞ÂèñÂæó
+// ∏© Ã•Ê•À°º•Ø•¢•Ø•ª•πøÙºË∆¿
 function state_access($where_term,$dbins){
 
 	// if($where_term){$where_term .= "AND (UNIQUE_FLG == '1')";}else{$where_term .= "WHERE (UNIQUE_FLG == '1')";}
@@ -592,7 +585,7 @@ function state_access($where_term,$dbins){
 		STATE,
 		count(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		STATE
@@ -606,77 +599,84 @@ function state_access($where_term,$dbins){
 	return $fetch_state_u;
 }
 
+// SQLº¬π‘
+if(empty($term)){
+$dbh3 = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term.FILE_SUFFIX;
+$dbh3 = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 if(empty($kensu))$kensu = 1;
 
 switch ($_POST["mode"]):
 	case "day":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 	case "month":
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
 		break;
 	case "hour":
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
 		break;
 	case "youbi":
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
 		break;
 	case "page":
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
 		break;
 	case "engine":
-			$fetchENGINE = engine_access($where_term,$SQLITE);
+			$fetchENGINE = engine_access($where_term,$dbh3);
 		break;
 	case "query":
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
 		break;
 	case "bro":
-			$fetch_bro = bro_access($where_term,$SQLITE);
+			$fetch_bro = bro_access($where_term,$dbh3);
 		break;
 	case "os":
-			$fetch_os = os_access($where_term,$SQLITE);
+			$fetch_os = os_access($where_term,$dbh3);
 		break;
 	case "ref":
-			$fetch_ref = ref_access($where_term,$SQLITE);
+			$fetch_ref = ref_access($where_term,$dbh3);
 		break;
 	case "state":
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_state_u = state_access($where_term,$dbh3);
 		break;
 	case "all":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
-			$fetchENGINE = engine_access($where_term,$SQLITE);
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
-			$fetch_bro = bro_access($where_term,$SQLITE);
-			$fetch_os = os_access($where_term,$SQLITE);
-			$fetch_ref = ref_access($where_term,$SQLITE);
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
+			$fetchENGINE = engine_access($where_term,$dbh3);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
+			$fetch_bro = bro_access($where_term,$dbh3);
+			$fetch_os = os_access($where_term,$dbh3);
+			$fetch_ref = ref_access($where_term,$dbh3);
+			$fetch_state_u = state_access($where_term,$dbh3);
 	default:
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 endswitch;
 

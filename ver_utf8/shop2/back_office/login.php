@@ -2,6 +2,7 @@
 session_start();
 // 設定＆ライブラリファイル読み込み
 require_once("../common/INI_config.php");
+require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 if($_GET) extract(utilLib::getRequestParams("get",array(8,7,1,4),true));
 

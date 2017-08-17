@@ -35,7 +35,7 @@ search_file_del("./product_img/","prev_*");
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
 //////////////////////////////////////////////
@@ -72,7 +72,7 @@ if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
 					(".COLOR_MST.".DEL_FLG = '0')
 		";
 
-		$fetchCSDATA = $PDO -> fetch($sql_cs);
+		$fetchCSDATA = dbOpe::fetch($sql_cs, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 		//次の在庫データを生成する為に$fetchCSDATAを元に連想配列名がSIZE_CODEでカラーサイズ名のデータを作る
 		$cs_list = array();
@@ -281,7 +281,7 @@ else:
 	";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//////////////////////////////////
 	// 該当商品サイズ/カラー情報
@@ -302,7 +302,7 @@ else:
 		DSC_ID ASC
 	";
 
-	$fetchCS = $PDO -> fetch($sql_cs);
+	$fetchCS = dbOpe::fetch($sql_cs, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	//画像
 	if($_POST['status']=="prev_d"){

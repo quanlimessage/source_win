@@ -195,7 +195,7 @@ $makeID = create_function('','return date("U")."-".sprintf("%06d",(microtime() *
 $makeID2 = create_function('','return date("U").sprintf("%06d",(microtime() * 1000000));');
 
 // パスワード作成
-$makePass = create_function('','$pass = crypt(mt_rand(0,99999999),"CP");return preg_replace("/[^a-zA-Z0-9]/","",$pass);');
+$makePass = create_function('','$pass = crypt(mt_rand(0,99999999),"CP");return ereg_replace("[^a-zA-Z0-9]","",$pass);');
 
 #=================================================================================
 # “htmlspecialchars()”でエンティティ化したHTML特殊文字を

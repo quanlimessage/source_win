@@ -5,6 +5,7 @@
 
 	メニュー画面
 
+2005/4/12 tanaka
 *******************************************************************************/
 session_start();
 require_once("../common/config.php");
@@ -18,7 +19,7 @@ if( !$_SESSION['LOGIN'] ){
 	header("Location: ./err.php");exit();
 }
 if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
-//	header("Location: ../");exit();
+//	header("HTTP/1.0 404 Not Found");exit();
 }
 
 #=============================================================
@@ -44,19 +45,23 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 <p><strong>処理を選択してください</strong></p>
 	<!--メニューテーブル-->
 	<table border="0" cellpadding="0" cellspacing="0" width="90%">
+
 		<tr>
 			<td class="menutitle">
 			▼ 更新プログラム管理
 			</td>
 		</tr>
+
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 			<tr>
 				<td class="subtitle">
 				・<a href="w3_download/" target="main">ファイルダウンロードの更新</a>
 				</td>
 			</tr>
+
 		<tr>
 			<td class="explanation"> ファイルダウンロードのページの新規登録や既存データの更新などを行います。</td>
 		</tr>

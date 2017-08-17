@@ -5,6 +5,7 @@
 
 	メニュー画面
 
+2005/4/12 tanaka
 *******************************************************************************/
 session_start();
 require_once("../common/config.php");
@@ -18,7 +19,7 @@ if( !$_SESSION['LOGIN'] ){
 	header("Location: ./err.php");exit();
 }
 if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
-//	header("Location: ../");exit();
+//	header("HTTP/1.0 404 Not Found");exit();
 }
 
 #=============================================================
@@ -52,19 +53,24 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 		<tr>
 			<td class="subtitle">
 			・<a href="s2_product/" target="main">商品紹介の更新</a>
 			</td>
 		</tr>
+
 		<tr>
+
   		<td class="explanation"> 商品紹介ページの新規登録や既存データの更新などを行います。<br>
 			また、表示順番の変更等の管理もできます。
 			</td>
 		</tr>
+
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 	</table>
 	<div class="largespace"></div>
 	<!--メニューテーブルここまで-->

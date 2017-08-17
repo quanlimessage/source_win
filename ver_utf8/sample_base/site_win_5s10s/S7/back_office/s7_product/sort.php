@@ -21,6 +21,7 @@ if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_S7.php");	// 共通設定情報
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 
@@ -37,7 +38,7 @@ require_once('imgOpe.php');					// 画像アップロードクラスライブラ
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($casql);
+	$fetchCA = dbOpe::fetch($casql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -57,7 +58,7 @@ for($i=0;$i<count($fetchCA);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 #===============================================================================
 # $_POST['action']があれば新しく並び変えた順番に更新する
@@ -80,7 +81,7 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 	for($i=0;$i<count($vo);$i++){
 
-		$sql = "
+		$sql[$i] = "
 		UPDATE
 			".S7_PRODUCT_LST."
 		SET
@@ -91,9 +92,12 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 			(DEL_FLG = '0')
 		";
-		// ＳＱＬを実行
-		$PDO -> regist($sql);
+
 	}
+
+	// ＳＱＬを実行
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 最後に並び替えのトップへ飛ばす
 	//header("Location: ./sort.php");
@@ -133,7 +137,7 @@ AND
 ORDER BY
 	VIEW_ORDER ASC
 ";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力

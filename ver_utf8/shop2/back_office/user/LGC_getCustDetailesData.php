@@ -58,7 +58,7 @@ GROUP BY
 	".CUSTOMER_LST.".CUSTOMER_ID
 ";
 
-$fetchCust = $PDO -> fetch($sql1);
+$fetchCust = dbOpe::fetch($sql1,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 // 購入履歴
 $sql2 = "
@@ -79,6 +79,6 @@ WHERE
 AND
 	(DEL_FLG = '0')
 ";
-$fetchPurchase = $PDO -> fetch($sql2);
+$fetchPurchase = dbOpe::fetch($sql2,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

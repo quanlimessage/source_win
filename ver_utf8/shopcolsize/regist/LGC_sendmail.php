@@ -265,6 +265,6 @@ if(!$webmstmail_result)die("Send Mail Error! for WebMaster");
 		AND
 			(DEL_FLG = '0')
 	";
-	$PDO -> regist($sqlbuy_flg);
+	$registDB_buy_flg = dbOpe::regist($sqlbuy_flg,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

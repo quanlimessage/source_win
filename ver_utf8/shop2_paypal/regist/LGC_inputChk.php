@@ -37,7 +37,7 @@ case "confirm":
 
 		// コンビに決済時(スマートピットの場合)
 		if($payment_method == '4'):
-			if(!preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no1) || !preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no2) || !preg_match("/^[0-9]{2,2}[0-9]$/i",$card_no3) || !preg_match("/^[0-9]{3,3}[0-9]$/i",$card_no4)){
+			if(!eregi("^[0-9]{2,2}[0-9]$",$card_no1) || !eregi("^[0-9]{2,2}[0-9]$",$card_no2) || !eregi("^[0-9]{2,2}[0-9]$",$card_no3) || !eregi("^[0-9]{3,3}[0-9]$",$card_no4)){
 				$error_message.="お手持ちのカード番号を正しく入力してください。<br>\n";
 			}
 		endif;

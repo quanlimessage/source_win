@@ -71,19 +71,25 @@ if(!empty($y2) && !empty($m2) && !empty($d2)){
 			(DEL_FLG = '0')
 	";
 
-	$fetchVO = $PDO -> fetch($vosql);
+	$fetchVO = dbOpe::fetch($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 	if($_POST["copy_type"]=="new"){
 			//複製データのVIEW_ORDER
 			$vosql_old = "SELECT VIEW_ORDER AS VO FROM ".PRODUCT_LST." WHERE (PRODUCT_ID = '$product_id') AND (DEL_FLG = '0')";
-			$fetchVO_old = $PDO -> fetch($vosql_old);
+			$fetchVO_old = dbOpe::fetch($vosql_old,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			//$view_order複製データのVIEW_ORDER+1
 			$view_order_old = $fetchVO_old[0]["VO"];
 			$vosql_new ="UPDATE ".PRODUCT_LST." SET VIEW_ORDER = VIEW_ORDER+1 WHERE (CATEGORY_CODE = '$category_code') AND (VIEW_ORDER > $view_order_old)";
-			$PDO -> regist($vosql_new);
+			if(!empty($vosql_new)){
+				$db_result = dbOpe::regist($vosql_new,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = ($fetchVO_old[0]["VO"] + 1);
 	}elseif($_POST["ins_chk"]=="1"){
 			$vosql_new ="UPDATE ".PRODUCT_LST." SET VIEW_ORDER = VIEW_ORDER+1 WHERE (CATEGORY_CODE = '$category_code')";
-			$PDO -> regist($vosql_new);
+			if(!empty($vosql_new)){
+				$db_result = dbOpe::regist($vosql_new,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = 1;
 	}else{
 	//新規登録
@@ -211,7 +217,7 @@ case "update":
 	#-----------------------------------------------------
 	# 商品情報
 	#-----------------------------------------------------
-	$sql = "
+	$sql[] = "
 	UPDATE
 		".PRODUCT_LST."
 	SET
@@ -230,7 +236,7 @@ case "new":
 	#-----------------------------------------------------
 	# 商品情報
 	#-----------------------------------------------------
-	$sql = "
+	$sql[] = "
 	INSERT INTO
 		".PRODUCT_LST."
 	SET
@@ -246,8 +252,6 @@ default:
 	die("致命的エラー：登録フラグ（regist_type）が設定されていません");
 endswitch;
 
-$PDO -> regist($sql);
-
 	// 登録しているカラー/サイズ情報を一旦削除
 if($regist_type == "update"){
 	$del_sql = "
@@ -257,7 +261,10 @@ if($regist_type == "update"){
 		(PRODUCT_ID = '$product_id')
 	";
 
-	$PDO -> regist($del_sql);
+	if(!empty($del_sql)):
+		$del_rt = dbOpe::regist($del_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if($del_rt)die("既存カラー/サイズ情報の削除に失敗しました{$del_rt}");
+	endif;
 }
 
 	// 新しいカラー情報とサイズ情報を格納
@@ -265,7 +272,7 @@ if($regist_type == "update"){
 
 		if(strlen($color[$i]) == 0 && strlen($size[$i]) == 0 && strlen($stock[$i]) != 0){
 
-			$sql = "
+			$sql[] = "
 			INSERT INTO
 				".PRODUCT_PROPERTY_DATA."
 			SET
@@ -275,11 +282,11 @@ if($regist_type == "update"){
 				UPD_DATE = NOW(),
 				DEL_FLG = '0'
 			";
-			$PDO -> regist($sql);
+
 		}
 		elseif((strlen($color[$i]) != 0 || strlen($size[$i]) != 0) && strlen($stock[$i]) != 0){
 
-			$sql = "
+			$sql[] = "
 			INSERT INTO
 				".PRODUCT_PROPERTY_DATA."
 			SET
@@ -291,9 +298,14 @@ if($regist_type == "update"){
 				UPD_DATE = NOW(),
 				DEL_FLG = '0'
 			";
-			$PDO -> regist($sql);
-		}
 
+		}
 	endfor;
+
+// ＳＱＬを実行
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+}
 
 ?>

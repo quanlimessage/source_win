@@ -34,8 +34,8 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,true);
 <link href="../for_bk.css" rel="stylesheet" type="text/css">
 <script src="../tag_pg/cms.js" type="text/javascript"></script>
 <script src="../actchange.js" type="text/javascript"></script>
-<script type="text/javascript" src="./jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="./jquery/jquery.upload-1.0.2.js"></script>
+<script type="text/javascript" src="../jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery.upload-1.0.2.js"></script>
 <script type="text/javascript" src="./uploadcheck.js"></script>
 </head>
 <body>
@@ -103,12 +103,6 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,true);
 			<a href="javascript:void(0)" onClick="CheckObj();addTag(Temp.name,'strong'); return false;"><img src="../tag_pg/img/text_bold.png" width="16" height="16" alt="太字" border="0"></a>
 			<a href="javascript:void(0)" onClick="CheckObj();addTag(Temp.name,'u'); return false;"><img src="../tag_pg/img/text_underline.png" width="16" height="16" alt="下線" border="0"></a>
 			<a href="javascript:void(0)" onClick="CheckObj();obj=Temp.name;MM_showHideLayers('<?php echo $layer_free;?>',obj.name,'show');OnLink('<?php echo $layer_free;?>',event.x,event.y,event.pageX,event.pageY); return false;"><img src="../tag_pg/img/rainbow.png" alt="テキストカラー" border="0"></a>
-			<!--
-			<a href="javascript:void(0)" onClick="CheckObj();addLink(Temp.name); return false;"><img src="../tag_pg/img/link.png" width="16" height="16" alt="リンク" border="0"></a>
-			<a href="javascript:void(0)" onClick="CheckObj();addTag(Temp.name,'b'); return false;"><img src="../tag_pg/img/text_bold.png" width="16" height="16" alt="太字" border="0"></a>
-			<a href="javascript:void(0)" onClick="CheckObj();addTag(Temp.name,'i'); return false;"><img src="../tag_pg/img/text_italic.png" width="16" height="16" alt="斜体" border="0"></a>
-			<a href="javascript:void(0)" onClick="CheckObj();addTag(Temp.name,'u'); return false;"><img src="../tag_pg/img/text_underline.png" width="16" height="16" alt="下線" border="0"></a>
-			<a href="javascript:void(0)" onClick="CheckObj();obj=Temp.name;MM_showHideLayers('<?php echo $layer_free;?>',obj.name,'show');OnLink('<?php echo $layer_free;?>',event.x,event.y,event.pageX,event.pageY); return false;"><img src="../tag_pg/img/rainbow.png" alt="テキストカラー" border="0"></a>-->
 			<br>
 
 		<textarea name="content" cols="85" rows="10" style="ime-mode:active" onFocus="SaveOBJ(this)"><?php echo $content;?></textarea>

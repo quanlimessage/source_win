@@ -81,7 +81,7 @@ if($_POST["action"] == "update"):
 	if(empty($new_id)){
 		$error_message.="新IDが未入力です。<br>\n";
 	}
-	elseif(!preg_match("/^[0-9A-Za-z]{4,8}$/",$new_id)){
+	elseif(!ereg("^[0-9A-Za-z]{4,8}$",$new_id)){
 		$error_message.="IDは半角英数字で4文字以上8文字以内で入力してください。<br>\n";
 	}
 
@@ -89,7 +89,7 @@ if($_POST["action"] == "update"):
 	if(empty($new_pw)){
 		$error_message.="新パスワードが未入力です。<br>\n";
 	}
-	elseif(!preg_match("/^[0-9A-Za-z]{4,8}$/",$new_pw)){
+	elseif(!ereg("^[0-9A-Za-z]{4,8}$",$new_pw)){
 		$error_message.="パスワードは半角英数字で4文字以上8文字以内で入力してください。<br>\n";
 	}
 

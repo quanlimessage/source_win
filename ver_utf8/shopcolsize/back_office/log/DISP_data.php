@@ -1,14 +1,14 @@
 <?php
 /*******************************************************************************
-•¢•Ø•ª•π≤Ú¿œ
+„Ç¢„ÇØ„Çª„ÇπËß£Êûê
 
-	•¢•Ø•ª•π≤Ú¿œ…Ωº®•«°º•øºË∆¿Õ—£ƒ£¬•¢•Ø•ª•π
-	…Ωº®æÚ∑Ô§À§Ë§√§∆•«°º•ø•Ÿ°º•π…Ωº®§Ú —ππ
+	„Ç¢„ÇØ„Çª„ÇπËß£ÊûêË°®Á§∫„Éá„Éº„ÇøÂèñÂæóÁî®Ôº§Ôº¢„Ç¢„ÇØ„Çª„Çπ
+	Ë°®Á§∫Êù°‰ª∂„Å´„Çà„Å£„Å¶„Éá„Éº„Çø„Éô„Éº„ÇπË°®Á§∫„ÇíÂ§âÊõ¥
 
 *******************************************************************************/
 #---------------------------------------------------------------
-# …‘¿µ•¢•Ø•ª•π•¡•ß•√•Ø° ƒæ¿‹§≥§Œ•’•°•§•Î§À•¢•Ø•ª•π§∑§øæÏπÁ°À
-#	¢®∏∑§∑§Øπ‘§¶æÏπÁ§œID§»PW§‚∞Ï√◊§π§Î§´§ﬁ§«π‘§¶
+# ‰∏çÊ≠£„Ç¢„ÇØ„Çª„Çπ„ÉÅ„Çß„ÉÉ„ÇØÔºàÁõ¥Êé•„Åì„ÅÆ„Éï„Ç°„Ç§„É´„Å´„Ç¢„ÇØ„Çª„Çπ„Åó„ÅüÂ†¥ÂêàÔºâ
+#	‚ÄªÂé≥„Åó„ÅèË°å„ÅÜÂ†¥Âêà„ÅØID„Å®PW„ÇÇ‰∏ÄËá¥„Åô„Çã„Åã„Åæ„ÅßË°å„ÅÜ
 #---------------------------------------------------------------
 /*
 if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
@@ -20,9 +20,9 @@ if(!$injustice_access_chk){
 }
 
 #-------------------------------------------------------------
-# HTTP•ÿ•√•¿°º§ÚΩ–Œœ
-#	 ∏ª˙•≥°º•…§»∏¿∏Ï°ßEUC§«∆¸À‹∏Ï
-#	¬æ°ß£ £”§»£√£”£”§Œ¿ﬂƒÍ°ø•≠•„•√•∑•ÂµÒ»›°ø•Ì•‹•√•»µÒ»›
+# HTTP„Éò„ÉÉ„ÉÄ„Éº„ÇíÂá∫Âäõ
+#	ÊñáÂ≠ó„Ç≥„Éº„Éâ„Å®Ë®ÄË™ûÔºöEUC„ÅßÊó•Êú¨Ë™û
+#	‰ªñÔºöÔº™Ôº≥„Å®Ôº£Ôº≥Ôº≥„ÅÆË®≠ÂÆöÔºè„Ç≠„É£„ÉÉ„Ç∑„É•ÊãíÂê¶Ôºè„É≠„Éú„ÉÉ„ÉàÊãíÂê¶
 #-------------------------------------------------------------
 utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 ?>
@@ -30,7 +30,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
-<title>ALL INTERNET •¢•Ø•ª•π≤Ú¿œ</title>
+<title>ALL INTERNET „Ç¢„ÇØ„Çª„ÇπËß£Êûê</title>
 <link href="access_style.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" type="text/JavaScript">
 <!--
@@ -79,7 +79,7 @@ function popWin(){
 	<tr>
 		<td width="178" valign="top" height="100%" background="images/bk.gif">
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
-		<!--•·•À•Â°º•∆°º•÷•Î-->
+		<!--„É°„Éã„É•„Éº„ÉÜ„Éº„Éñ„É´-->
 			<tr>
 				<td width="178" height="25"><img src="images/menu.gif" width="178" height="25" border="0"></td>
 			</tr>
@@ -139,7 +139,7 @@ function popWin(){
 			<input type="hidden" name="term" value="<?php echo $_POST["term"];?>">
 			</form>
 <?php
-	// •¢•Ø•ª•π≤Ú¿œ§Œ•–°º•∏•Á•Û§«∏°∫˜•®•Û•∏•Û°¢•≠°º•Ô°º•…ºË∆¿•™•◊•∑•Á•Û§Ú¿ﬂƒÍ§∑§øæÏπÁ§Œ§ﬂ
+	// „Ç¢„ÇØ„Çª„ÇπËß£Êûê„ÅÆ„Éê„Éº„Ç∏„Éß„É≥„ÅßÊ§úÁ¥¢„Ç®„É≥„Ç∏„É≥„ÄÅ„Ç≠„Éº„ÉØ„Éº„ÉâÂèñÂæó„Ç™„Éó„Ç∑„Éß„É≥„ÇíË®≠ÂÆö„Åó„ÅüÂ†¥Âêà„ÅÆ„Åø
 	if((VARSION_CONFIG == 2) || ($_GET['zeek'] == "kenny")){
 ?>
 			<form method="post" action="./">
@@ -228,8 +228,8 @@ function popWin(){
 			<tr>
 
 		  <td height="30" align="center" background="images/m_d_access_back.gif">
-			PV ° •⁄°º•∏•”•Â°º°À: <b><font color="#003399" size="3"><?php echo count($fetch);?></font></b><br>
-			ÕËÀ¨º‘øÙ : <b><font color="#003399" size="3"><?php echo count($fetch_uu);?></font></b>
+			PV Ôºà„Éö„Éº„Ç∏„Éì„É•„ÉºÔºâ: <b><font color="#003399" size="3"><?php echo count($fetch);?></font></b><br>
+			Êù•Ë®™ËÄÖÊï∞ : <b><font color="#003399" size="3"><?php echo count($fetch_uu);?></font></b>
 			</td>
 			</tr>
 			<tr>
@@ -244,8 +244,8 @@ function popWin(){
 			<form method="post" action="./">
 			<tr>
 				<td width="178" height="158" background="images/menu_under_01.gif" align="right" valign="top" style="padding-right:5px;">
-				¢£≤Ú¿œ•‚°º•…ªÿƒÍ<br>
-				(≤·µÓ6•ı∑Ó¥÷§Œ•«°º•ø§¨<br> ›¥…§µ§Ï§∆§§§ﬁ§π°£)<br>
+				‚ñ†Ëß£Êûê„É¢„Éº„ÉâÊåáÂÆö<br>
+				(ÈÅéÂéª6„ÉµÊúàÈñì„ÅÆ„Éá„Éº„Çø„Åå<br>‰øùÁÆ°„Åï„Çå„Å¶„ÅÑ„Åæ„Åô„ÄÇ)<br>
 				<select name="term">
 <?php
 $dir2 = opendir(ACCESS_PATH);
@@ -259,21 +259,21 @@ foreach($strfile2 as $v){
 		$db_fname = explode("_",$v);
 		$filedate = $db_fname[0]."_".$db_fname[1];
 		$selected = ($_POST["term"] == $filedate)?" selected":"";
-		echo "<option value=\"".$filedate."\"".$selected.">".$db_fname[0]."«Ø".$db_fname[1]."∑Ó</option>\n";
+		echo "<option value=\"".$filedate."\"".$selected.">".$db_fname[0]."Âπ¥".$db_fname[1]."Êúà</option>\n";
 	}
 }
 ?>
 				</select>
 				<br><br>
-				<input type="submit" name="reg" value="≤Ú¿œ≥´ªœ">
+				<input type="submit" name="reg" value="Ëß£ÊûêÈñãÂßã">
 				</td>
 			</tr>
 			</form>
-		<!--•·•À•Â°º§≥§≥§ﬁ§«-->
+		<!--„É°„Éã„É•„Éº„Åì„Åì„Åæ„Åß-->
 		</table>
 		</td>
 		<td width="622" align="center" class="right_bar" valign="top">
-		<!--•≥•Û•∆•Û•ƒ•ª•Î-->
+		<!--„Ç≥„É≥„ÉÜ„É≥„ÉÑ„Çª„É´-->
 		<?php if(!empty($error_mes)):?>
 		<br>
 		<p class="err"><?php echo $error_mes;?></p>
@@ -281,11 +281,11 @@ foreach($strfile2 as $v){
 		<br>
 		<table width="250" cellpadding="0" cellspacing="1" border="0" bgcolor="#000000">
 			<tr bgcolor="#FFFFFF">
-				<td align="left" style="padding:5px;"><img src="images/bar.gif" width="50" height="10" align="absmiddle">°¶°¶PV° •⁄°º•∏•”•Â°º°À<br><!--<img src="images/bar_u.gif" width="50" height="10" align="absmiddle">°¶°¶•Ê•À°º•ØPV<br>--><img src="images/bar_uu.gif" width="50" height="10" align="absmiddle">°¶°¶ÕËÀ¨º‘øÙ</td>
+				<td align="left" style="padding:5px;"><img src="images/bar.gif" width="50" height="10" align="absmiddle">„Éª„ÉªPVÔºà„Éö„Éº„Ç∏„Éì„É•„ÉºÔºâ<br><!--<img src="images/bar_u.gif" width="50" height="10" align="absmiddle">„Éª„Éª„É¶„Éã„Éº„ÇØPV<br>--><img src="images/bar_uu.gif" width="50" height="10" align="absmiddle">„Éª„ÉªÊù•Ë®™ËÄÖÊï∞</td>
 			</tr>
 		</table>
 		<?php if(!empty($fetch_day)):?>
-		<!--∆¸ Ã-->
+		<!--Êó•Âà•-->
 		<?php
 			$fetch_max = 0;
 			for($i=0;$i<count($fetch_day);$i++){
@@ -301,26 +301,26 @@ foreach($strfile2 as $v){
 			<?php for($i=0;$i<count($fetch_day);$i++):?>
 			<tr bgcolor="#FFFFFF">
 				<td width="10%" align="center" height="25">
-				<?php echo $fetch_day[$i]["M"];?>∑Ó<?php echo $fetch_day[$i]["D"];?>∆¸
+				<?php echo $fetch_day[$i]["M"];?>Êúà<?php echo $fetch_day[$i]["D"];?>Êó•
 				</td>
 
 	 <td align="left" style="padding-top:2px;">
 	  <?php
 					$width = @round($fetch_day[$i]['CNT']/$fetch_max * 100);
 					$width_uu = @round($fetch_day_uu[$i]['CNT']/$fetch_max * 100);
-	°°?>
+	„ÄÄ?>
 	  <img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="left">&nbsp;
-	  <?php echo "(".$fetch_day[$i]['CNT']."∑Ô)";?><br>
+	  <?php echo "(".$fetch_day[$i]['CNT']."‰ª∂)";?><br>
 	  <img src="images/bar_uu.gif" width="<?php echo $width_uu*3;?>" height="10" align="absmiddle">&nbsp;
-	  <?php echo "(".$fetch_day_uu[$i]['CNT']."øÕ)";?><br>
+	  <?php echo "(".$fetch_day_uu[$i]['CNT']."‰∫∫)";?><br>
 	   </td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--∆¸ Ã-->
+		<!--Êó•Âà•-->
 		<?php endif;?>
 		<?php if(!empty($MonCnt)):?>
-		<!--∑Ó Ã-->
+		<!--ÊúàÂà•-->
 		<br>
 		<table width="553" cellpadding="0" cellspacing="1" border="0" bgcolor="#000000">
 			<tr bgcolor="#E1E1E1">
@@ -334,28 +334,28 @@ foreach($strfile2 as $v){
 			//for($i=(date("n") - 3);$i<=date("n");$i++):?>
 			<tr bgcolor="#FFFFFF">
 				<td width="10%" align="center" height="25">
-				<?php echo $mon;?>∑Ó
+				<?php echo $mon;?>Êúà
 				</td>
 				<td align="left" style="padding-top:2px;">
 				<?php
 				$num = count($fetch);
-				$width = @round($MonCnt[$mon]/$num * 100); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ªªΩ–(•∞•È•’§ÀÕ¯Õ—)
-				$width_uu = @round($MonCnt_uu[$mon]/$num * 100); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ªªΩ–(•∞•È•’§ÀÕ¯Õ—)
-				if($width > 0):// •´•¶•Û•»§¨§¢§Î∑Ó§Œ§ﬂ•∞•È•’…Ωº®
+				$width = @round($MonCnt[$mon]/$num * 100); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÁÆóÂá∫(„Ç∞„É©„Éï„Å´Âà©Áî®)
+				$width_uu = @round($MonCnt_uu[$mon]/$num * 100); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÁÆóÂá∫(„Ç∞„É©„Éï„Å´Âà©Áî®)
+				if($width > 0):// „Ç´„Ç¶„É≥„Éà„Åå„ÅÇ„ÇãÊúà„ÅÆ„Åø„Ç∞„É©„ÉïË°®Á§∫
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="left">&nbsp;
-				<?php echo ($MonCnt[$mon])?"(".$MonCnt[$mon]."∑Ô)":"";?><br>
+				<?php echo ($MonCnt[$mon])?"(".$MonCnt[$mon]."‰ª∂)":"";?><br>
 				<img src="images/bar_uu.gif" width="<?php echo $width_uu*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo ($MonCnt_uu[$mon])?"(".$MonCnt_uu[$mon]."øÕ)":"";?>
+				<?php echo ($MonCnt_uu[$mon])?"(".$MonCnt_uu[$mon]."‰∫∫)":"";?>
 				<?php endif;?>
 				</td>
 			</tr>
 			<?php //endfor;?>
 		</table>
-		<!--∑Ó Ã-->
+		<!--ÊúàÂà•-->
 		<?php endif;?>
 		<?php if(!empty($fetch_time)):?>
-		<!--ª˛¥÷ Ã-->
+		<!--ÊôÇÈñìÂà•-->
 		<?php
 			$fetch_max = 0;
 			for($i=0;$i<23;$i++){
@@ -371,34 +371,34 @@ foreach($strfile2 as $v){
 			<?php for($i=0;$i<=23;$i++):?>
 			<tr bgcolor="#FFFFFF">
 				<td width="10%" align="center" height="25">
-				<?php echo $i;?>ª˛
+				<?php echo $i;?>ÊôÇ
 				</td>
 				<td align="left" style="padding-top:2px;">
 				<?php
 				$num = count($fetch);
 				$i = sprintf("%02d",$i);
 
-				$width = @round($fetch_time[$i]/$fetch_max * 100); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ºË∆¿
-				if($width > 0):// •¢•Ø•ª•π•´•¶•Û•»§¨§¢§√§ø§È•∞•È•’…Ωº®
+				$width = @round($fetch_time[$i]/$fetch_max * 100); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÂèñÂæó
+				if($width > 0):// „Ç¢„ÇØ„Çª„Çπ„Ç´„Ç¶„É≥„Éà„Åå„ÅÇ„Å£„Åü„Çâ„Ç∞„É©„ÉïË°®Á§∫
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="left">&nbsp;
 				<?php endif;?>
-				<?php echo ($fetch_time[$i])?"(".$fetch_time[$i]."∑Ô)":"";?><br>
+				<?php echo ($fetch_time[$i])?"(".$fetch_time[$i]."‰ª∂)":"";?><br>
 				<?php
-				$width_uu = @round($fetch_time_uu[$i]/$fetch_max * 100 ); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ºË∆¿
-				if($width_uu > 0):// •¢•Ø•ª•π•´•¶•Û•»§¨§¢§√§ø§È•∞•È•’…Ωº®
+				$width_uu = @round($fetch_time_uu[$i]/$fetch_max * 100 ); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÂèñÂæó
+				if($width_uu > 0):// „Ç¢„ÇØ„Çª„Çπ„Ç´„Ç¶„É≥„Éà„Åå„ÅÇ„Å£„Åü„Çâ„Ç∞„É©„ÉïË°®Á§∫
 				?>
 				<img src="images/bar_uu.gif" width="<?php echo $width_uu*3;?>" height="10" align="absmiddle">&nbsp;
 				<?php endif;?>
-				<?php echo ($fetch_time_uu[$i])?"(".$fetch_time_uu[$i]."øÕ)":"";?><br>
+				<?php echo ($fetch_time_uu[$i])?"(".$fetch_time_uu[$i]."‰∫∫)":"";?><br>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--ª˛¥÷ Ã-->
+		<!--ÊôÇÈñìÂà•-->
 		<?php endif;?>
 		<?php if(!empty($fetch_dayofweek)):?>
-		<!--ÕÀ∆¸ Ã-->
+		<!--ÊõúÊó•Âà•-->
 		<?php
 			$fetch_max = 0;
 			for($i=0;$i<=6;$i++){
@@ -413,56 +413,56 @@ foreach($strfile2 as $v){
 			<?php for($i=0;$i<=6;$i++):?>
 			<tr bgcolor="#FFFFFF">
 				<td width="10%" align="center" height="25">
-				<?php // ÕÀ∆¸øÙ√Õ§Ú»Ω Ã§∑§∆ÕÀ∆¸§ÚΩ–Œœ
+				<?php // ÊõúÊó•Êï∞ÂÄ§„ÇíÂà§Âà•„Åó„Å¶ÊõúÊó•„ÇíÂá∫Âäõ
 				switch ($i):
 					case 0:
-						echo "∆¸ÕÀ∆¸";
+						echo "Êó•ÊõúÊó•";
 						break;
 					case 1:
-						echo "∑ÓÕÀ∆¸";
+						echo "ÊúàÊõúÊó•";
 						break;
 					case 2:
-						echo "≤–ÕÀ∆¸";
+						echo "ÁÅ´ÊõúÊó•";
 						break;
 					case 3:
-						echo "øÂÕÀ∆¸";
+						echo "Ê∞¥ÊõúÊó•";
 						break;
 					case 4:
-						echo "Ã⁄ÕÀ∆¸";
+						echo "Êú®ÊõúÊó•";
 						break;
 					case 5:
-						echo "∂‚ÕÀ∆¸";
+						echo "ÈáëÊõúÊó•";
 						break;
 					case 6:
-						echo "≈⁄ÕÀ∆¸";
+						echo "ÂúüÊõúÊó•";
 						break;
 				endswitch;
 				?>
 				</td>
 				<td align="left" style="padding-top:2px;">
 				<?php
-				$width = @round($fetch_dayofweek[$i]/$fetch_max * 100); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ºË∆¿(•∞•È•’…Ωº®Õ—)
-				if($width > 0):// •´•¶•Û•»§¨§¢§ÎÕÀ∆¸§Œ§ﬂ•∞•È•’…Ωº®
+				$width = @round($fetch_dayofweek[$i]/$fetch_max * 100); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÂèñÂæó(„Ç∞„É©„ÉïË°®Á§∫Áî®)
+				if($width > 0):// „Ç´„Ç¶„É≥„Éà„Åå„ÅÇ„ÇãÊõúÊó•„ÅÆ„Åø„Ç∞„É©„ÉïË°®Á§∫
 				?>
 				<!--<img src="images/bar_u.gif" width="<?php echo $width_u*3;?>" height="10" align="left">-->
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="left">&nbsp;
 				<?php endif;?>
-				<?php echo ($fetch_dayofweek[$i])?"(".$fetch_dayofweek[$i]."∑Ô)":"";?><br>
+				<?php echo ($fetch_dayofweek[$i])?"(".$fetch_dayofweek[$i]."‰ª∂)":"";?><br>
 				<?php
-				$width_uu = @round($fetch_dayofweek_uu[$i]/$fetch_max * 100 ); // •´•¶•Û•»øÙ°‡¡¥•´•¶•Û•»øÙ§«•—°º•ª•Û•∆°º•∏ºË∆¿(•∞•È•’…Ωº®Õ—)
-				if($width_uu > 0):// •´•¶•Û•»§¨§¢§ÎÕÀ∆¸§Œ§ﬂ•∞•È•’…Ωº®
+				$width_uu = @round($fetch_dayofweek_uu[$i]/$fetch_max * 100 ); // „Ç´„Ç¶„É≥„ÉàÊï∞√∑ÂÖ®„Ç´„Ç¶„É≥„ÉàÊï∞„Åß„Éë„Éº„Çª„É≥„ÉÜ„Éº„Ç∏ÂèñÂæó(„Ç∞„É©„ÉïË°®Á§∫Áî®)
+				if($width_uu > 0):// „Ç´„Ç¶„É≥„Éà„Åå„ÅÇ„ÇãÊõúÊó•„ÅÆ„Åø„Ç∞„É©„ÉïË°®Á§∫
 				?>
 				<img src="images/bar_uu.gif" width="<?php echo $width_uu*3;?>" height="10" align="absmiddle">
 				<?php endif;?>
-				<?php echo ($fetch_dayofweek_uu[$i])?"(".$fetch_dayofweek_uu[$i]."øÕ)":"";?><br>
+				<?php echo ($fetch_dayofweek_uu[$i])?"(".$fetch_dayofweek_uu[$i]."‰∫∫)":"";?><br>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--ÕÀ∆¸ Ã-->
+		<!--ÊõúÊó•Âà•-->
 		<?php endif;?>
 		<?php if(!empty($fetchURL)):?>
-		<!--•⁄°º•∏ Ã-->
+		<!--„Éö„Éº„Ç∏Âà•-->
 		<?php
 			$fetch_max = 0;
 			for($i=0;$i<=count(fetchURL);$i++){
@@ -494,20 +494,20 @@ foreach($strfile2 as $v){
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="left">&nbsp;
 				<?php echo round($fetchURL[$i]['CNT']/$fetch_sum * 100);?>%
-				<?php echo "(".$fetchURL[$i]['CNT']."∑Ô)";?>
+				<?php echo "(".$fetchURL[$i]['CNT']."‰ª∂)";?>
 
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--•⁄°º•∏ Ã-->
+		<!--„Éö„Éº„Ç∏Âà•-->
 		<?php endif;?>
 <?php
-	// •¢•Ø•ª•π≤Ú¿œ§Œ•–°º•∏•Á•Û§«∏°∫˜•®•Û•∏•Û°¢•≠°º•Ô°º•…ºË∆¿•™•◊•∑•Á•Û§Ú¿ﬂƒÍ§∑§øæÏπÁ§Œ§ﬂ
+	// „Ç¢„ÇØ„Çª„ÇπËß£Êûê„ÅÆ„Éê„Éº„Ç∏„Éß„É≥„ÅßÊ§úÁ¥¢„Ç®„É≥„Ç∏„É≥„ÄÅ„Ç≠„Éº„ÉØ„Éº„ÉâÂèñÂæó„Ç™„Éó„Ç∑„Éß„É≥„ÇíË®≠ÂÆö„Åó„ÅüÂ†¥Âêà„ÅÆ„Åø
 	if((VARSION_CONFIG == 2) || ($_GET['zeek'] == "kenny")){
 ?>
 		<?php if(!empty($fetchENGINE)):?>
-		<!--∏°∫˜•®•Û•∏•Û Ã-->
+		<!--Ê§úÁ¥¢„Ç®„É≥„Ç∏„É≥Âà•-->
 		<?php
 			$fetch_max = $fetchENGINE[0]['CNT'];
 			$fetch_sum = 0;
@@ -536,16 +536,16 @@ foreach($strfile2 as $v){
 					$width = @round($fetchENGINE[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetchENGINE[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetchENGINE[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetchENGINE[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetchENGINE[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--∏°∫˜•®•Û•∏•Û Ã-->
+		<!--Ê§úÁ¥¢„Ç®„É≥„Ç∏„É≥Âà•-->
 		<?php endif;?>
 
 		<?php if(!empty($fetchQuery)):?>
-		<!--§≥§≥§´§È∏°∫˜ ∏ª˙ŒÛ-->
+		<!--„Åì„Åì„Åã„ÇâÊ§úÁ¥¢ÊñáÂ≠óÂàó-->
 		<?php
 			$fetch_max = $fetchQuery[0]['CNT'];
 			$fetch_sum = 0;
@@ -559,7 +559,7 @@ foreach($strfile2 as $v){
 		<table width="553" cellpadding="0" cellspacing="1" border="0" bgcolor="#000000">
 			<tr bgcolor="#FFFFFF">
 				<td align="left" height="20">
-				&nbsp;…Ωº®∑ÔøÙ°ß<input type="radio" name="kensu" value="1" onClick="javascript:submit();"<?php echo ($kensu == 1)?" checked":"";?>>&nbsp;100∑Ô§ﬁ§«…Ωº®&nbsp;<input type="radio" name="kensu" value="2" onClick="javascript:submit();"<?php echo ($kensu == 2)?" checked":"";?>>&nbsp;300∑Ô§ﬁ§«…Ωº®&nbsp;<input type="radio" name="kensu" value="3"  onClick="javascript:submit();"<?php echo ($kensu == 3)?" checked":"";?>>&nbsp;¡¥§∆…Ωº®
+				&nbsp;Ë°®Á§∫‰ª∂Êï∞Ôºö<input type="radio" name="kensu" value="1" onClick="javascript:submit();"<?php echo ($kensu == 1)?" checked":"";?>>&nbsp;100‰ª∂„Åæ„ÅßË°®Á§∫&nbsp;<input type="radio" name="kensu" value="2" onClick="javascript:submit();"<?php echo ($kensu == 2)?" checked":"";?>>&nbsp;300‰ª∂„Åæ„ÅßË°®Á§∫&nbsp;<input type="radio" name="kensu" value="3"  onClick="javascript:submit();"<?php echo ($kensu == 3)?" checked":"";?>>&nbsp;ÂÖ®„Å¶Ë°®Á§∫
 				</td>
 			</tr>
 		</table>
@@ -582,23 +582,23 @@ foreach($strfile2 as $v){
 					$width = @round($fetchQuery[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetchQuery[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetchQuery[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetchQuery[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetchQuery[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 <!--			<tr>
 				<td bgcolor="#FFFFFF">
-				<div align="left"><input type="button" name="button" value="•≠°º•Ô°º•…£≤∑Ô∞ ≤º" onClick="popWin()" class="button"></div>
+				<div align="left"><input type="button" name="button" value="„Ç≠„Éº„ÉØ„Éº„ÉâÔºí‰ª∂‰ª•‰∏ã" onClick="popWin()" class="button"></div>
 				</td>
 			</tr>-->
 		</table>
-		<!--∏°∫˜ ∏ª˙ŒÛ-->
+		<!--Ê§úÁ¥¢ÊñáÂ≠óÂàó-->
 		<?php endif;?>
 <?php
-	// •–°º•∏•Á•Û£≤Ω™§Ô§Í
+	// „Éê„Éº„Ç∏„Éß„É≥ÔºíÁµÇ„Çè„Çä
 	}
 ?>
-		<!--§≥§≥§´§È•÷•È•¶•∂ Ã-->
+		<!--„Åì„Åì„Åã„Çâ„Éñ„É©„Ç¶„Ç∂Âà•-->
 		<?php if(!empty($fetch_bro)):?>
 		<?php $fetch_max = $fetch_bro[0]['CNT'];?>
 		<br>
@@ -620,14 +620,14 @@ foreach($strfile2 as $v){
 					$width = @round($fetch_bro[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetch_bro[$i]['CNT']/count($fetch) * 100);?>%<?php echo "(".$fetch_bro[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetch_bro[$i]['CNT']/count($fetch) * 100);?>%<?php echo "(".$fetch_bro[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--•÷•È•¶•∂ Ã-->
+		<!--„Éñ„É©„Ç¶„Ç∂Âà•-->
 		<?php endif;?>
-		<!--§≥§≥§´§ÈOS Ã-->
+		<!--„Åì„Åì„Åã„ÇâOSÂà•-->
 		<?php if(!empty($fetch_os)):?>
 		<?php $fetch_max = $fetch_os[0]['CNT'];?>
 		<br>
@@ -649,14 +649,14 @@ foreach($strfile2 as $v){
 					$width = @round($fetch_os[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetch_os[$i]['CNT']/count($fetch) * 100);?>%<?php echo "(".$fetch_os[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetch_os[$i]['CNT']/count($fetch) * 100);?>%<?php echo "(".$fetch_os[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--OS Ã-->
+		<!--OSÂà•-->
 		<?php endif;?>
-		<!-- ∏© Ã -->
+		<!-- ÁúåÂà• -->
 		<?php if(!empty($fetch_state_u)):?>
 		<?php
 			$fetch_max = $fetch_state_u[0]['CNT'];
@@ -684,14 +684,14 @@ foreach($strfile2 as $v){
 					$width = @round($fetch_state_u[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetch_state_u[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetch_state_u[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetch_state_u[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetch_state_u[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--∏© Ã-->
+		<!--ÁúåÂà•-->
 		<?php endif;?>
-		<!-- •Í•’•°•È°º Ã -->
+		<!-- „É™„Éï„Ç°„É©„ÉºÂà• -->
 		<?php if(!empty($fetch_ref)):?>
 		<?php
 			$fetch_max = $fetch_ref[0]['CNT'];
@@ -719,12 +719,12 @@ foreach($strfile2 as $v){
 					$width = @round($fetch_ref[$i]['CNT']/$fetch_max * 100);
 				?>
 				<img src="images/bar.gif" width="<?php echo $width*3;?>" height="10" align="absmiddle">&nbsp;
-				<?php echo round($fetch_ref[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetch_ref[$i]['CNT']."∑Ô)";?>
+				<?php echo round($fetch_ref[$i]['CNT']/$fetch_sum * 100);?>%<?php echo "(".$fetch_ref[$i]['CNT']."‰ª∂)";?>
 				</td>
 			</tr>
 			<?php endfor;?>
 		</table>
-		<!--•Í•’•°•È°º Ã-->
+		<!--„É™„Éï„Ç°„É©„ÉºÂà•-->
 		<?php endif;?>
 		<br>
 		</td>

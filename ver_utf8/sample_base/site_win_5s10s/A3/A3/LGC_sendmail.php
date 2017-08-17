@@ -106,7 +106,7 @@ $comment
 $err_mes = "";
 
 // メール送信実行（結果を取得しコントローラーで次の処理を判断）
-if(!empty($mailto) && preg_match("/^(.+)@(.+)\\.(.+)$/",$mailto)){
+if(!empty($mailto) && ereg("^(.+)@(.+)\\.(.+)$",$mailto)){
 
 	#-----------------------------------------
 	# 添付ファイルの有無で送信メソッドを分岐
@@ -167,7 +167,7 @@ $mailbody2 = str_replace("\r","", $mailbody2);
 
 
 if(!empty($mailto2)){
- if(preg_match("/^(.+)@(.+)\\.(.+)$/",$mailto2)){
+ if(ereg("^(.+)@(.+)\\.(.+)$",$mailto2)){
 
   $sendmail_result = mb_send_mail($mailto2,$subject2,$mailbody2,$headers2,$rpath);
 

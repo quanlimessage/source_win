@@ -17,6 +17,8 @@ $injustice_access_chk = 1;
 
 // 設定ファイル＆共通ライブラリの読み込み
 	require_once("../../common/INI_config.php");	// 共通設定情報
+	require_once("dbOpe.php");					// DB操作クラスライブラリ
+	require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 	if($_POST)extract(utilLib::getRequestParams("post",array(8,7,1,4,5)));
 	if($_GET)extract(utilLib::getRequestParams("get",array(8,7,1,4,5)));
@@ -37,7 +39,7 @@ $injustice_access_chk = 1;
 			VIEW_ORDER ASC
 	";
 
-	$fetchCateCheck = $PDO -> fetch($sql);
+	$fetchCateCheck = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if($ReturnStr == ""){
 

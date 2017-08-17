@@ -35,8 +35,8 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,true);
 <link href="../for_bk.css" rel="stylesheet" type="text/css">
 <script src="../tag_pg/cms.js" type="text/javascript"></script>
 <script src="../actchange.js" type="text/javascript"></script>
-<script type="text/javascript" src="./jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="./jquery/jquery.upload-1.0.2.js"></script>
+<script type="text/javascript" src="../jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="../jquery/jquery.upload-1.0.2.js"></script>
 <script type="text/javascript" src="./uploadcheck.js"></script>
 </head>
 <body>
@@ -116,9 +116,8 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,true);
 		<th nowrap class="tdcolored">
 		<?php echo ($i==1)?"画像":"詳細用画像".($i-1);?>：</th>
 		<td height="35" class="other-td">
-
-		<?php if(search_file_flg(N1_IMG_PATH,$fetch[0]['RES_ID']."_".$i.".*")):?>
 		<?php echo search_file_disp(N1_IMG_PATH,$fetch[0]['RES_ID']."_".$i.".*","",1);?><br>
+		<?php if(search_file_flg(N1_IMG_PATH,$fetch[0]['RES_ID']."_".$i.".*")):?>
 			現在表示中の画像<br>
 			<input type="checkbox" name="del_img[]" value="<?php echo $i;?>" id="<?php echo $i;?>"><label for="<?php echo $i;?>">この画像を削除</label>
 			<br>

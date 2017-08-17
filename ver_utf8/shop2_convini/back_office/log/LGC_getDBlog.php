@@ -256,7 +256,7 @@ function hour_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -288,7 +288,7 @@ function hour_u_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -320,7 +320,7 @@ function hour_uu_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";

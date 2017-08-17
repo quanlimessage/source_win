@@ -40,7 +40,7 @@ if($_POST['regist_type']=="new" || $_POST['regist_type']=="update"):
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	#==================================================================
 	# stripslashes処理した値を$fetch[0]に格納
@@ -193,7 +193,7 @@ else:
 	";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$ca = $fetch[0]['CATEGORY_CODE'];
 	$ca_name = $fetch[0]['CATEGORY_NAME'];

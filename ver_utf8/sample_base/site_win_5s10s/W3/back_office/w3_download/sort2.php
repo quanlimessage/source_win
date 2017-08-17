@@ -17,6 +17,7 @@ if( !$_SESSION['LOGIN'] ){
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_W3.php");	// 設定情報
+require_once("dbOpe.php");					// ＤＢ操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 	// POSTデータの受け取りと共通な文字列処理
@@ -40,7 +41,7 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 	for($i=0;$i<count($vo);$i++){
 
-		$sql = "
+		$sql[$i] = "
 		UPDATE
 			".W3_DOWNLOAD."
 		SET
@@ -51,10 +52,12 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 			(DEL_FLG = '0')
 		";
-		// ＳＱＬを実行
-		$PDO -> regist($sql);
+
 	}
 
+	// ＳＱＬを実行
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 最後に並び替えのトップへ飛ばす
 	//header("Location: ./sort2.php");
@@ -68,7 +71,7 @@ endif;
 // 現在の並び順でデータを取得
 $sql = "
 SELECT
-	*
+	RES_ID,TITLE,VIEW_ORDER,DISPLAY_FLG
 FROM
 	".W3_DOWNLOAD."
 WHERE
@@ -76,7 +79,7 @@ WHERE
 ORDER BY
 	VIEW_ORDER ASC
 ";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力

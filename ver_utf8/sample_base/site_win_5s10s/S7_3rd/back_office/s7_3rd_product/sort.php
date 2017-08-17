@@ -13,13 +13,11 @@ Sx系プログラム バックオフィス（MySQL対応版）
 session_start();
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
-	header("Location: ../index.php");exit();
-}*/
+}
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_S7_3rd.php");	// 共通設定情報
+require_once("dbOpe.php");					// ＤＢ操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 //カテゴリー情報の取得
@@ -35,7 +33,7 @@ require_once("util_lib.php");				// 汎用処理クラスライブラリ
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//カテゴリー名の横に登録件数を表示させる
 	for($i=0;$i<count($fetchCA);$i++){
@@ -54,7 +52,7 @@ require_once("util_lib.php");				// 汎用処理クラスライブラリ
 		";
 
 		// ＳＱＬを実行
-		${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+		${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 	}
 
 	// POSTデータの受け取りと共通な文字列処理
@@ -119,10 +117,8 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 	}
 
 	// ＳＱＬを実行
-	foreach ($sqlvo as $sql) {
-		$PDO -> regist($sql);
-	}
-
+	$db_result = dbOpe::regist($sqlvo,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 最後に並び替えのトップへ飛ばす
 	//header("Location: ./sort.php");
@@ -153,7 +149,7 @@ endif;
 		VIEW_ORDER ASC
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力
@@ -290,7 +286,7 @@ else:
 			<br>
 			現在の並び順<br>
 
-		<table width="530" border="1" cellpadding="2" cellspacing="0" style="height:inherit;">
+		<table width="600" border="1" cellpadding="2" cellspacing="0" style="height:inherit;">
 				<tr class="tdcolored">
 					<th nowrap class="back2">タイトル</th>
 					<th width="10%" nowrap class="back2">画像</th>

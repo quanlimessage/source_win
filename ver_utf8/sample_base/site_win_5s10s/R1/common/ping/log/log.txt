@@ -1,8 +1,0 @@
-HTTP/1.1 302 Moved Temporarily
-Date: Thu, 07 Apr 2011 02:52:22 GMT
-Server: Apache
-Set-Cookie: JSESSIONID=4DD6287A40A12A07EA81A99D634FF1E0; Path=/
-Location: http://amember.ameba.jp/amemberRequest.do?oAid=mn00&url=http%3A%2F%2Fsecret.ameba.jp%2Fpublic%2Famemberentry.do%3Fbnm%3Dmn00%26eid%3D10478338832
-Content-Length: 0
-Connection: close
-Content-Type: text/html

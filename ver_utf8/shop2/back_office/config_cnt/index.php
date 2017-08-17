@@ -18,6 +18,8 @@ if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_config.php");		// 共通設定情報
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");						// 汎用処理クラスライブラリ
 
 #===============================================================================
 # $_POST['action']の内容により処理を分岐

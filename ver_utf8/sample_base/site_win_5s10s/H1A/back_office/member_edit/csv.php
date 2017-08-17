@@ -1,4 +1,4 @@
-<?php
+<?
 /*******************************************************************************
 
 リスト出力
@@ -7,6 +7,7 @@
 session_start();
 
 // 設定ファイル＆共通ライブラリの読み込み
+require_once("dbOpe.php");      // ＤＢ操作クラスライブラリ
 require_once("util_lib.php");       // 汎用処理クラスライブラリ
 require_once("../../common/config_H1A.php");  //設定ファイル
 
@@ -27,7 +28,7 @@ $sql = "
 		INS_DATE ASC
 ";
 
-$fetchAnswerList = $PDO -> fetch($sql);
+$fetchAnswerList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //入力された危険文字が実態参照で表示されるため処理をする
 function csv_conversion($str){

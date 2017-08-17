@@ -1,13 +1,13 @@
 <?php
 /*******************************************************************************
-�����������ϥե�����ޥ͡����㡼
-View���������������ե��������ɽ���ʺǽ��ɽ�������
+アクセス解析ファイルマネージャー
+View：アクセスログファイル一覧表示（最初に表示する）
 
 *******************************************************************************/
 
 #---------------------------------------------------------------
-# �����������������å���ľ�ܤ��Υե�����˥���������������
-#	���������Ԥ�����ID��PW����פ��뤫�ޤǹԤ�
+# 不正アクセスチェック（直接このファイルにアクセスした場合）
+#	※厳しく行う場合はIDとPWも一致するかまで行う
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
@@ -20,9 +20,9 @@ if(!$injustice_access_chk){
 }
 
 #=============================================================
-# HTTP�إå��������
-#	ʸ�������ɤȸ��졧EUC�����ܸ�
-#	¾���ʣӤȣãӣӤ����꡿ͭ�����¤����꡿����å�����ݡ����ܥåȵ���
+# HTTPヘッダーを出力
+#	文字コードと言語：EUCで日本語
+#	他：ＪＳとＣＳＳの設定／有効期限の設定／キャッシュ拒否／ロボット拒否
 #=============================================================
 utilLib::httpHeadersPrint("EUC-JP",true,false,true,true);
 ?>
@@ -35,22 +35,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,true,true);
 </head>
 <body>
 <div class="header"></div>
-<p class="page_title">�����������ϡ��ե�����ޥ͡����㡼</p>
+<p class="page_title">アクセス解析：ファイルマネージャー</p>
 <p class="explanation">
-��<strong>�ֺ����</strong>�򥯥�å��������Ͽ����Ƥ��볺�������ե����뤬�������ޤ���<br>
-��<strong>��������ե�����������Ǥ��ޤ���</strong>��ʬ�����դ��ƽ�����ԤäƤ���������<br><br>
-��<strong>�֥�ݡ��ȡ�</strong>�򥯥�å�����ȥ�ݡ��ȥǡ��������ǤΥХå����åפ�<br>
-<strong>��CSV���ϡ�</strong>�򥯥�å������CSV�ǡ��������ǤΥХå����åפ�Ȥ뤳�Ȥ�����ޤ���<br>
-�ե������������ݤ����Ӥ˹�碌�Ƥ��줾�����ˡ�ǥХå����åפ�Ȥ뤳�Ȥ򤪴��ᤷ�ޤ���
+▼<strong>「削除」</strong>をクリックすると登録されている該当ログファイルが削除されます。<br>
+▼<strong>削除したファイルは復帰できません。</strong>十分に注意して処理を行ってください。<br><br>
+▼<strong>「レポート」</strong>をクリックするとレポートデータ形式でのバックアップを<br>
+<strong>「CSV出力」</strong>をクリックするとCSVデータ形式でのバックアップをとることが出来ます。<br>
+ファイルを削除する際に用途に合わせてそれぞれの方法でバックアップをとることをお勧めします。
 </p>
 <table width="600" border="1" cellpadding="2" cellspacing="0">
 	<tr class="tdcolored">
-		<th width="15%" nowrap>�ǡ�������</th>
-		<th nowrap>�ե�����̾</th>
-		<th width="5%" nowrap>�ե����륵����</th>
-		<th width="10%" nowrap>���ϥ�ݡ��Ƚ���</th>
-		<th width="10%" nowrap>CSV����</th>
-	    <th width="5%" nowrap>���</th>
+		<th width="15%" nowrap>データ日付</th>
+		<th nowrap>ファイル名</th>
+		<th width="5%" nowrap>ファイルサイズ</th>
+		<th width="10%" nowrap>解析レポート出力</th>
+		<th width="10%" nowrap>CSV出力</th>
+	    <th width="5%" nowrap>削除</th>
 	</tr>
 <?php
 $dir = opendir(ACCESS_PATH);
@@ -63,24 +63,24 @@ closedir($dir);
 	<?php if(strstr($v,"access_log_db")):?>
 	<tr class="<?php echo (($i % 2)==0)?"other-td":"otherColTd";?>">
 		<td align="center">&nbsp;<?php $db_fname = explode("_",$v);
-										echo $db_fname[0]."ǯ".$db_fname[1]."��";?></td>
+										echo $db_fname[0]."年".$db_fname[1]."月";?></td>
 		<td align="center">&nbsp;<?php echo $v;?></td>
 		<td align="center">&nbsp;<?php echo round(filesize(ACCESS_PATH.$v)/(1024 * 1024),2)."MB";?></td>
 		<td align="center">
 		<form method="post" action="file.php" style="margin:0;">
-		<input type="submit" value="��ݡ���">
+		<input type="submit" value="レポート">
 		<input type="hidden" name="filename" value="<?php echo $v;?>">
 		</form>
 		</td>
 		<td align="center">
 		<form method="post" action="csv.php" style="margin:0;">
-		<input type="submit" value="CSV����">
+		<input type="submit" value="CSV出力">
 		<input type="hidden" name="filename" value="<?php echo $v;?>">
 		</form>
 		</td>
 		<td align="center">
-		<form method="post" action="./" style="margin:0;" onSubmit="return confirm('���Υ������������ե���������˺�����ޤ���\n�������������ե�����������Ͻ���ޤ���\n��������Ǥ�����');">
-		<input type="submit" value="���">
+		<form method="post" action="./" style="margin:0;" onSubmit="return confirm('このアクセスログファイルを完全に削除します。\nアクセスログファイルの復帰は出来ません。\nよろしいですか？');">
+		<input type="submit" value="削除">
 		<input type="hidden" name="filename" value="<?php echo $v;?>">
 		<input type="hidden" name="action" value="del_file">
 		</form>

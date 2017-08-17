@@ -85,7 +85,7 @@ AND
 	(".CUSTOMER_LST.".DEL_FLG = '0')
 ";
 
-$fetchOrderCust = $PDO -> fetch($sql1);
+$fetchOrderCust = dbOpe::fetch($sql1,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 // 注文情報詳細
 $sql3 = "
@@ -105,5 +105,5 @@ AND
 ORDER BY
 	".PURCHASE_ITEM_DATA.".PID ASC
 ";
-$fetchPerItem = $PDO -> fetch($sql3);
+$fetchPerItem = dbOpe::fetch($sql3,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 ?>

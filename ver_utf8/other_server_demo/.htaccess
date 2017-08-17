@@ -1,0 +1,73 @@
+#セッションの有効期限（秒単位 1分=60 1時間=3600 12時間=43200 1日=86400）
+php_value session.gc_maxlifetime 3600
+
+#gc_probability　ガーベッジコレクタの分子
+#gc_divisor　ガーベッジコレクタの分母
+#分子を1,分母を100とした場合,1/100の確立で有効期限が切れたファイルが削除される。
+php_value session.gc_probability 1
+php_value session.gc_divisor 100
+
+AddType application/x-httpd-php .php .html
+
+#更新2010-7-14
+
+#.htaccess閲覧防止
+#AddHandler cgi-script htaccess
+
+<Files ~ "^\.ht">
+    order allow,deny
+    deny from all
+    satisfy all
+</Files>
+
+# ユーザーエージェント
+SetEnvIfNoCase User-Agent "msnbot" shutout
+SetEnvIfNoCase User-Agent "Googlebot" shutout
+SetEnvIfNoCase User-Agent "Slurp" shutout
+SetEnvIfNoCase User-Agent "Yahoo" shutout
+SetEnvIfNoCase User-Agent "Y!J" shutout
+
+SetEnvIf User-Agent "inktomi" shutout
+SetEnvIf User-Agent "moget" shutout
+SetEnvIf User-Agent "ichiro" shutout
+SetEnvIf User-Agent "ia_archiver" shutout
+SetEnvIfNoCase User-Agent "MarkAgent" shutout
+SetEnvIfNoCase User-Agent "marsflag" shutout
+SetEnvIfNoCase User-Agent "spider" shutout
+SetEnvIfNoCase User-Agent "Baiduspider" shutout
+SetEnvIfNoCase User-Agent "Crawler" shutout
+SetEnvIfNoCase User-Agent "Yeti" shutout
+SetEnvIf User-Agent "http" shutout
+
+# Google
+SetEnvIf Referer "^http://www\.google\..*/search" shutout
+SetEnvIf Referer "^http://images\.google\..*/images" shutout
+# Yahoo
+SetEnvIf Referer "^http.*search\.yahoo\..*\?" shutout
+# MSN
+SetEnvIf Referer "^http://search\.msn\..*/results\.aspx\?" shutout
+SetEnvIf Referer "^http://search\.live\..*/results\.aspx\?" shutout
+# 百度
+SetEnvIf Referer "^http://baidu\." shutout
+SetEnvIf Referer "^http.*\.baidu\." shutout
+
+order Allow,Deny
+Allow from all
+Deny from env=shutout
+
+# Google
+Deny from 66.249.64.0/19
+# Yahoo
+Deny from 72.30.0.0/16
+Deny from 74.6.0.0/16
+#NAVER
+Deny from 220.88.0.0/13
+Deny from 61.247.192.0/19
+#百度
+Deny from 202.108.0.0/16
+Deny from 60.24.0.0/13
+Deny from 122.152.128.0/23
+Deny from 202.106.0.0/16
+Deny from 221.216.0.0/13
+Deny from 61.135.0.0/16
+Deny from 203.192.149.0/24

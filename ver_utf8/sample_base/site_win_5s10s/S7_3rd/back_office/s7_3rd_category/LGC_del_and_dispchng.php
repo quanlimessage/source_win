@@ -14,10 +14,7 @@ Logic:以下の処理を行う
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
+}
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -46,11 +43,11 @@ case "del_data":
 	// SQL実行
 		//完全削除を行う場合
 		//カテゴリーの登録データを削除
-		// $PDO -> regist("DELETE FROM ".S7_3_CATEGORY_MST." WHERE(CATEGORY_CODE = '$cate')");
+		$db_result = dbOpe::regist("DELETE FROM ".S7_3_CATEGORY_MST." WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		//DEL_FLGで表示を行わないようにする場合（カテゴリーのデータを復元できるように）
 		//カテゴリーのDELフラグを設定
-		$PDO -> regist("UPDATE ".S7_3_CATEGORY_MST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')");
+		//$db_result = dbOpe::regist("UPDATE ".S7_3_CATEGORY_MST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 case "display_change":
@@ -61,7 +58,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE ".S7_3_CATEGORY_MST." SET DISPLAY_FLG = '$up_display' WHERE(CATEGORY_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE ".S7_3_CATEGORY_MST." SET DISPLAY_FLG = '$up_display' WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

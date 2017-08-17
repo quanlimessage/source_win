@@ -128,7 +128,7 @@ $company_info
 ";
 
 // メール送信実行（結果を取得しコントローラーで次の処理を判断）
-if(!empty($mailto) && preg_match("/^(.+)@(.+)\\.(.+)$/",$mailto)){
+if(!empty($mailto) && ereg("^(.+)@(.+)\\.(.+)$",$mailto)){
 
 	$sendmail_result = mb_send_mail($email,$subject,$mailbody,$headers);
 

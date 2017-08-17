@@ -22,6 +22,7 @@ session_start();
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../common/config_H1A.php");	// 設定情報
+require_once('dbOpe.php');
 require_once("util_lib.php");			// 汎用処理クラスライブラリ
 
 // エラーメッセージと不正アクセスフラグ（index.php以外からのコールを防~）の初期化

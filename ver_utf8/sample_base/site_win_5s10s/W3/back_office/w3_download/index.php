@@ -23,6 +23,7 @@ $accessChk = 1;
 require_once("../../common/config_W3.php");	// 共通設定情報
 require_once("../tag_pg/LGC_color_table.php");	// タグ処理のプログラム
 
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 //require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 require_once('../../common/imgOpe2.php');	// 画像アップロードクラスライブラリ(gif・png対応)
@@ -33,7 +34,7 @@ require_once('../../common/imgOpe2.php');	// 画像アップロードクラス�
 
 	//現在の資料ファイル登録個数
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".W3_DOWNLOAD." WHERE(DEL_FLG = '0')AND(PDF_FLG = '1')";
-	$fetch_PDF_NUM = $PDO -> fetch($cnt_sql);
+	$fetch_PDF_NUM = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #===============================================================================
 # $_POST["action"]の内容により処理を分岐

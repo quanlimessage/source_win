@@ -57,7 +57,7 @@ case "update":
 // 対象IDのデータ更新
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -95,7 +95,7 @@ case "new":
 
 	// 現在の登録件数が設定した件数未満の場合のみDBに格納
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".W3_DOWNLOAD." WHERE(DEL_FLG = '0')";
-	$fetchCNT = $PDO -> fetch($cnt_sql);
+	$fetchCNT = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	if($fetchCNT[0]["CNT"] < W3_DBMAX_CNT):
 
@@ -110,12 +110,15 @@ case "new":
 		if($_POST["regist_type"]=="new" && $ins_chk == 1){
 			$vosql ="UPDATE ".W3_DOWNLOAD." SET VIEW_ORDER = VIEW_ORDER+1";
 			// ＳＱＬを実行
-			$PDO -> regist($vosql);
+			if(!empty($vosql)){
+				$db_result = dbOpe::regist($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = 1;
 		}
 		else{
 			$vosql = "SELECT MAX(VIEW_ORDER) AS VO FROM ".W3_DOWNLOAD." WHERE(DEL_FLG = '0')";
-			$fetchVO = $PDO -> fetch($vosql);
+			$fetchVO = dbOpe::fetch($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			$view_order = ($fetchVO[0]["VO"] + 1);
 		}
 
@@ -137,7 +140,11 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
+}
 
 #=================================================================================
 # 共通処理；資料ファイルアップロード・削除処理
@@ -167,7 +174,10 @@ $PDO -> regist($sql);
 		WHERE
 			(RES_ID = '$res_id')
 		";
-		$PDO -> regist($sql);
+		if(!empty($sql)){
+			$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+		}
 	}
 
 	/////////////////////////////////////////////////////
@@ -250,7 +260,10 @@ $PDO -> regist($sql);
 					WHERE
 						(RES_ID = '$res_id')
 					";
-					$PDO -> regist($sql);
+					if(!empty($sql)){
+						$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+						if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+					}
 
 			}else{//ファイルのサイズ制限を超えている場合
 				exit(LIMIT_SIZE."MB以上のファイルはアップロードできません。");

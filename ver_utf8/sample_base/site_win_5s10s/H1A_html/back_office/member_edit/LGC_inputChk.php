@@ -43,19 +43,19 @@ $error_mes .= utilLib::strCheck($kana,0,"フリガナを入力してください
 
 $zip = $zip1 . $zip2;
 if(!empty($zip)){
-	if(preg_match("/[^0-9]/",$zip)){
+	if(ereg("[^0-9]",$zip)){
 		$error_mes .= "郵便番号は半角数字のみで入力してください。<br><br>\n";
 	}
 }
 
 if(!empty($tel)){
-	if(preg_match("/[^-0-9]/",$tel)){
+	if(ereg("[^-0-9]",$tel)){
 		$error_mes .= "TELは半角数字とハイフンのみで入力してください。<br><br>\n";
 	}
 }
 
 if(!empty($fax)){
-	if(preg_match("/[^-0-9]/",$fax)){
+	if(ereg("[^-0-9]",$fax)){
 		$error_mes .= "FAXは半角数字とハイフンのみで入力してください。<br><br>\n";
 	}
 }

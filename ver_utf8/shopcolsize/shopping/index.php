@@ -12,6 +12,8 @@ $injustice_access_chk = 1;
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../common/INI_config.php");		// 共通設定情報
 require_once("../common/INI_ShopConfig.php");	// ショップ用設定情報
+require_once("dbOpe.php");						// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");					// 汎用処理クラスライブラリ
 require_once('tmpl2.class.php');				// テンプレートクラスライブラリ
 require_once('../common/imgOpe2.php');					// 画像アップロードクラスライブラリ
 
@@ -30,7 +32,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 	}
 
 	// 商品IDが送信されパラメーターが不正でなければ商品詳細を表示
-	if( ( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_GET['pid']) ) || $_POST['status']=="prev_d" ){
+	if( ( isset($_GET['pid']) && ereg("^([0-9]{10,})-([0-9]{6})$", $_GET['pid']) ) || $_POST['status']=="prev_d" ){
 		include("DISP_detail.php");
 
 	}else{

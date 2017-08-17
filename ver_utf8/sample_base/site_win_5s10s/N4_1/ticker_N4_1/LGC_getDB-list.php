@@ -19,7 +19,7 @@ if(!$injustice_access_chk){
 $res_id = urldecode($_GET['id']);
 
 // パラメータがないもしくは不正なデータを混入された状態でアクセスされた場合のエラー処理
-if(empty($res_id) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id) ){
+if(empty($res_id) || !ereg("^([0-9]{10,})-([0-9]{6})$",$res_id) ){
 	header("Location: ../");exit();
 }
 $sql = "

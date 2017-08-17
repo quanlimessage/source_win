@@ -80,21 +80,21 @@ if(empty($pid)):
 			".PRODUCT_LST.".VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$sql .= "
 		LIMIT
 			".$st.",".SHOP_MAXROW."
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 else:
 #------------------------------------------------------------------------
 #	詳細ページ用情報の取得
 #------------------------------------------------------------------------
 // 対象のGETデータ（商品ID）をチェック
-if( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/",$_GET['pid']) ){
+if( isset($_GET['pid']) && ereg("^([0-9]{10,})-([0-9]{6})$",$_GET['pid']) ){
 
 	//////////////////////////////////
 	// 商品情報取得
@@ -131,7 +131,7 @@ if( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/",$_GET['pid']
 	AND
 		(".PRODUCT_LST.".SALE_END_DATE > NOW() || ".PRODUCT_LST.".SALE_END_DATE = '0000-00-00 00:00:00')
 	";
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	if(!$fetch){ header("Location: ./"); }
 
@@ -152,7 +152,7 @@ if( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/",$_GET['pid']
 			".PRODUCT_LST.".VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//////////////////////////////////
 	// 該当商品サイズ/カラー情報
@@ -191,7 +191,7 @@ if( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/",$_GET['pid']
 			".PRODUCT_PROPERTY_DATA.".DSC_ID ASC
 		";
 
-		$fetchCS = $PDO -> fetch($sql_cs);
+		$fetchCS = dbOpe::fetch($sql_cs, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 }else{
 

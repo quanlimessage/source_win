@@ -24,7 +24,7 @@ $sql_cnt = "
 	WHERE
 		(DEL_FLG = '0')
 	";
-	$fetchCNT = $PDO -> fetch($sql_cnt);
+	$fetchCNT = dbOpe::fetch($sql_cnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=================================================================================
 # 指定件数以上だったらインサートしない。
@@ -88,7 +88,10 @@ if($fetchCNT[0]["CNT"] > MEMBER_DBMAX_CNT){
 	#=================================================================================
 	# SQL実行
 	#=================================================================================
-	$PDO -> regist($sql1);
+	if(!empty($sql1)){
+		$db_result = dbOpe::regist($sql1,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if($db_result)die("DB更新失敗しました<hr>{$db_result}");
+	}
 
 }
 

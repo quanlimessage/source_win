@@ -14,10 +14,8 @@ Logic:以下の処理を行う
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
+}
+
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -29,7 +27,7 @@ if(!$accessChk){
 extract(utilLib::getRequestParams("post",array(8,7,1,4)));
 
 // 対象記事IDデータのチェック
-if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 	die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 }
 
@@ -42,30 +40,20 @@ case "del_data":
 // 該当データの完全削除
 
 	// SQL実行
-	$PDO -> regist("DELETE FROM ".S7_PRODUCT_LST." WHERE(RES_ID = '$res_id')");
+		//登録データの削除
+			$db_result = dbOpe::regist("DELETE FROM ".S7_3_PRODUCT_LST." WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
-	//並び順の削除
-	$PDO -> regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST." WHERE(RES_ID = '$res_id')");
+		//並び順の削除
+			$db_result = dbOpe::regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST." WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
-//並び順補佐の削除
-	$PDO -> regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST2." WHERE(RES_ID = '$res_id')");
+		//並び順補佐の削除
+			$db_result = dbOpe::regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST2." WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
-	// 記事画像の削除(対象はRES_IDが一致するファイル)
-	search_file_del(IMG_PATH,$res_id."*");
-
-	/*
-	for($i=1;$i<=IMG_CNT;$i++){
-	// 記事画像の削除
-		if(file_exists(IMG_PATH.$res_id."_".$i.".jpg")){
-			unlink(IMG_PATH.$res_id."_".$i.".jpg") or die("画像の削除に失敗しました。");
-		}
-		if(file_exists(IMG_PATH.$res_id."_".$i.".gif")){
-			unlink(IMG_PATH.$res_id."_".$i."gif") or die("画像の削除に失敗しました。");
-		}
-		if(file_exists(IMG_PATH.$res_id."_".$i.".png")){
-			unlink(IMG_PATH.$res_id."_".$i."png") or die("画像の削除に失敗しました。");
-		}
-	}*/
+	//削除対象はRES_IDが一致するファイル
+		search_file_del(IMG_PATH,$res_id."*");
 
 	break;
 case "display_change":
@@ -76,7 +64,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE ".S7_PRODUCT_LST." SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')");
+	$db_result = dbOpe::regist("UPDATE ".S7_3_PRODUCT_LST." SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

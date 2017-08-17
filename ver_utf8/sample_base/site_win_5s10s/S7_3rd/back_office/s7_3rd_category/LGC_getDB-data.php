@@ -11,10 +11,7 @@ Logic：ＤＢ情報取得処理ファイル
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
+}
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -70,6 +67,6 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

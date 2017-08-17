@@ -12,7 +12,7 @@
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("./common/INI_logconfig.php");		// 設定ファイル
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
-require_once("dbOpe.php");				// SQLite操作クラスライブラリ
+require_once("sqliteOpe.php");				// SQLite操作クラスライブラリ
 require_once("envOpe.php");					// 環境変数取得ライブラリ
 
 #---------------------------------------------------------------------------------
@@ -181,8 +181,7 @@ $query = $keyword;
 		UNIQUE_FLG,
 		USER_FLG,
 		INS_DATE,
-		TIME,
-		DEL_FLG
+		TIME
 	)
 	VALUES(
 		'".utilLib::strRep($ip,5)."',
@@ -197,14 +196,16 @@ $query = $keyword;
 		'".utilLib::strRep($unique,5)."',
 		'".utilLib::strRep($unique_user,5)."',
 		'$date_now',
-		'$time_now',
-		'0'
+		'$time_now'
 	)
 	";
 // SQL実行
 if( (!empty($sql_ins)) && ($fname != "://") ){
-	$SQLITE = access_log_start();
-	$SQLITE -> regist($sql_ins);
+
+	$dbh = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+	$db_result = $dbh->regist($sql_ins);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
 }
 
 /*

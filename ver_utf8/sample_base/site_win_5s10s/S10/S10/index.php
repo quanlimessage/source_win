@@ -8,6 +8,7 @@ S系表示用プログラム コントローラー
 // 共通ライブラリ読み込み
 require_once('../common/config_S10.php');
 require_once('util_lib.php');
+require_once('dbOpe.php');
 require_once('tmpl2.class.php');// テンプレートクラスライブラリ
 
 	// 不正アクセスチェックのフラグ

@@ -188,7 +188,7 @@ GROUP BY
 		";
 	endif;
 
-$fetchCustListCNT = $PDO -> fetch($sql_cnt);
+$fetchCustListCNT = dbOpe::fetch($sql_cnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 // SQLベース
 
@@ -316,6 +316,6 @@ LIMIT
 	".$st.",".CUSTOMER_MAXROW."
 ";
 
-$fetchCustList = $PDO -> fetch($sql);
+$fetchCustList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

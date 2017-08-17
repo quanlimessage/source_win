@@ -187,21 +187,6 @@ utilLib::httpHeadersPrint("UTF-8",true,true,false,false);
 					//詳細内容を表示する
 					echo $detail;
 
-					//該当商品の並び位置の取得
-					for($i=0;$i < count($fetch_view);$i++):
-						if($fetch[0]['RES_ID'] == $fetch_view[$i]['RES_ID']){
-							$next = $fetch_view[$i+1]['RES_ID'];
-							$prev = $fetch_view[$i-1]['RES_ID'];
-							if($prev){
-								$link_prev = "<a href=\"./?id=".$prev."\">&lt;&lt; Prev</a>";
-							}
-							if($next){
-								$link_next = "<a href=\"./?id=".$next."\">Next &gt;&gt;</a>";
-							}
-						}
-
-					endfor;
-
 			?>
 
 		<br>

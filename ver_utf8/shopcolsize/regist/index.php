@@ -80,6 +80,8 @@ $error_message = "";
 require_once("../common/INI_config.php");		// 設定ファイル
 require_once("../common/INI_ShopConfig.php");	// ショップ用設定ファイル
 require_once('../common/INI_pref_list.php');	// 都道府県＆送料情報（配列）
+require_once("dbOpe.php");										// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");									// 汎用処理クラスライブラリ
 require_once('tmpl2.class.php');							// PHPテンプレートクラスライブラリ
 require_once('../common/LF_cart_calc2.php');	// カート操作関数（ローカルファンクション）
 

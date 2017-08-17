@@ -28,6 +28,8 @@ $error_message = "";
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_config.php");		// 設定ファイル
 require_once("../../common/INI_ShopConfig.php");	// ショップ用設定ファイル
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");						// 汎用処理クラスライブラリ
 require_once("tmpl2.class.php");					// PHPテンプレートクラスライブラリ
 
 #=============================================================================
@@ -41,7 +43,7 @@ case 4:
 
 	// 上記の処理でエラーがなければ完了画面を表示し
 	// セッションを初期化して終了（エラー時：強制終了）
-	if ( $update_result && $usrmail_result ){
+	if ( !$error_message && $usrmail_result ){
 		include("DISP_completion.php");
 		//$_SESSION['getParam']['oldmail'] = array();
 		//$_SESSION['getParam']['newmail'] = array();

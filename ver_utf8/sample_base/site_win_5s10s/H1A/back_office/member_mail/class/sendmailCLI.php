@@ -71,14 +71,14 @@ unlink( $mailConfigFile );
 $cnt = 0;
 foreach( $config->emailList as $email ){
 	$cnt++;
-	if ( !preg_match( "/^(.+)@(.+)\\.(.+)$/", $email ) ){
+	if ( !ereg( "^(.+)@(.+)\\.(.+)$", $email ) ){
 		writeLog( "0\tWrong mail address format at No.$cnt.\n" );
 		exit();
 	}
 }
 
 // 送信元メールアドレスの形式チェック
-if ( !preg_match( "/^(.+)@(.+)\\.(.+)$/", $config->fromAddress )  ){
+if ( !ereg( "^(.+)@(.+)\\.(.+)$", $config->fromAddress )  ){
 	writeLog( "0\tWrong From mail address format.\n" );
 	exit();
 }

@@ -32,7 +32,7 @@ require_once('../common/imgOpe2.php');					// 画像アップロードクラス�
 	}
 
 	// 商品IDが送信されパラメーターが不正でなければ商品詳細を表示
-	if( ( isset($_GET['pid']) && preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_GET['pid']) ) || $_POST['status']=="prev_d" ){
+	if( ( isset($_GET['pid']) && ereg("^([0-9]{10,})-([0-9]{6})$", $_GET['pid']) ) || $_POST['status']=="prev_d" ){
 		include("DISP_detail.php");
 
 	}else{

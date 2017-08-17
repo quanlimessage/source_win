@@ -24,6 +24,7 @@ $accessChk = 1;
 require_once("../../common/config_S1.php");	// 共通設定情報
 require_once("../tag_pg/LGC_color_table.php");	// タグ処理のプログラム
 
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 //require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 require_once('../../common/imgOpe2.php');	// 画像アップロードクラスライブラリ(gif・png対応)
@@ -66,11 +67,6 @@ default:
 // DBより情報を取得し、一覧表示する
 
 	include("LGC_getDB-data.php");
-	if($p > 1 && empty($fetch)){
-		$p -= 1;
-		header("Location:./?p=".urlencode($p));
-		exit();
-	}
 	include("DISP_listview.php");
 
 endswitch;

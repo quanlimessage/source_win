@@ -12,10 +12,6 @@ View：更新画面表示
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
 }
-/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -216,7 +212,6 @@ bkLib.onDomLoaded(function() {
 	<?php }?>
 
 <input type="hidden" name="act" value="completion">
-<input type="hidden" name="ca" value="<?php echo $ca;?>">
 <input type="hidden" name="res_id" value="<?php echo $fetch[0]["RES_ID"];?>">
 <input type="hidden" name="p" value="<?php echo $p;?>">
 
@@ -229,7 +224,7 @@ bkLib.onDomLoaded(function() {
 
 <form action="./" method="post">
 	<input type="submit" value="一覧画面へ戻る" style="width:150px;">
-	<input type="hidden" name="ca" value="<?php echo $ca;?>">
+	<input type="hidden" name="ca" value="<?php echo $fetch[0]["CATEGORY_CODE"];?>">
 	<input type="hidden" name="p" value="<?php echo $p;?>">
 </form>
 <?php

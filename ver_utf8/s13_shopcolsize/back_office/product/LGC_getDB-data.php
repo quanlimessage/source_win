@@ -41,7 +41,7 @@ WHERE
 	(DEL_FLG='0')
 ORDER BY
 	CATEGORY_CODE ASC";
-$fetchCateList = $PDO -> fetch($sql);
+$fetchCateList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -61,7 +61,7 @@ for($i=0;$i<count($fetchCateList);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 
 #===============================================================================
@@ -80,7 +80,7 @@ for($i=0;$i<count($fetchCateList);$i++){
 		ORDER BY
 			VIEW_ORDER ASC
 			";
-		$fetchCSList = $PDO -> fetch($sql_c);
+		$fetchCSList = dbOpe::fetch($sql_c,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		//$fetchCSListにサイズデータを付与させる
 
@@ -108,7 +108,7 @@ for($i=0;$i<count($fetchCateList);$i++){
 					";
 
 				$fetchgetSizeList = array();//初期化
-				$fetchgetSizeList = $PDO -> fetch($sql_c);
+				$fetchgetSizeList = dbOpe::fetch($sql_c,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 				$fetchCSList[$i]['size_list'] = $fetchgetSizeList;//size_listの配列名にサイズデータを入れていく
 
@@ -129,7 +129,7 @@ for($i=0;$i<count($fetchColorList);$i++){
 		(DEL_FLG='0')
 	ORDER BY
 		VIEW_ORDER ASC";
-	$fetchSizeList[$i] = $PDO -> fetch($sql_s);
+	$fetchSizeList[$i] = dbOpe::fetch($sql_s,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 }
 
@@ -180,7 +180,7 @@ case "product_edit":case "copy":
 		AND
 			(".CATEGORY_MST.".DEL_FLG = '0')
 		";
-		$fetchProductData = $PDO -> fetch($sql);
+		$fetchProductData = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		////////////////////////////////////////////////
 		// カラーサイズ在庫数
@@ -194,7 +194,7 @@ case "product_edit":case "copy":
 			AND
 				(PRODUCT_PROPERTY_DATA.DEL_FLG = '0')
 			";
-			$fetchCSData = $PDO -> fetch($sql);
+			$fetchCSData = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			//この取得したデータを更新画面の在庫数の反映に扱いやすいように加工する
 			//連想配列で配列名がSIZE_CODE　中身は在庫数STOCK_QUANTITY　で簡単に該当の在庫数を取得できるように加工
@@ -369,7 +369,7 @@ case "search_result":case "recommend":
 	";
 
 	// 検索SQL実行
-	$fetchProductList = $PDO -> fetch($sql);
+	$fetchProductList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// おすすめフラグが立っている商品数を取得
 	$sql = "
@@ -383,7 +383,7 @@ case "search_result":case "recommend":
 		(DEL_FLG = '0')
 	";
 
-	$fetchREC = $PDO -> fetch($sql);
+	$fetchREC = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 

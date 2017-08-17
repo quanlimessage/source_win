@@ -73,14 +73,14 @@ if(empty($res_id)):
 			VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$sql .= "
 		LIMIT
 			".$st.",".S6_3DISP_MAXROW."
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// 商品が何も登録されていない場合に表示
 	if(count($fetch) == 0):
@@ -97,7 +97,7 @@ endif;
 if(!empty($res_id)):
 
 	// パラメータがないもしくは不正なデータを混入された状態でアクセスされた場合のエラー処理
-	if(empty($res_id) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id) ){
+	if(empty($res_id) || !ereg("^([0-9]{10,})-([0-9]{6})$",$res_id) ){
 		header("Location: ../");exit();
 	}
 	//pidのデータがある場合チェックを行う、数字以外の場合はエラー
@@ -120,7 +120,7 @@ if(!empty($res_id)):
 		(DISPLAY_FLG = '1')
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// ＳＱＬの実行を取得できてなければ処理をしない
 	if(empty($fetch[0]["RES_ID"])){
@@ -141,7 +141,7 @@ if(!empty($res_id)):
 			VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 endif;
 
 ?>

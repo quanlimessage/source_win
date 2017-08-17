@@ -20,6 +20,6 @@ if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
 // DBより全管理者情報を取得する
 
 $sql = "SELECT EMAIL2,CONTENT FROM CONFIG_MST WHERE(CONFIG_ID = '1')";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

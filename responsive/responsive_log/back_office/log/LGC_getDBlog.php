@@ -17,18 +17,12 @@ if(!$injustice_access_chk){
 // POSTデータの受け取りと共通な文字列処理
 if($_POST)extract(utilLib::getRequestParams("post",array(8,7,1,4),true));
 
-$filename = ($term)?$term."_access_log_db":"";
-$SQLITE = access_log_start($filename);
-// 全データ取得
-$total_sql = "
-SELECT
-	ID
-FROM
-".ACCESS_LOG."
-".$where_term."
-";
-
-$fetch = $SQLITE -> fetch($total_sql);
+if(empty($term)){
+$dbh = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term.FILE_SUFFIX;
+$dbh = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 #---------------------------------------------------------------
 # 旧データの削除(4ヶ月以上経過したもの)
@@ -37,7 +31,7 @@ $fetch = $SQLITE -> fetch($total_sql);
 
 $del_sql = "
 DELETE FROM
-	ACCESS_LOG
+	" . ACCESS_LOG . "
 WHERE
 	( strftime('%Y%m', INS_DATE) <= '$DEL_limit' )
 ";
@@ -49,8 +43,8 @@ while(1){
 	//$DEL_limit = date('Y_m', mktime(0,0,0,(date("n")-$i),date("j"),date("Y")));
 	$DEL_limit = date('Y_m', mktime(0,0,0,(date("n")-$i),'1',date("Y")));
 
-	if(file_exists(ACCESS_PATH.$DEL_limit."_access_log_db")){
-		unlink(ACCESS_PATH.$DEL_limit."_access_log_db") or die("旧データの削除に失敗しました。");
+	if(file_exists(ACCESS_PATH.$DEL_limit.FILE_SUFFIX)){
+		unlink(ACCESS_PATH.$DEL_limit.FILE_SUFFIX) or die("旧データの削除に失敗しました。");
 	}
 	else{
 		break;
@@ -67,11 +61,10 @@ $total_sql = "
 SELECT
 	ID
 FROM
- ACCESS_LOG
+ " . ACCESS_LOG . "
 ".$where_term."
 ";
-
-$fetch = $SQLITE -> fetch($total_sql);
+$fetch = $dbh->fetch($total_sql);
 
 //if($where_term){$total_u_sql =  $total_sql."AND (UNIQUE_FLG == '1')";}else{$total_u_sql = $total_sql."WHERE (UNIQUE_FLG == '1')";}
 
@@ -79,7 +72,7 @@ $fetch = $SQLITE -> fetch($total_sql);
 
 if($where_term){$total_uu_sql =  $total_sql."AND (USER_FLG == '1')";}else{$total_uu_sql = $total_sql."WHERE (USER_FLG == '1')";}
 
-$fetch_uu = $SQLITE -> fetch($total_uu_sql);
+$fetch_uu = $dbh->fetch($total_uu_sql);
 
 // 今日のアクセス件数
 $today_day_time = date('Ymd', mktime(0,0,0,date("n"),date("j"),date("Y")));
@@ -88,11 +81,11 @@ $today_sql = "
 SELECT
 	ID
 FROM
- ACCESS_LOG
+ " . ACCESS_LOG . "
 WHERE
 	( strftime('%Y%m%d', INS_DATE) = '".$today_day_time."')
 ";
-$TodayCnt = $SQLITE->fetch($today_sql);
+$TodayCnt = $dbh->fetch($today_sql);
 
 #---------------------------------------------------------------
 # 各データ取得関数の定義
@@ -107,7 +100,7 @@ function day_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -132,7 +125,7 @@ function day_u_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -157,7 +150,7 @@ function day_uu_access($where_term,$dbins){
 		strftime('%d', INS_DATE) AS D,
 		count(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%Y%m%d', INS_DATE)
@@ -177,7 +170,7 @@ function mon_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -206,7 +199,7 @@ function mon_u_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -235,7 +228,7 @@ function mon_uu_access($where_term,$dbins){
 		strftime('%m', INS_DATE) AS M,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%m', INS_DATE)
@@ -260,10 +253,10 @@ function hour_access($where_term,$dbins){
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -292,10 +285,10 @@ function hour_u_access($where_term,$dbins){
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -324,10 +317,10 @@ function hour_uu_access($where_term,$dbins){
 		strftime('%H', TIME) AS TIME,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -353,7 +346,7 @@ function page_access($where_term,$dbins){
 		PAGE_URL,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		PAGE_URL
@@ -376,7 +369,7 @@ function page_u_access($where_term,$dbins){
 		PAGE_URL,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		PAGE_URL
@@ -396,7 +389,7 @@ function engine_access($where_term,$dbins){
 		ENGINE,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		ENGINE
@@ -418,7 +411,7 @@ function access_query($where_term,$dbins,$kensu){
 		ENGINE,QUERY_STRING,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		QUERY_STRING, ENGINE
@@ -443,7 +436,7 @@ function dayofweek_access($where_term,$dbins){
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -472,7 +465,7 @@ function dayofweek_u_access($where_term,$dbins){
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -501,7 +494,7 @@ function dayofweek_uu_access($where_term,$dbins){
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		strftime('%w', INS_DATE)
@@ -527,7 +520,7 @@ function bro_access($where_term,$dbins){
 		BROWSER,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		BROWSER
@@ -546,7 +539,7 @@ function os_access($where_term,$dbins){
 		OS,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		OS
@@ -568,7 +561,7 @@ if($where_term){$where_term .= " AND ( REFERER != \"\" )";}else{$where_term = "W
 		REFERER,
 		COUNT(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		REFERER
@@ -592,7 +585,7 @@ function state_access($where_term,$dbins){
 		STATE,
 		count(*) AS CNT
 	FROM
-		ACCESS_LOG
+		" . ACCESS_LOG . "
 	".$where_term."
 	GROUP BY
 		STATE
@@ -606,77 +599,84 @@ function state_access($where_term,$dbins){
 	return $fetch_state_u;
 }
 
+// SQL実行
+if(empty($term)){
+$dbh3 = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term.FILE_SUFFIX;
+$dbh3 = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 if(empty($kensu))$kensu = 1;
 
 switch ($_POST["mode"]):
 	case "day":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 	case "month":
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
 		break;
 	case "hour":
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
 		break;
 	case "youbi":
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
 		break;
 	case "page":
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
 		break;
 	case "engine":
-			$fetchENGINE = engine_access($where_term,$SQLITE);
+			$fetchENGINE = engine_access($where_term,$dbh3);
 		break;
 	case "query":
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
 		break;
 	case "bro":
-			$fetch_bro = bro_access($where_term,$SQLITE);
+			$fetch_bro = bro_access($where_term,$dbh3);
 		break;
 	case "os":
-			$fetch_os = os_access($where_term,$SQLITE);
+			$fetch_os = os_access($where_term,$dbh3);
 		break;
 	case "ref":
-			$fetch_ref = ref_access($where_term,$SQLITE);
+			$fetch_ref = ref_access($where_term,$dbh3);
 		break;
 	case "state":
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_state_u = state_access($where_term,$dbh3);
 		break;
 	case "all":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
-			$fetchENGINE = engine_access($where_term,$SQLITE);
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
-			$fetch_bro = bro_access($where_term,$SQLITE);
-			$fetch_os = os_access($where_term,$SQLITE);
-			$fetch_ref = ref_access($where_term,$SQLITE);
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
+			$fetchENGINE = engine_access($where_term,$dbh3);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
+			$fetch_bro = bro_access($where_term,$dbh3);
+			$fetch_os = os_access($where_term,$dbh3);
+			$fetch_ref = ref_access($where_term,$dbh3);
+			$fetch_state_u = state_access($where_term,$dbh3);
 	default:
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 endswitch;
 

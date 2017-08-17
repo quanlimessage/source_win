@@ -32,7 +32,7 @@ if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
 	WHERE
 		(CONFIG_ID = '1')
 	";
-	$fetch = $fetch_page = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //////////////////////////////////////////////////////////////////
 // まだDBに管理者情報が未登録な場合、仮情報を登録
@@ -51,6 +51,9 @@ if(empty($fetch)):
 		'".WEBMST_CONTACT_MAIL."'
 	)";
 
-	$PDO -> regist($ins_sql);
+	if(!empty($ins_sql)){
+		$db_result = dbOpe::regist($ins_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if($db_result)die("ディフォルト情報セットに失敗しました。<hr>{$db_result}");
+	}
 endif;
 ?>

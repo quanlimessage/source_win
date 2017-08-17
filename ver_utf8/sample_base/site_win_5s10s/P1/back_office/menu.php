@@ -49,6 +49,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 			▼ 更新プログラム管理
 			</td>
 		</tr>
+
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
@@ -63,6 +64,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
+
 	</table>
 	<div class="largespace"></div>
 	<!--メニューテーブルここまで-->

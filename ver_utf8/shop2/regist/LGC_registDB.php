@@ -18,7 +18,7 @@ if(!$injustice_access_chk){
 }
 
 // 前準備：ＳＱＬ文を格納する配列を初期化しておく（念のため。。。）
-$sql = "";
+$sql = array();
 
 #=================================================================
 # ＤＢ格納する前にセッションデータにメタ文字エスケープをやっとく
@@ -36,7 +36,7 @@ $_SESSION['cust'] = array_map("addslashes",$_SESSION['cust']);
 #===============================================================================
 if($_SESSION['cust']['CUSTOMER_ID']):	// 利用経験者（UPDATE）
 
-	$sql = "
+	$sql[] = "
 	UPDATE
 		".CUSTOMER_LST."
 	SET
@@ -65,7 +65,7 @@ else:	// 利用未経験者（INSERT文）
 	// 念のため、最後にEMAILが既に登録されているものかどうかチェック
 //	$lastEmailChk = dbOpe::fetch("SELECT EMAIL FROM ".CUSTOMER_LST." WHERE(EMAIL = '".$_SESSION['cust']['EMAIL']."')AND(DEL_FLG = '0') AND ((ALPWD IS NOT NULL) OR (ALPWD != ''))",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 	//$lastEmailChk = dbOpe::fetch("SELECT EMAIL FROM ".CUSTOMER_LST." WHERE(EMAIL = '".$_SESSION['cust']['EMAIL']."')AND(DEL_FLG = '0') AND (ALPWD != '')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
-	$lastEmailChk = $PDO -> fetch("SELECT EMAIL FROM ".CUSTOMER_LST." WHERE(EMAIL = '".$_SESSION['cust']['EMAIL']."')AND(DEL_FLG = '0') AND (ALPWD != '') AND (EXISTING_CUSTOMER_FLG = '1')");
+	$lastEmailChk = dbOpe::fetch("SELECT EMAIL FROM ".CUSTOMER_LST." WHERE(EMAIL = '".$_SESSION['cust']['EMAIL']."')AND(DEL_FLG = '0') AND (ALPWD != '') AND (EXISTING_CUSTOMER_FLG = '1')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 	if ( $lastEmailChk ){
 		$_SESSION['cust'] = array();
 		deleteItems();
@@ -83,7 +83,7 @@ else:	// 利用未経験者（INSERT文）
 		// 注文ＩＤを生成（PURCHASE_ITEM_LSTにも格納）
 		$order_id = $makeID();
 
-		$sql = "
+		$sql[] = "
 		INSERT INTO
 			".PRE_CUSTOMER_LST."
 		SET
@@ -106,7 +106,7 @@ else:	// 利用未経験者（INSERT文）
 			INS_DATE = NOW()
 		";
 	}else{
-		$sql = "
+		$sql[] = "
 		INSERT INTO
 			".CUSTOMER_LST."
 		SET
@@ -132,8 +132,6 @@ else:	// 利用未経験者（INSERT文）
 
 endif;
 
-$PDO -> regist($sql);
-
 #===============================================================================
 # 注文情報と注文商品一覧を格納するＳＱＬを設定（新規／リピーター共通）
 #	※テーブル：
@@ -154,7 +152,7 @@ if(!$order_id){
 // 支払い総額を算出
 $total_price = ($_SESSION["cust"]["sum_price"] + $_SESSION['cust']['shipping_amount'] + $_SESSION['cust']['daibiki_amount']);
 
-$sql = "
+$sql[] = "
 	INSERT INTO
 		".PURCHASE_LST."
 	SET
@@ -181,8 +179,6 @@ $sql = "
 		SHIPPED_FLG = '0',
 		REMARKS = '".$_SESSION['cust']['REMARKS']."'
 	";
-
-	$PDO -> regist($sql);
 
 // PURCHASE_ITEM_LST（注文商品一覧 ※購入内容の詳細）
 // 	※購入アイテム数（カゴから取り出した件数）の分だけSQLを設定
@@ -245,7 +241,7 @@ if(!SHOP_LITE_FLG){//ショップライトで無い場合、在庫チェック�
 			PRODUCT_ID = '".$purchaseData[$i]['product_id']."'
 		";
 
-		$CntRst = $PDO -> fetch($cnt_sql);
+		$CntRst = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		# 現在個数を購入個数が超えていたらエラー
 		if($CntRst[0]["STOCK_QUANTITY"] < $purchaseData[$i]['quantity']){
@@ -299,7 +295,12 @@ for ( $i = 0; $i < count($purchaseData); $i++ ){
 				PRODUCT_ID = '".$purchaseData[$i]['product_id']."'
 			";
 
-			$PDO -> regist($zaiko_sql);
+			$ZaikoRst = dbOpe::regist($zaiko_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if ( $ZaikoRst ){
+				$error_message = "予想外のエラー：在庫数上書きに失敗しました。<hr>{$ZaikoRst}";
+				include("DISP_error_disp.php");
+				exit();
+			}
 
 		}
 	}
@@ -311,7 +312,7 @@ for ( $i = 0; $i < count($purchaseData); $i++ ){
 	$purchaseData[$i] = array_map("addslashes", $purchaseData[$i]);
 
 	// PURCHASE_ITEM_LSTへ購入詳細情報を登録
-	$sql = "
+	$sql[] = "
 	INSERT INTO
 		".PURCHASE_ITEM_DATA."
 	SET
@@ -324,11 +325,16 @@ for ( $i = 0; $i < count($purchaseData); $i++ ){
 		INS_DATE = NOW()
 	";
 
-	#================================================================================
-	# 設定したＳＱＬを実行（登録失敗時：ＤＢエラー出力して強制終了）
-	#================================================================================
-	$PDO -> regist($sql);
+}
 
+#================================================================================
+# 設定したＳＱＬを実行（登録失敗時：ＤＢエラー出力して強制終了）
+#================================================================================
+$registDB_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+if ( $registDB_result ){
+	$error_message = "予想外のエラー：データベースへの登録ができませんでした。<hr>{$registDB_result}";
+	include("DISP_error_disp.php");
+	exit();
 }
 
 /////////////////////////////////////
@@ -344,8 +350,12 @@ if(CONV_NO_SQL == 1):
 		( ORDER_ID = '".$order_id."' )
 	";
 
-	$PDO -> regist($no_sql);
-
+	$registDB_result2 = dbOpe::regist($no_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if ( $registDB_result2 ){
+		$error_message = "予想外のエラー：データベースへの登録ができませんでした。";
+		include("DISP_error_disp.php");
+		exit();
+	}
 endif;
 
 // 在庫切れメール通知

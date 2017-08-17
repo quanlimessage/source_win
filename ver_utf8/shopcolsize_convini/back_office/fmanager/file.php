@@ -279,7 +279,7 @@
 					ACCESS_LOG
 				".$where_term."
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";
@@ -317,7 +317,7 @@
 				WHERE
 					(USER_FLG == '1')
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";

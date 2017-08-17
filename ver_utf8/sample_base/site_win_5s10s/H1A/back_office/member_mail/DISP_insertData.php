@@ -34,7 +34,7 @@ if( !$injustice_access_chk){
 	";
 
 // DBの取得データをセッションに格納
-$fetchCNT = $PDO -> fetch($sql_cnt);
+$fetchCNT = dbOpe::fetch($sql_cnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力

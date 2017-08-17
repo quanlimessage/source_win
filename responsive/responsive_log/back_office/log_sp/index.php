@@ -25,12 +25,13 @@ $injustice_access_chk = 1;
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_logconfig_sp.php");		// 設定情報
 require_once("util_lib.php");					// 汎用処理クラスライブラリ
-require_once("dbOpe.php");
+require_once("sqliteOpe.php");					// SQLite操作クラスライブラリ
 
 #-------------------------------------------------------------------
 # デフォルト表示画面
 # 結果一覧表示
 #-------------------------------------------------------------------
+
 include("./LGC_getDBlog.php");
 
 include("./DISP_data.php");

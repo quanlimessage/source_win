@@ -1,13 +1,14 @@
 <?php
-// ÀßÄê¥Õ¥¡¥¤¥ë¡õ¶¦ÄÌ¥é¥¤¥Ö¥é¥ê¤ÎÆÉ¤ß¹þ¤ß
+// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ï¼†å…±é€šãƒ©ã‚¤ãƒ–ãƒ©ãƒªã®èª­ã¿è¾¼ã¿
 	session_start();
-	require_once("../../common/INI_logconfig.php");		// ÀßÄê¥Õ¥¡¥¤¥ë
-	require_once("util_lib.php");					// ÈÆÍÑ½èÍý¥¯¥é¥¹¥é¥¤¥Ö¥é¥ê
-	require_once("dbOpe.php");					// SQLiteÁàºî¥¯¥é¥¹¥é¥¤¥Ö¥é¥ê
+
+	require_once("../../common/INI_logconfig.php");		// è¨­å®šãƒ•ã‚¡ã‚¤ãƒ«
+	require_once("util_lib.php");					// æ±Žç”¨å‡¦ç†ã‚¯ãƒ©ã‚¹ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
+	require_once("sqliteOpe.php");					// SQLiteæ“ä½œã‚¯ãƒ©ã‚¹ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 
 #---------------------------------------------------------------
-# ÉÔÀµ¥¢¥¯¥»¥¹¥Á¥§¥Ã¥¯¡ÊÄ¾ÀÜ¤³¤Î¥Õ¥¡¥¤¥ë¤Ë¥¢¥¯¥»¥¹¤·¤¿¾ì¹ç¡Ë
-#	¢¨¸·¤·¤¯¹Ô¤¦¾ì¹ç¤ÏID¤ÈPW¤â°ìÃ×¤¹¤ë¤«¤Þ¤Ç¹Ô¤¦
+# ä¸æ­£ã‚¢ã‚¯ã‚»ã‚¹ãƒã‚§ãƒƒã‚¯ï¼ˆç›´æŽ¥ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚¢ã‚¯ã‚»ã‚¹ã—ãŸå ´åˆï¼‰
+#	â€»åŽ³ã—ãè¡Œã†å ´åˆã¯IDã¨PWã‚‚ä¸€è‡´ã™ã‚‹ã‹ã¾ã§è¡Œã†
 #---------------------------------------------------------------
 	if( !$_SESSION['LOGIN'] ){
 		header("Location: ../err.php");exit();
@@ -16,16 +17,17 @@
 	//	header("HTTP/1.0 404 Not Found"); exit();
 	}
 
-// POST¥Ç¡¼¥¿¤Î¼õ¤±¼è¤ê¤È¶¦ÄÌ¤ÊÊ¸»úÎó½èÍý
+// POSTãƒ‡ãƒ¼ã‚¿ã®å—ã‘å–ã‚Šã¨å…±é€šãªæ–‡å­—åˆ—å‡¦ç†
 	if($_POST){extract(utilLib::getRequestParams("post",array(8,7,1,4),true));}
 
 	// $filename = "2010_05_access_log_db";
 
-// ·îÊÌ¥Ç¡¼¥¿¤Î¼èÆÀ
-	$SQLITE = access_log_start($filename);
+// æœˆåˆ¥ãƒ‡ãƒ¼ã‚¿ã®å–å¾—
+	$db_filepath = ACCESS_PATH.$filename;
+	$dbh = new sqliteOpe($db_filepath,CREATE_SQL);
 
 /*
-// ÆüÊÌ¥æ¥Ë¡¼¥¯¥¢¥¯¥»¥¹¿ô¼èÆÀ
+// æ—¥åˆ¥ãƒ¦ãƒ‹ãƒ¼ã‚¯ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 
 	$day_u_sql = "
 	SELECT
@@ -44,9 +46,9 @@
 		strftime('%Y%m%d', INS_DATE) ASC
 	";
 
-	$fetch_day_u = $SQLITE -> fetch($day_u_sql);
+	$fetch_day_u = $dbh->fetch($day_u_sql);
 
-// »þ´ÖÊÌ¥æ¥Ë¡¼¥¯¥¢¥¯¥»¥¹¿ô¼èÆÀ
+// æ™‚é–“åˆ¥ãƒ¦ãƒ‹ãƒ¼ã‚¯ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 	$time_u_sql = "
 	SELECT
 		strftime('%H', TIME) AS TIME,
@@ -61,9 +63,9 @@
 		TIME ASC
 	";
 
-	$cnt_time = $SQLITE -> fetch($time_u_sql);
+	$cnt_time = $dbh->fetch($time_u_sql);
 
-	// »þ´Ö(1¡Á24)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë24¸ÄÍ×ÁÇÇÛÎó¤Ë)
+	// æ™‚é–“(1ï½ž24)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«24å€‹è¦ç´ é…åˆ—ã«)
 	foreach($cnt_time as $k => $v){
 		$key = $v["TIME"];
 
@@ -72,7 +74,7 @@
 		$fetch_time_u[$key] = $v["CNT"];
 	}
 
-// ÍËÆüÊÌ¥æ¥Ë¡¼¥¯¥¢¥¯¥»¥¹¿ô¼èÆÀ
+// æ›œæ—¥åˆ¥ãƒ¦ãƒ‹ãƒ¼ã‚¯ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 	$dayofweek_u_sql = "
 	SELECT
 		strftime('%w', INS_DATE) AS DAYOFWEEK,
@@ -87,27 +89,21 @@
 		strftime('%w', INS_DATE) ASC
 	";
 
-	$cnt_dayofweek = $SQLITE -> fetch($dayofweek_u_sql);
+	$cnt_dayofweek = $dbh->fetch($dayofweek_u_sql);
 
-	// ÍËÆü(0¡Á6)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë7¸ÄÍ×ÁÇÇÛÎó¤Ë)
+	// æ›œæ—¥(0ï½ž6)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«7å€‹è¦ç´ é…åˆ—ã«)
 	foreach($cnt_dayofweek as $k => $v){
 		$key = $v["DAYOFWEEK"];
 		$fetch_dayofweek_u[$key] = $v["CNT"];
 	}
 */
 
-#-------------------------------------------------------------
-# HTTP¥Ø¥Ã¥À¡¼¤ò½ÐÎÏ
-#	Ê¸»ú¥³¡¼¥É¤È¸À¸ì¡§EUC¤ÇÆüËÜ¸ì
-#	Â¾¡§£Ê£Ó¤È£Ã£Ó£Ó¤ÎÀßÄê¡¿¥­¥ã¥Ã¥·¥åµñÈÝ¡¿¥í¥Ü¥Ã¥ÈµñÈÝ
-#-------------------------------------------------------------
-utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=euc-jp" />
-<title>¥¢¥¯¥»¥¹²òÀÏ¥ì¥Ý¡¼¥È</title>
+<title>ã‚¢ã‚¯ã‚»ã‚¹è§£æžãƒ¬ãƒãƒ¼ãƒˆ</title>
 <style type="text/css">
 <!--
 .style1 {font-size: 10px}
@@ -127,7 +123,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 </head>
 
 <body>
-<input type="button" name="button" value="¥ì¥Ý¡¼¥È½ÐÎÏ" onClick="window.print();">
+<input type="button" name="button" value="ãƒ¬ãƒãƒ¼ãƒˆå‡ºåŠ›" onClick="window.print();">
 
 <table class="paper_seo">
     <tr>
@@ -144,19 +140,19 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 		<?php $db_fname = explode("_",$filename);?>
 		<table width="100%" class="titles" cellpadding="5">
           <tr>
-            <td class="titles"><?php echo $db_fname[0];?>Ç¯<?php echo $db_fname[1];?>·î¥¢¥¯¥»¥¹²òÀÏ¥ì¥Ý¡¼¥È</td>
+            <td class="titles"><?php echo $db_fname[0];?>å¹´<?php echo $db_fname[1];?>æœˆã‚¢ã‚¯ã‚»ã‚¹è§£æžãƒ¬ãƒãƒ¼ãƒˆ</td>
           </tr>
         </table>
         <br>
         <table width="100%" border="0">
           <tr>
-		  <!-- Ä¹¤¤²ñ¼ÒÌ¾ÂÐ±þ¤Çwidth¤ÎÃÍ¤òÊÑ¹¹ -->
+		  <!-- é•·ã„ä¼šç¤¾åå¯¾å¿œã§widthã®å€¤ã‚’å¤‰æ›´ -->
 		  <?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥Ú¡¼¥¸¥Ó¥å¡¼
+//ãƒšãƒ¼ã‚¸ãƒ“ãƒ¥ãƒ¼
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// Á´¥Ç¡¼¥¿¼èÆÀ¤ÎSQL
+			// å…¨ãƒ‡ãƒ¼ã‚¿å–å¾—ã®SQL
 			$total_sql = "
 			SELECT
 				ID
@@ -165,38 +161,38 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			";
 
 			//$total_u_sql = $total_sql."WHERE (UNIQUE_FLG == '1')";
-			//$fetch_u = $SQLITE -> fetch($total_u_sql);
+			//$fetch_u = $dbh->fetch($total_u_sql);
 
-		//É½¼¨
-		  ?><td align="left" valign="bottom" colspan="3"><span class="style2"><strong>PV¡Ê¥Ú¡¼¥¸¥Ó¥å¡¼¡Ë¡§</strong><?php
-			$fetch = $SQLITE -> fetch($total_sql);
+		//è¡¨ç¤º
+		  ?><td align="left" valign="bottom" colspan="3"><span class="style2"><strong>PVï¼ˆãƒšãƒ¼ã‚¸ãƒ“ãƒ¥ãƒ¼ï¼‰ï¼š</strong><?php
+			$fetch = $dbh->fetch($total_sql);
 			echo count($fetch);
 
-		//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+		//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch);
 	    ?>
-	    <br><!--<strong>¥æ¥Ë¡¼¥¯PV¡§</strong><?php //echo count($fetch_u);?><br>-->
+	    <br><!--<strong>ãƒ¦ãƒ‹ãƒ¼ã‚¯PVï¼š</strong><?php //echo count($fetch_u);?><br>-->
 
 	    <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ÍèË¬¼Ô¿ô
+//æ¥è¨ªè€…æ•°
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		$total_uu_sql = $total_sql."WHERE (USER_FLG == '1')";
-		$fetch_uu = $SQLITE -> fetch($total_uu_sql);
+		$fetch_uu = $dbh->fetch($total_uu_sql);
 
-	    ?><strong>ÍèË¬¼Ô¿ô¡§</strong><?php
+	    ?><strong>æ¥è¨ªè€…æ•°ï¼š</strong><?php
 	    echo count($fetch_uu);
 
-		//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+		//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 		unset($fetch_uu);
 	    ?></span></td>
 		<!--<td>&nbsp;</td>-->
 		</tr>
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ÆüÊÌ¥¢¥¯¥»¥¹¿ô
+//æ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// ÆüÊÌ¥¢¥¯¥»¥¹¿ô¼èÆÀ
+		// æ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 			$day_sql = "
 			SELECT
 				INS_DATE,
@@ -212,7 +208,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				strftime('%Y%m%d', INS_DATE) ASC
 			";
 
-			$fetch_day = $SQLITE -> fetch($day_sql);
+			$fetch_day = $dbh->fetch($day_sql);
 
 			$fetch_max = 0;
 			for($i=0;$i<count($fetch_day);$i++){
@@ -224,7 +220,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				if($fetch_u_max <= $fetch_day_u[$i]['CNT'])$fetch_u_max = $fetch_day_u[$i]['CNT'];
 			}*/
 
-			// ÆüÊÌÍèË¬¼Ô¿ô¼èÆÀ
+			// æ—¥åˆ¥æ¥è¨ªè€…æ•°å–å¾—
 
 				$day_uu_sql = "
 				SELECT
@@ -243,15 +239,15 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					strftime('%Y%m%d', INS_DATE) ASC
 				";
 
-				$fetch_day_uu = $SQLITE -> fetch($day_uu_sql);
+				$fetch_day_uu = $dbh->fetch($day_uu_sql);
 
 		?>
 		<tr style="margin-top:10px;">
-			<td width="33%" valign="top"><span class="style2"><strong>ÆüÊÌ¥¢¥¯¥»¥¹¿ô¡§</strong></span>
+			<td width="33%" valign="top"><span class="style2"><strong>æ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°ï¼š</strong></span>
 		<table>
 			<?php for($i=0;$i<count($fetch_day);$i++):?>
 			<tr style="margin:0px;padding:0px;">
-				<td width="40" class="style1" style="margin:0px;padding:0px;">&nbsp;<?php echo $fetch_day[$i]["D"];?>Æü</td>
+				<td width="40" class="style1" style="margin:0px;padding:0px;">&nbsp;<?php echo $fetch_day[$i]["D"];?>æ—¥</td>
 				<td width="200" style="margin:0px;padding:0px;">
 				<?php $width_uu = @round($fetch_day_uu[$i]['CNT']/$fetch_max * 100 );?>
 	  			<img src="images/bar_uu.gif" width="<?php echo $width_uu*0.8;?>" height="8" align="left">
@@ -264,17 +260,17 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			<?php endfor; ?>
 		</table>
 		<?php
-		//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+		//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 		unset($fetch_day);
 		unset($fetch_day_uu);
 		?>
 
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//»þ´ÖÊÌ¥¢¥¯¥»¥¹¿ô
+//æ™‚é–“åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-			// »þ´ÖÊÌ¥¢¥¯¥»¥¹¿ô¼èÆÀ
+			// æ™‚é–“åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 				$time_sql = "
 				SELECT
 					strftime('%H', TIME) AS TIME,
@@ -283,14 +279,14 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					ACCESS_LOG
 				".$where_term."
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";
 
-				$cnt_time = $SQLITE -> fetch($time_sql);
+				$cnt_time = $dbh->fetch($time_sql);
 
-				// »þ´Ö(1¡Á24)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë24¸ÄÍ×ÁÇÇÛÎó¤Ë)
+				// æ™‚é–“(1ï½ž24)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«24å€‹è¦ç´ é…åˆ—ã«)
 				foreach($cnt_time as $k => $v){
 					$key = $v["TIME"];
 
@@ -311,7 +307,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				if($fetch_u_max <= $fetch_time_u[$i])$fetch_u_max = $fetch_time_u[$i];
 			}*/
 
-			// »þ´ÖÊÌÍèË¬¼Ô¿ô¼èÆÀ
+			// æ™‚é–“åˆ¥æ¥è¨ªè€…æ•°å–å¾—
 				$time_uu_sql = "
 				SELECT
 					strftime('%H', TIME) AS TIME,
@@ -321,14 +317,14 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				WHERE
 					(USER_FLG == '1')
 				GROUP BY
-					TIME
+					strftime('%H', TIME)
 				ORDER BY
 					TIME ASC
 				";
 
-				$cnt_time = $SQLITE -> fetch($time_uu_sql);
+				$cnt_time = $dbh->fetch($time_uu_sql);
 
-				// »þ´Ö(1¡Á24)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë24¸ÄÍ×ÁÇÇÛÎó¤Ë)
+				// æ™‚é–“(1ï½ž24)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«24å€‹è¦ç´ é…åˆ—ã«)
 				foreach($cnt_time as $k => $v){
 					$key = $v["TIME"];
 
@@ -337,16 +333,16 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					$fetch_time_uu[$key] = $v["CNT"];
 				}
 
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 				unset($cnt_time);
 
 			?>
 			</td>
-				<td width="33%" valign="top"><span class="style2"><strong>»þ´ÖÊÌ¥¢¥¯¥»¥¹¿ô¡§</strong></span>
+				<td width="33%" valign="top"><span class="style2"><strong>æ™‚é–“åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°ï¼š</strong></span>
 			<table>
 			<?php for($i=0;$i<=23;$i++):?>
 			<tr>
-				<td width="40" class="style1" style="margin:0px;padding:0px;">&nbsp;<?php echo $i;?>»þ</td>
+				<td width="40" class="style1" style="margin:0px;padding:0px;">&nbsp;<?php echo $i;?>æ™‚</td>
 				<td width="200" style="margin:0px;padding:0px;"><?php $i = sprintf("%02d",$i);?>
 				<?php $width_uu = @round($fetch_time_uu[$i]/$fetch_max * 100 );?>
 	  			<img src="images/bar_uu.gif" width="<?php echo $width_uu*0.8;?>" height="8" align="left">
@@ -360,16 +356,16 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 		</table>
 		</td>
 		<?php
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch_time);
 			unset($fetch_time_uu);?>
 
 <?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ÍËÆüÊÌ¥¢¥¯¥»¥¹¿ô
+//æ›œæ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-				// ÍËÆüÊÌ¥¢¥¯¥»¥¹¿ô¼èÆÀ
+				// æ›œæ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—
 					$dayofweek_sql = "
 					SELECT
 						strftime('%w', INS_DATE) AS DAYOFWEEK,
@@ -383,9 +379,9 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 						strftime('%w', INS_DATE) ASC
 					";
 
-					$cnt_dayofweek = $SQLITE -> fetch($dayofweek_sql);
+					$cnt_dayofweek = $dbh->fetch($dayofweek_sql);
 
-					// ÍËÆü(0¡Á6)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë7¸ÄÍ×ÁÇÇÛÎó¤Ë)
+					// æ›œæ—¥(0ï½ž6)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«7å€‹è¦ç´ é…åˆ—ã«)
 					foreach($cnt_dayofweek as $k => $v){
 						$key = $v["DAYOFWEEK"];
 						$fetch_dayofweek[$key] = $v["CNT"];
@@ -401,7 +397,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				if($fetch_u_max <= $fetch_dayofweek_u[$i])$fetch_u_max = $fetch_dayofweek_u[$i];
 			}*/
 
-				// ÍËÆüÊÌÍèË¬¼Ô¿ô¼èÆÀ
+				// æ›œæ—¥åˆ¥æ¥è¨ªè€…æ•°å–å¾—
 
 					$dayofweek_uu_sql = "
 					SELECT
@@ -417,45 +413,45 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 						strftime('%w', INS_DATE) ASC
 					";
 
-					$cnt_dayofweek = $SQLITE -> fetch($dayofweek_uu_sql);
+					$cnt_dayofweek = $dbh->fetch($dayofweek_uu_sql);
 
-					// ÍËÆü(0¡Á6)¤ò¥¤¥ó¥Ç¥Ã¥¯¥¹¥­¡¼¤ËÃÖ¤­´¹¤¨(É½¼¨ÍÑ¤Ë7¸ÄÍ×ÁÇÇÛÎó¤Ë)
+					// æ›œæ—¥(0ï½ž6)ã‚’ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚­ãƒ¼ã«ç½®ãæ›ãˆ(è¡¨ç¤ºç”¨ã«7å€‹è¦ç´ é…åˆ—ã«)
 					foreach($cnt_dayofweek as $k => $v){
 						$key = $v["DAYOFWEEK"];
 						$fetch_dayofweek_uu[$key] = $v["CNT"];
 					}
 
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 					unset($cnt_dayofweek);
 
 			?>
-			<td rowspan="2" width="33%" valign="top"><span class="style2"><strong>ÍËÆüÊÌ¥¢¥¯¥»¥¹¿ô¡§</strong></span>
+			<td rowspan="2" width="33%" valign="top"><span class="style2"><strong>æ›œæ—¥åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°ï¼š</strong></span>
 		<table>
 			<?php for($i=0;$i<=6;$i++):?>
 			<tr>
 				<td width="25" class="style1" style="margin:0px;padding:0px;">
-				<?php // ÍËÆü¿ôÃÍ¤òÈ½ÊÌ¤·¤ÆÍËÆü¤ò½ÐÎÏ
+				<?php // æ›œæ—¥æ•°å€¤ã‚’åˆ¤åˆ¥ã—ã¦æ›œæ—¥ã‚’å‡ºåŠ›
 				switch ($i):
 					case 0:
-						echo "Æü";
+						echo "æ—¥";
 						break;
 					case 1:
-						echo "·î";
+						echo "æœˆ";
 						break;
 					case 2:
-						echo "²Ð";
+						echo "ç«";
 						break;
 					case 3:
-						echo "¿å";
+						echo "æ°´";
 						break;
 					case 4:
-						echo "ÌÚ";
+						echo "æœ¨";
 						break;
 					case 5:
-						echo "¶â";
+						echo "é‡‘";
 						break;
 					case 6:
-						echo "ÅÚ";
+						echo "åœŸ";
 						break;
 				endswitch;
 
@@ -472,7 +468,7 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			</tr>
 			<?php endfor;
 
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 				unset($fetch_dayofweek);
 				unset($cnt_dayofweek);
 				unset($fetch_dayofweek_uu);
@@ -480,12 +476,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 		</table>
 		<br>
 
-		<span class="style2"><strong>¸¡º÷¥¨¥ó¥¸¥óÊÌ¥¢¥¯¥»¥¹¿ôBEST5</strong></span><br><br>
+		<span class="style2"><strong>æ¤œç´¢ã‚¨ãƒ³ã‚¸ãƒ³åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST5</strong></span><br><br>
 		<?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¸¡º÷¥¨¥ó¥¸¥ó
+//æ¤œç´¢ã‚¨ãƒ³ã‚¸ãƒ³
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// ¸¡º÷¥¨¥ó¥¸¥ó¿ô¼èÆÀ
+			// æ¤œç´¢ã‚¨ãƒ³ã‚¸ãƒ³æ•°å–å¾—
 			$engine_sql = "
 			SELECT
 				ENGINE,
@@ -502,22 +498,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 5
 			";
 
-			$fetchENGINE = $SQLITE -> fetch($engine_sql);
+			$fetchENGINE = $dbh->fetch($engine_sql);
 
 		for($i=0;$i<count($fetchENGINE);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetchENGINE[$i]['ENGINE'];?>¡Ê<?php echo $fetchENGINE[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetchENGINE[$i]['ENGINE'];?>ï¼ˆ<?php echo $fetchENGINE[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetchENGINE);
 		?>
 		<br>
-		<span class="style2"><strong>¸¡º÷¥­¡¼¥ï¡¼¥ÉÊÌ¥¢¥¯¥»¥¹¿ôBEST10</strong></span><br><br>
+		<span class="style2"><strong>æ¤œç´¢ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST10</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥­¡¼¥ï¡¼¥É
+//ã‚­ãƒ¼ãƒ¯ãƒ¼ãƒ‰
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// ¸¡º÷Ê¸»úÎó¼èÆÀ
+			// æ¤œç´¢æ–‡å­—åˆ—å–å¾—
 				$q_sql = "
 				SELECT
 					QUERY_STRING,
@@ -534,22 +530,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 10
 				";
 
-				$fetchQuery = $SQLITE -> fetch($q_sql);
+				$fetchQuery = $dbh->fetch($q_sql);
 
 		for($i=0;$i<count($fetchQuery);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetchQuery[$i]['QUERY_STRING'];?>¡Ê<?php echo $fetchQuery[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetchQuery[$i]['QUERY_STRING'];?>ï¼ˆ<?php echo $fetchQuery[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetchQuery);
 		?>
 		<br>
-		<span class="style2"><strong>¥Ö¥é¥¦¥¶ÊÌ¥¢¥¯¥»¥¹¿ôBEST3</strong></span><br><br>
+		<span class="style2"><strong>ãƒ–ãƒ©ã‚¦ã‚¶åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST3</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥Ö¥é¥¦¥¶
+//ãƒ–ãƒ©ã‚¦ã‚¶
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// ¥Ö¥é¥¦¥¶¼èÆÀÍÑ
+		// ãƒ–ãƒ©ã‚¦ã‚¶å–å¾—ç”¨
 			$bro_sql = "
 			SELECT
 				BROWSER,
@@ -564,22 +560,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 3
 			";
 
-			$fetch_bro = $SQLITE -> fetch($bro_sql);
+			$fetch_bro = $dbh->fetch($bro_sql);
 
 		for($i=0;$i<count($fetch_bro);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetch_bro[$i]['BROWSER'];?>¡Ê<?php echo $fetch_bro[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetch_bro[$i]['BROWSER'];?>ï¼ˆ<?php echo $fetch_bro[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch_bro);
 		?>
 		<br>
-		<span class="style2"><strong>OSÊÌ¥¢¥¯¥»¥¹¿ôBEST3</strong></span><br><br>
+		<span class="style2"><strong>OSåˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST3</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//£Ï£ÓÊÌ
+//ï¼¯ï¼³åˆ¥
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// OS¼èÆÀÍÑ
+			// OSå–å¾—ç”¨
 				$os_sql = "
 				SELECT
 					OS,
@@ -594,22 +590,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 3
 				";
 
-				$fetch_os = $SQLITE -> fetch($os_sql);
+				$fetch_os = $dbh->fetch($os_sql);
 
 		for($i=0;$i<count($fetch_os);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetch_os[$i]['OS'];?>¡Ê<?php echo $fetch_os[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetch_os[$i]['OS'];?>ï¼ˆ<?php echo $fetch_os[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch_os);
 		?>
 		<br>
-		<span class="style2"><strong>ÃÏ°èÊÌ¥¢¥¯¥»¥¹¿ôBEST10</strong></span><br><br>
+		<span class="style2"><strong>åœ°åŸŸåˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST10</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//ÃÏ°èÊÌ
+//åœ°åŸŸåˆ¥
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// ÃÏ°èÊÌ¼èÆÀÍÑ
+			// åœ°åŸŸåˆ¥å–å¾—ç”¨
 				$state_sql = "
 				SELECT
 					STATE,
@@ -624,12 +620,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 10
 				";
 
-				$fetch_state = $SQLITE -> fetch($state_sql);
+				$fetch_state = $dbh->fetch($state_sql);
 
 			for($i=0;$i<count($fetch_state);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetch_state[$i]['STATE'];?>¡Ê<?php echo $fetch_state[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetch_state[$i]['STATE'];?>ï¼ˆ<?php echo $fetch_state[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch_state);
 
 		?>
@@ -637,13 +633,13 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
           </tr>
 		<tr>
 	   <td colspan="2">
-		<span class="style2"><strong>¥Ú¡¼¥¸ÊÌ¥¢¥¯¥»¥¹¿ôBEST3</strong></span><br><br>
+		<span class="style2"><strong>ãƒšãƒ¼ã‚¸åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST3</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥Ú¡¼¥¸ÊÌ¡Ê¥Ù¥¹¥È£³¡Ë
+//ãƒšãƒ¼ã‚¸åˆ¥ï¼ˆãƒ™ã‚¹ãƒˆï¼“ï¼‰
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// ¥Ú¡¼¥¸ÊÌ¥¢¥¯¥»¥¹¿ô¼èÆÀ¡Ê¾å°Ì£³¤Ä¡Ë
+		// ãƒšãƒ¼ã‚¸åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—ï¼ˆä¸Šä½ï¼“ã¤ï¼‰
 			$url_b_sql = "
 			SELECT
 				PAGE_URL,
@@ -658,22 +654,22 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 				0 , 3
 			";
 
-			$fetchURL_b = $SQLITE -> fetch($url_b_sql);
+			$fetchURL_b = $dbh->fetch($url_b_sql);
 
 			for($i=0;$i<count($fetchURL_b);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetchURL_b[$i]['PAGE_URL'];?>¡Ê<?php echo $fetchURL_b[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetchURL_b[$i]['PAGE_URL'];?>ï¼ˆ<?php echo $fetchURL_b[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetchURL_b);
 		?>
 		<br>
-		<span class="style2"><strong>¥Ú¡¼¥¸ÊÌ¥¢¥¯¥»¥¹¿ô¥ï¡¼¥¹¥È3</strong></span><br><br>
+		<span class="style2"><strong>ãƒšãƒ¼ã‚¸åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°ãƒ¯ãƒ¼ã‚¹ãƒˆ3</strong></span><br><br>
 		<?php
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥Ú¡¼¥¸ÊÌ¡Ê¥ï¡¼¥¹¥È£³¡Ë
+//ãƒšãƒ¼ã‚¸åˆ¥ï¼ˆãƒ¯ãƒ¼ã‚¹ãƒˆï¼“ï¼‰
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			// ¥Ú¡¼¥¸ÊÌ¥¢¥¯¥»¥¹¿ô¼èÆÀ¡Ê²¼°Ì£³¤Ä¡Ë
+			// ãƒšãƒ¼ã‚¸åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°å–å¾—ï¼ˆä¸‹ä½ï¼“ã¤ï¼‰
 				$url_w_sql = "
 				SELECT
 					PAGE_URL,
@@ -688,12 +684,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 					0 , 3
 				";
 
-				$fetchURL_w = $SQLITE -> fetch($url_w_sql);
+				$fetchURL_w = $dbh->fetch($url_w_sql);
 
 		for($i=0;$i<count($fetchURL_w);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetchURL_w[$i]['PAGE_URL'];?>¡Ê<?php echo $fetchURL_w[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetchURL_w[$i]['PAGE_URL'];?>ï¼ˆ<?php echo $fetchURL_w[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetchURL_w);
 		?>
 		</td>
@@ -704,12 +700,12 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 	  </tr>
 		<tr>
 		<td>
-		<span class="style2"><strong>¥ê¥Õ¥¡¥é¡¼ÊÌ¥¢¥¯¥»¥¹¿ôBEST3</strong></span><br><br>
+		<span class="style2"><strong>ãƒªãƒ•ã‚¡ãƒ©ãƒ¼åˆ¥ã‚¢ã‚¯ã‚»ã‚¹æ•°BEST3</strong></span><br><br>
 		<?php
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//¥ê¥Õ¥¡¥é¡¼
+//ãƒªãƒ•ã‚¡ãƒ©ãƒ¼
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		// ¥ê¥Õ¥¡¥é¡¼¼èÆÀÍÑ
+		// ãƒªãƒ•ã‚¡ãƒ©ãƒ¼å–å¾—ç”¨
 
 			$ref_sql = "
 			SELECT
@@ -724,21 +720,21 @@ utilLib::httpHeadersPrint("EUC-JP",true,false,false,true);
 			LIMIT 1 , 3
 			";
 
-			$fetch_ref = $SQLITE -> fetch($ref_sql);
+			$fetch_ref = $dbh->fetch($ref_sql);
 
 		for($i=0;$i<count($fetch_ref);$i++):?>
-		<?php echo ($i + 1);?>¡§<?php echo $fetch_ref[$i]['REFERER'];?>¡Ê<?php echo $fetch_ref[$i]['CNT'];?>·ï¡Ë<br>
+		<?php echo ($i + 1);?>ï¼š<?php echo $fetch_ref[$i]['REFERER'];?>ï¼ˆ<?php echo $fetch_ref[$i]['CNT'];?>ä»¶ï¼‰<br>
 		<?php endfor;
-			//¤â¤¦ÉÔÉ¬Í×¤Ê¥Ç¡¼¥¿¤òºï½ü
+			//ã‚‚ã†ä¸å¿…è¦ãªãƒ‡ãƒ¼ã‚¿ã‚’å‰Šé™¤
 			unset($fetch_ref);
 		?>
 	   </td>
 	 </tr>
 	</table>
 		<br>
-		ALL INTERNET ¡¡Áí¹çÁë¸ý&nbsp;&nbsp;           STAGE GROUP¡Ê¥¹¥Æ¡¼¥¸¥°¥ë¡¼¥×¡Ë<br>
-		¢©101-0061 Åì µþ ÅÔ Àé Âå ÅÄ ¶è »° ºê Ä® £²¡Ý£´¡Ý£±&nbsp;&nbsp;&nbsp;T U G - I ¥Ó ¥ë £³ F <br>
-		TEL:03-5210-3788¡¡¡¡FAX:03-5210-3799
+		ALL INTERNET ã€€ç·åˆçª“å£&nbsp;&nbsp;           STAGE GROUPï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ã‚°ãƒ«ãƒ¼ãƒ—ï¼‰<br>
+		ã€’101-0061 æ± äº¬ éƒ½ åƒ ä»£ ç”° åŒº ä¸‰ å´Ž ç”º ï¼’ï¼ï¼”ï¼ï¼‘&nbsp;&nbsp;&nbsp;T U G - I ãƒ“ ãƒ« ï¼“ F <br>
+		TEL:03-5210-3788ã€€ã€€FAX:03-5210-3799
 		</td>
     </tr>
   </table>

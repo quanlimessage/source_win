@@ -13,10 +13,6 @@ View：登録内容一覧表示（最初に表示する）
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
 }
-/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -102,7 +98,7 @@ utilLib::httpHeadersPrint("UTF-8",true,false,true,true);
 #-----------------------------------------------------
 	//最大件数を超えてない、またはカテゴリーが存在している場合新規登録が出来るようにする
 	//基本的にカテゴリーが無ければそのカテゴリーに登録されているデータが表示または存在が出来ない為、編集ボタン側の表示は制限をしない
-	if((count($fetchCNT) < DBMAX_CNT) && count($fetchCA)):?>
+	if(($fetchCNT[0]['CNT'] < DBMAX_CNT) && count($fetchCA)):?>
 		<form action="./" method="post">
 			<input type="submit" value="新規追加" style="width:150px;">
 			<input type="hidden" name="act" value="new_entry">
@@ -244,7 +240,7 @@ utilLib::httpHeadersPrint("UTF-8",true,false,true,true);
 			</form>
 		</td>
 		<td align="center">
-		<?php if((count($fetchCNT) < DBMAX_CNT) && count($fetchCA)){?>
+			<?php if(($fetchCNT[0]['CNT'] < DBMAX_CNT) && count($fetchCA)){?>
 			<form method="post" action="./" style="margin:0;">
 			<input type="submit" name="reg" value="複製">
 			<input type="hidden" name="act" value="copy">

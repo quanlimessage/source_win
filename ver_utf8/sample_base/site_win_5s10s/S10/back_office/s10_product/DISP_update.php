@@ -9,14 +9,11 @@ View：更新画面表示
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
 #	※厳しく行う場合はIDとPWも一致するかまで行う
 #---------------------------------------------------------------
-if( !$_SESSION['LOGIN'] ){
-	header("Location: ../err.php");exit();
-}
 if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-//	header("Location: ../");exit();
+	header("Location: ../");exit();
 }
 if(!$accessChk){
-	header("HTTP/1.0 404 Not Found");exit();
+	header("Location: ../");exit();
 }
 
 #=============================================================

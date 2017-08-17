@@ -31,7 +31,7 @@ $sql = "
 		VIEW_ORDER ASC
 ";
 // ＳＱＬを実行
-$fetchCA = $PDO -> fetch($sql);
+$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=================================================================================
 # POSTデータの受取と文字列処理（共通処理）	※汎用処理クラスライブラリを使用
@@ -98,7 +98,7 @@ case "update":
 // 対象IDのデータ更新
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -130,7 +130,7 @@ case "new":
 
 	// 現在の登録件数が設定した件数未満の場合のみDBに格納
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".N3_S7_WHATSNEW." INNER JOIN ".N3_S7_CATEGORY_MST." ON (".N3_S7_WHATSNEW.".CATEGORY_CODE = ".N3_S7_CATEGORY_MST.".CATEGORY_CODE) WHERE(".N3_S7_WHATSNEW.".DEL_FLG = '0')AND(".N3_S7_CATEGORY_MST.".DEL_FLG = '0')";
-	$fetchCNT = $PDO -> fetch($cnt_sql);
+	$fetchCNT = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//最大登録件数に達していない、そして、カテゴリーが存在している場合登録をする
 	if(($fetchCNT[0]["CNT"] < DBMAX_CNT) && count($fetchCA)):
@@ -152,7 +152,11 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
+}
 
 #=================================================================================
 # 共通処理；画像アップロード処理

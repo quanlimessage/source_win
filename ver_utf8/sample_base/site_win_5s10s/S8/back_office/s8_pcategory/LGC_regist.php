@@ -71,12 +71,15 @@ case "new":
 
 		if($_POST["regist_type"]=="new" && $ins_chk == 1){
 			$vosql ="UPDATE ".S8_PARENT_CATEGORY_MST." SET VIEW_ORDER = VIEW_ORDER+1 WHERE(DEL_FLG = '0')";
-			$PDO -> regist($vosql);
+			if(!empty($vosql)){
+				$db_result = dbOpe::regist($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = 1;
 		}
 		else{
 			$vosql = "SELECT MAX(VIEW_ORDER) AS VO FROM ".S8_PARENT_CATEGORY_MST." WHERE(DEL_FLG = '0')";
-			$fetchVO = $PDO -> fetch($vosql);
+			$fetchVO = dbOpe::fetch($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			$view_order = ($fetchVO[0]["VO"] + 1);
 		}
 
@@ -102,6 +105,10 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
+}
 
 ?>

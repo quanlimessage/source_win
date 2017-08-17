@@ -8,10 +8,9 @@
 
 session_start();
 // 設定ファイル＆共通ライブラリの読み込み
-require_once("../../common/config.php");		// 設定ファイル
 require_once("../../common/INI_logconfig_tb.php");		// 設定ファイル
 require_once("util_lib.php");					// 汎用処理クラスライブラリ
-
+require_once("sqliteOpe.php");					// SQLite操作クラスライブラリ
 /*
 #---------------------------------------------------------------
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
@@ -42,20 +41,18 @@ header("Content-Type: text/plain; charset=Shift_JIS");
 header("Content-Type: application/octet-stream");
 header("Content-Disposition: attachment; filename=list-".date("YmdHis").".csv");
 
-
-$SQLITE = access_log_start($filename);
-
 //データの合計件数を算出
 $sql = "
 	SELECT
 		COUNT(*) AS CNT
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	WHERE
 		(DEL_FLG = '0')
-";
+	";
 
-$fetchCNT = $SQLITE -> fetch($sql);
+$dbh = new sqliteOpe(ACCESS_PATH.$filename,CREATE_SQL);
+$fetchCNT = $dbh->fetch($sql);
 
 // 各項目のタイトルをつける
 $data = "リモートホスト,リファラ,検索キーワード,検索エンジン,地域,OS,ブラウザ,URL,日付,時間\n";
@@ -80,7 +77,7 @@ $sql = "
 		INS_DATE,
 		TIME
 	FROM
-		".ACCESS_LOG."
+		" . ACCESS_LOG . "
 	WHERE
 		(DEL_FLG = '0')
 	ORDER BY
@@ -90,7 +87,8 @@ $sql = "
 ";
 
 // ＳＱＬを実行
-$fetchLogList = $SQLITE->fetch($sql);
+$dbh = new sqliteOpe(ACCESS_PATH.$filename,CREATE_SQL);
+$fetchLogList = $dbh->fetch($sql);
 
 	// データの数だけループする。
 	for($i=0;$i<count($fetchLogList);$i++):

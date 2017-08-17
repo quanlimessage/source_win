@@ -24,6 +24,10 @@ $accessChk = 1;
 require_once("../../common/INI_config.php");	// 共通設定情報
 require_once("../../common/INI_ShopConfig.php");	// 共通設定情報
 
+require_once("dbOpe.php");					// DB操作クラスライブラリ
+require_once("util_lib.php");				// 汎用処理クラスライブラリ
+require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
+
 #===============================================================================
 # $_POST["action"]の内容により処理を分岐
 #===============================================================================

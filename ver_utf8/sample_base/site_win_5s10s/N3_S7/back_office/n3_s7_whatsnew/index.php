@@ -23,6 +23,7 @@ $accessChk = 1;
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_N3_S7.php");	// 共通設定情報
 require_once("../tag_pg/LGC_color_table.php");	// タグ処理のプログラム
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 //require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 require_once('../../common/imgOpe2.php');	// 画像アップロードクラスライブラリ(gif・png対応)

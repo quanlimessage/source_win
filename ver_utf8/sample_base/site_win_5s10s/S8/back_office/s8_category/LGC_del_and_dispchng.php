@@ -47,7 +47,7 @@ case "del_data":
 
 	//DEL_FLGで表示を行わないようにする場合（カテゴリーのデータを復元できるように）
 	//カテゴリーのDELフラグを設定
-	$PDO -> regist("UPDATE ".S8_CATEGORY_MST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE ".S8_CATEGORY_MST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//該当するカテゴリーの登録データを削除処理
 
@@ -67,7 +67,7 @@ case "del_data":
 	";
 
 	// ＳＱＬを実行
-	$fetchDEL = $PDO -> fetch($sqlcnt);
+	$fetchDEL = dbOpe::fetch($sqlcnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//登録された画像データを削除する
 	for($j=0;$j < count($fetchDEL);$j++):
@@ -88,7 +88,7 @@ case "del_data":
 
 	//登録データを削除する
 	//$db_result = dbOpe::regist("DELETE FROM ".S8_PRODUCT_LST." WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
-	$PDO -> regist("UPDATE ".S8_PRODUCT_LST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE ".S8_PRODUCT_LST." SET DEL_FLG = '1' WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 case "display_change":
@@ -99,7 +99,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE ".S8_CATEGORY_MST." SET DISPLAY_FLG = '$up_display' WHERE(CATEGORY_CODE = '$cate')");
+	$db_result = dbOpe::regist("UPDATE ".S8_CATEGORY_MST." SET DISPLAY_FLG = '$up_display' WHERE(CATEGORY_CODE = '$cate')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

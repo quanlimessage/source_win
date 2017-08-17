@@ -89,7 +89,7 @@ for ( $i = 0; $i < count($cart_list); $i++ ){
 			DSC_ID = '".$disc_id."'
 		";
 
-		$fetchCnt = $PDO -> fetch($sql);
+		$fetchCnt = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	if($fetchCnt[0]["STOCK_QUANTITY"] > $quantity){
 		// 個数の追加用リンクのHTML出力

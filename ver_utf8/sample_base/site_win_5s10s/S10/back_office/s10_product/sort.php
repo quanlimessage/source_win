@@ -10,16 +10,13 @@ Sx系プログラム バックオフィス（MySQL対応版）
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
 #	※厳しく行う場合はIDとPWも一致するかまで行う
 #---------------------------------------------------------------
-session_start();
-if( !$_SESSION['LOGIN'] ){
-	header("Location: ../err.php");exit();
-}
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-//	header("HTTP/1.0 404 Not Found"); exit();
+if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
+	header("Location: ../");exit();
 }
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_S10.php");	// 設定情報
+require_once("dbOpe.php");					// ＤＢ操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 #===============================================================================
@@ -43,7 +40,7 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 
 	for($i=0;$i<count($vo);$i++){
 
-		$sql = "
+		$sql[$i] = "
 		UPDATE
 			S10_PRODUCT_LST
 		SET
@@ -55,10 +52,11 @@ if(($_POST['action'] == "update")&&(!empty($_POST['new_view_order']))):
 			(DEL_FLG = '0')
 		";
 
-		// ＳＱＬを実行
-		$PDO -> regist($sql);
 	}
 
+	// ＳＱＬを実行
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 最後に並び替えのトップへ飛ばす
 	//header("Location: ./sort.php");
@@ -80,7 +78,7 @@ WHERE
 ORDER BY
 	VIEW_ORDER ASC
 ";
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=============================================================
 # HTTPヘッダーを出力

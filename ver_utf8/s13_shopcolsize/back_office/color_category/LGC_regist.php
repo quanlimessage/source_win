@@ -54,7 +54,10 @@ case "update":
 	WHERE
 		(COLOR_CODE = '$cate')
 	";
-	$PDO -> regist($sql);
+	if(!empty($sql)){
+		$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+	}
 
 	break;
 
@@ -73,12 +76,15 @@ case "new":
 
 		if($_POST["regist_type"]=="new" && $ins_chk == 1){
 			$vosql ="UPDATE COLOR_MST SET VIEW_ORDER = VIEW_ORDER+1 WHERE(DEL_FLG = '0')";
-			$PDO -> regist($vosql);
+			if(!empty($vosql)){
+				$db_result = dbOpe::regist($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = 1;
 		}
 		else{
 			$vosql = "SELECT MAX(VIEW_ORDER) AS VO FROM COLOR_MST WHERE(DEL_FLG = '0')";
-			$fetchVO = $PDO -> fetch($vosql);
+			$fetchVO = dbOpe::fetch($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			$view_order = ($fetchVO[0]["VO"] + 1);
 		}
 
@@ -102,7 +108,10 @@ case "new":
 			'0',
 			'$display_flg'
 		)";
-		$PDO -> regist($sql);
+		if(!empty($sql)){
+			$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+		}
 
 		// サイズ複製
 		if(count($copy_size)){
@@ -115,13 +124,13 @@ case "new":
 					WHERE
 						(COPY_ID = '$copy_id')
 				";
-			$fetch_get_color_id = $PDO -> fetch($sql_get_color_id);
+			$fetch_get_color_id = dbOpe::fetch($sql_get_color_id,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			for($i=0;$i<count($copy_size);$i++){
 
 				$s_view_order[$i] = ($i+1);
 
-				$sql_regist_size = "
+				$sql_regist_size[$i] = "
 				INSERT INTO SIZE_MST(
 					COLOR_CODE,
 					SIZE_NAME,
@@ -138,7 +147,10 @@ case "new":
 					'1'
 				)";
 
-				$PDO -> regist($sql_regist_size);
+				if(!empty($sql_regist_size[$i])){
+					$db_result_regist_size[$i] = dbOpe::regist($sql_regist_size[$i],DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+					if($db_result_regist_size[$i])die("DB{$i}登録失敗しました<hr>{$db_result_regist_size[$i]}");
+				}
 
 			}// for loop end
 

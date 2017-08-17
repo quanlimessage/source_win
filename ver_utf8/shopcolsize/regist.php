@@ -27,6 +27,8 @@
 require_once("./common/INI_config.php");		// 設定ファイル
 require_once("./common/INI_ShopConfig.php");		// ショップ用設定ファイル
 require_once("./common/INI_pref_list.php");		// 送料＆都道府県情報（配列）
+require_once("dbOpe.php");				// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");				// 汎用処理クラスライブラリ
 
 #=============================================================================
 # 決済サイトより決済処理完了後に送信されるGETの受取とエラーチェック
@@ -56,7 +58,7 @@ if($result == 'ok' || $result == 'OK'){
 		AND
 			( DEL_FLG = '0' )
 		";
-		$fetchPreCust =  $PDO -> fetch($sqlPre);
+		$fetchPreCust = dbOpe::fetch($sqlPre, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 		// 仮情報が存在しなければ中断
 		if(0 == count($fetchPreCust)){
@@ -78,7 +80,7 @@ if($result == 'ok' || $result == 'OK'){
 		AND
 			(EXISTING_CUSTOMER_FLG = '1')
 		";
-		$fetchCust =  $PDO -> fetch($sqlPre);
+		$fetchCust = dbOpe::fetch($sqlPre, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 		// 本登録済みなら中断
 		if(0 != count($fetchCust)){
@@ -109,7 +111,12 @@ if($result == 'ok' || $result == 'OK'){
 			INS_DATE = NOW(),
 			EXISTING_CUSTOMER_FLG = '0'
 		";
-		$PDO -> regist($sqlPre);
+		$registDB_buy_flg = dbOpe::regist($sqlPre,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+
+		if ( $registDB_buy_flg ){
+			$error_mes .= "予想外のエラー：顧客情報のデータベースへの登録ができませんでした。{$registDB_result}\n";
+			break;
+		}
 
 		// 仮顧客情報の削除フラグを立てる
 		$sqlPre = "
@@ -124,7 +131,12 @@ if($result == 'ok' || $result == 'OK'){
 		AND
 			(DEL_FLG = '0')
 		";
-		$PDO -> regist($sqlPre);
+		$registDB_buy_flg = dbOpe::regist($sqlPre,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+
+		if ( $registDB_buy_flg ){
+			$error_mes .= "予想外のエラー：仮顧客情報のデータベース更新ができませんでした。{$registDB_result}\n";
+			break;
+		}
 	}while(false);
 }
 
@@ -176,7 +188,7 @@ AND
 	(".CUSTOMER_LST.".DEL_FLG = '0')
 ";
 
-$fetchOrderCust = $PDO -> fetch($sql_ordercust);
+$fetchOrderCust = dbOpe::fetch($sql_ordercust,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //データが取得できなかった場合
 if(!count($fetchOrderCust)){
@@ -189,7 +201,7 @@ if(!$fetchOrderCust[0]["CREDIT_CLOSE_FLG"]){
 // 決済の成功、失敗による分岐
 if($result == 'ok' || $result == 'OK'):
 
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$cod)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$cod)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！");
 	}
 
@@ -213,7 +225,7 @@ if($result == 'ok' || $result == 'OK'):
 	///////////////////////////////////////
 	// 注文商品情報(PURCHASE_LST)
 
-	$sql = "
+	$sql[] = "
 	UPDATE
 		".PURCHASE_LST."
 	SET
@@ -227,8 +239,6 @@ if($result == 'ok' || $result == 'OK'):
 	AND
 		(DEL_FLG = '0')
 	";
-
-	$PDO -> regist($sql);
 
 	///////////////////////////////////////
 	// 注文商品情報(PURCHASE_ITEM_DATA)
@@ -250,7 +260,7 @@ if($result == 'ok' || $result == 'OK'):
 		( DEL_FLG = '0' )
 	ORDER BY PID
 	";
-	$fetchPerItem = $PDO -> fetch($sql_peritem);
+	$fetchPerItem = dbOpe::fetch($sql_peritem,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	for ( $i = 0; $i < count($fetchPerItem); $i++ ){
 
@@ -268,7 +278,7 @@ if($result == 'ok' || $result == 'OK'):
 			DSC_ID = '".$fetchPerItem[$i]['PROPERTY_ID']."'
 		";
 
-		$CntRst = $PDO -> fetch($cnt_sql);
+		$CntRst = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		########################################################################################################
 		# 在庫数オーバーのチェックは決済前に行ってるのでここでは在庫オーバーは管理者メールに添付させる
@@ -316,10 +326,23 @@ if($result == 'ok' || $result == 'OK'):
 			DSC_ID = '".$fetchPerItem[$i]['PROPERTY_ID']."'
 		";
 
-		$PDO -> regist($zaiko_sql);
+		$ZaikoRst = dbOpe::regist($zaiko_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		// 在庫データ書換え失敗時はエラー
+		if ( $ZaikoRst ){
+			$error_mes .= "予想外のエラー：在庫数上書きに失敗しました。<hr>{$ZaikoRst}\n";
+		}
 
 	}
 
+	#================================================================================
+	# 設定したＳＱＬを実行（登録失敗時：ＤＢエラー出力して強制終了）
+	#================================================================================
+	if(!empty($sql)){
+		$registDB_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+		if ( $registDB_result ){
+			$error_mes .= "予想外のエラー：データベースへの購入情報更新ができませんでした。<hr>{$registDB_result}\n";
+		}
+	}
 	#=============================================================================
 	# ユーザーと管理者へ メール送信の設定と送信を行う
 	#=============================================================================
@@ -509,7 +532,7 @@ if($result == 'ok' || $result == 'OK'):
 		 	AND
 		 		(DEL_FLG = '0')
 		 ";
-		 $PDO -> regist($sqlbuy_flg);
+		 $registDB_buy_flg = dbOpe::regist($sqlbuy_flg,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 // 最後にクレジット用完了画面へ転送
 ?>
@@ -523,7 +546,7 @@ if($result == 'ok' || $result == 'OK'):
 <?php
 elseif($result == 'ng' || $result == 'NG'):
 
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$cod)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$cod)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！");
 	}
 
@@ -540,7 +563,10 @@ elseif($result == 'ng' || $result == 'NG'):
 #================================================================================
 # 設定したＳＱＬを実行（登録失敗時：ＤＢエラー出力して強制終了）
 #================================================================================
-$PDO -> regist($sql);
+$registDB_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+if ( $registDB_result ){
+	$error_mes .= "予想外のエラー：クレジット決済失敗通知のデータベースへの登録ができませんでした。{$registDB_result}\n";
+}
 
 $error_mes .= "注文番号：".$cod."のお客様がクレジット決済に失敗をいたしました。\n";
 $error_mes .= "決済代行会社より決済エラーの通知が届いているためお客様に確認メールは届いていません。\n";

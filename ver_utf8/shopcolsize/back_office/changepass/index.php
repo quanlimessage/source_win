@@ -26,6 +26,9 @@ $error_message = "";
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/INI_config.php");		// 設定情報
 require_once("../../common/INI_ShopConfig.php");	// ショップ用設定情報
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");						// 汎用処理クラスライブラリ
+//require_once("share_pwd.php");						// 共通ID/PASSの取得
 
 #================================================================================
 # $_POST['status']の内容により処理をコントロール
@@ -84,7 +87,7 @@ default:
 				( CONFIG_ID = '1' )
 			";
 
-			$fetchConf = $PDO -> fetch($conf_sql);
+			$fetchConf = dbOpe::fetch($conf_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		//////////////////////////////////////////////////////////
 		// 現ID+現パスワードが登録されているかいないかで出力分岐

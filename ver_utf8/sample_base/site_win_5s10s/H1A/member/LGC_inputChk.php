@@ -54,7 +54,7 @@ if($email){
 
 //メールアドレスに重複があればエラーを発生させる
 $cnt_sql = "SELECT COUNT(*) AS CNT FROM ".MEMBER_LST." WHERE(EMAIL = '$email') AND (DEL_FLG = '0')";
-$fetch = $PDO -> fetch($cnt_sql);
+$fetch = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if($fetch[0]['CNT'] > 0){
 $error_mes .= "入力されましたメールアドレスは既に登録済みです。<br>\n";

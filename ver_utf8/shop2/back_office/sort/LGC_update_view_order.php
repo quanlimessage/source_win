@@ -34,7 +34,7 @@ $vo = explode("\t", $new_view_order);
 
 for ( $i = 0; $i < count($vo); $i++ ){
 
-	$sql = "
+	$sql[$i] = "
 	UPDATE
 		".PRODUCT_LST."
 	SET
@@ -44,10 +44,11 @@ for ( $i = 0; $i < count($vo); $i++ ){
 	AND
 		( DEL_FLG = '0' )
 	";
-	// ＳＱＬを実行
-	$PDO -> regist($sql);
+
 }
 
-
+// ＳＱＬを実行
+$db_result = dbOpe::regist($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
+if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 ?>

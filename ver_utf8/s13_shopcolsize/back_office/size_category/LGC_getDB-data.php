@@ -33,7 +33,7 @@ if(!$accessChk){
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #--------------------------------------------------------------------------------
 # 選択された処理action（$_POST["action"]）により発行するＳＱＬを分岐
@@ -108,6 +108,6 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

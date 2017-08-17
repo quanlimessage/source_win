@@ -79,14 +79,14 @@ if ( !$_SESSION['setParam']['emailChg_Auth_flg'] ):
 	if ( !$error_message ){
 
 		$sql = "SELECT EMAIL FROM CUSTOMER_LST WHERE ( EMAIL = '$newmail' ) AND (ALPWD != '') AND ( DEL_FLG = '0' )AND(EXISTING_CUSTOMER_FLG = '1')";
-		$fetchNewEmailChk = $PDO -> fetch($sql);
-		if ( !$fetchNewEmailChk )	$error_message .= "既に登録済みのメールアドレスです。<br>（新しいメールアドレス）<br>\n";
+		$fetchNewEmailChk = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
+		if ( $fetchNewEmailChk )	$error_message .= "既に登録済みのメールアドレスです。<br>（新しいメールアドレス）<br>\n";
 	}
 
 	#---------------------------------------------------------------------------
 	#　基本チェックのここまで、エラーがなければ認証チェック（ＤＢ：CUSTOMER_LST）
 	#---------------------------------------------------------------------------
-	if ( $error_message ){
+	if ( !$error_message ){
 
 		$sql = "
 		SELECT
@@ -103,7 +103,7 @@ if ( !$_SESSION['setParam']['emailChg_Auth_flg'] ):
 		AND
 			(EXISTING_CUSTOMER_FLG = '1')
 		";
-		$fetchAuth = $PDO -> fetch($sql);
+		$fetchAuth = dbOpe::fetch($sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 		// 認証チェック（ＯＫなら認証済みフラグをつける）
 		if( ($fetchAuth[0]['ALPWD'] == $pwd) && ($fetchAuth[0]['EMAIL'] == $oldmail) ){

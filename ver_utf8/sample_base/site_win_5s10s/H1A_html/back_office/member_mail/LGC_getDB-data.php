@@ -87,7 +87,7 @@ default:
 				if($nio_stock[$i]){//データが存在すれば処理を行う
 
 				// 対象記事IDデータのチェック
-					if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nio_stock[$i]) && !empty($nio_stock[$i])){
+					if(ereg("^([0-9]{10,})-([0-9]{6})$",$nio_stock[$i]) && !empty($nio_stock[$i])){
 
 						//送信にチェックの処理をする
 						$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '1' WHERE(MEMBER_ID = '".$nio_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
@@ -109,7 +109,7 @@ default:
 				if($nin_stock[$i]){//データが存在すれば処理を行う
 
 				// 対象記事IDデータのチェック
-					if(preg_match("/^([0-9]{10,})-([0-9]{6})$/",$nin_stock[$i]) && !empty($nin_stock[$i])){
+					if(ereg("^([0-9]{10,})-([0-9]{6})$",$nin_stock[$i]) && !empty($nin_stock[$i])){
 
 						//送信にチェックなしの処理をする
 						$db_result = dbOpe::regist("UPDATE " . MEMBER_LST . " SET SENDMAIL_FLG = '0' WHERE(MEMBER_ID = '".$nin_stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);

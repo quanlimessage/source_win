@@ -28,7 +28,7 @@ case "update":
 // 更新指示のあった該当記事データの取得
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -151,7 +151,7 @@ $_SESSION["condition"] = $condition_sql;
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 if(count($fetchCustList) > MEMBER_DBMAX_CNT){
 	$error_msg = "最大送信可能件数を超えております。<br>検索条件を絞って". MEMBER_DBMAX_CNT . "件以内に減らしてください。";

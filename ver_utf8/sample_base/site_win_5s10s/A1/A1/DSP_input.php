@@ -164,12 +164,7 @@ utilLib::httpHeadersPrint("UTF-8",true,false,false,false);
 			  </tr>
 			  <tr bgcolor="#FFFFFF" align="left">
 				<td>メールアドレス<span style="color:crimson;">（必須）</span></td>
-				<td>
-					<input name="email" type="text" id="email" size="40" maxlength="200" style="ime-mode:disabled;">
-					<br>
-					確認用メールアドレス<br>
-					<input name="c_email" type="text" id="c_email" size="40" maxlength="200" style="ime-mode:disabled;">
-				</td>
+				<td><input name="email" type="text" id="email" size="40" maxlength="200" style="ime-mode:disabled;"></td>
 			  </tr>
 			  <tr bgcolor="#FFFFFF" align="left">
 				<td>コメント<span style="color:crimson;">（必須）</span></td>

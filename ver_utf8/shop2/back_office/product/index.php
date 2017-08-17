@@ -25,6 +25,9 @@ $injustice_access_chk = 1;
 require_once("../../common/INI_config.php");	// 共通設定情報
 require_once("../../common/INI_ShopConfig.php");// ショップ用設定情報
 require_once('../tag_pg/LGC_color_table.php');//ＨＴＭＬタグのカラーパレット
+require_once("dbOpe.php");						// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");					// 汎用処理クラスライブラリ
+//require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 require_once('../../common/imgOpe2.php');	// 画像アップロードクラスライブラリ(gif・png対応)
 
 #===============================================================================

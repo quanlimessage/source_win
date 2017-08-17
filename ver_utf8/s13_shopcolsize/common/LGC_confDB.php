@@ -28,7 +28,7 @@ Logic：ＤＢより情報を取得
 			(CONFIG_ID = '1')
 	";
 
-	$fetchConfig = $PDO -> fetch($sql_config);
+	$fetchConfig = dbOpe::fetch($sql_config, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	// 認証時に(Basic2を使用)$fetch_ipas[$i]['user']['pass']を使用する
 	$sql_ipas = "
@@ -39,14 +39,14 @@ Logic：ＤＢより情報を取得
 			".CONFIG_MST."
 		";
 
-	$fetch_ipas = $PDO -> fetch($sql_ipas);
+	$fetch_ipas = dbOpe::fetch($sql_ipas, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 	// 管理者情報が未登録なら仮管理者情報レコードを作製
 	if(empty($fetchConfig)):
 
 		// 仮管理者情報をDB登録
 		// CONFIG_ID : 1 はクライアント変更用ID:PASS
-		$ins_sql ="
+		$ins_sql[] ="
 		INSERT INTO ".CONFIG_MST."(
 			CONFIG_ID,
 			NAME,
@@ -59,17 +59,19 @@ Logic：ＤＢより情報を取得
 			'".utilLib::strRep("zeeksdg",5)."',
 			'".utilLib::strRep("pass",5)."'
 		)";
-		$PDO -> regist($ins_sql);
 
 		// CONFIG_ID : 2 は共通ZEEK用ID:PASS
-		$ins_sql = "
+		$ins_sql[] = "
 			INSERT INTO ".CONFIG_MST." SET
 				CONFIG_ID = '2',
 				BO_ID = '".utilLib::strRep("zeeksdg",5)."',
 				BO_PW = '".utilLib::strRep("pass",5)."'
 		";
 
-		$PDO -> regist($ins_sql);
+		if(!empty($ins_sql)){
+			$db_result = dbOpe::regist($ins_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+			if($db_result)die("ディフォルト情報セットに失敗しました。<hr>{$db_result}");
+		}
 	endif;
 
 // 商品最大登録数
@@ -84,6 +86,6 @@ Logic：ＤＢより情報を取得
 				(DEL_FLG = '0')
 		";
 
-		$fetchPro = $PDO -> fetch($pnum_sql);
+		$fetchPro = dbOpe::fetch($pnum_sql, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 ?>

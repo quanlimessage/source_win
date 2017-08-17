@@ -110,7 +110,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 
 		<tr>
 			<td class="subtitle">
-			・<a href="config/" target="main">管理情報の更新</a>
+			・<a href="config/change_config.php" target="main">管理情報の更新</a>
 			</td>
 		</tr>
 

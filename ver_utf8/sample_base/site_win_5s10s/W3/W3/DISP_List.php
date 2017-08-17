@@ -198,16 +198,13 @@ utilLib::httpHeadersPrint("UTF-8",true,true,false,false);
 					$icon = $fetch[$i+$j]['EXTENTION'];
 
 					//ファイルパス
-					$fine_name = $fetch[$i+$j]['RES_ID'].".".$fetch[$i+$j]['EXTENTION'];
-					$file = "./up_img/".$fine_name;
+					$file = "./up_img/".$fetch[$i+$j]['RES_ID'].".".$fetch[$i+$j]['EXTENTION'];
 
 					//ファイルが存在しているかチェックする
 					if(file_exists($file)){
-						$file_path = "<a href=\"{$file}\" style=\"float:left;\" target=\"blank\"><img src=\"./icon_img/icon_{$icon}.jpg\" border=\"0\"></a>";
-						$download_link = "<a href=\"download.php?prm={$fine_name}\">ダウンロードする</a>";
+						$file_path = "<a href=\"./up_img/{$file}\" style=\"float:left;\" target=\"blank\"><img src=\"./icon_img/icon_{$icon}.jpg\" border=\"0\"></a>";
 					}else{//ファイルが存在しない場合
 						$file_path = "";
-						$download_link = "";
 					}
 
 					#==============================================================================================
@@ -232,7 +229,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,false,false);
 						<td>{$size}</td>
 						<td>{$type}		</td>
 						<td>
-							{$download_link}
+						<a href=\"download.php?prm={$file}\">ダウンロードする</a>
 						</td>
 					 </tr>
 					";

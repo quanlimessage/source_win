@@ -86,8 +86,8 @@ if($TOTLE_PAGES > $p){
 <div>※検索結果：<strong><?php echo count($fetchPurchaseCNT);?></strong>&nbsp;件</div><br>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-	  <td width="50%" align="left"><?php echo $PREVIOUS_PAGE;?></td>
-	  <td align="right"><?php echo $NEXT_PAGE;?></td>
+	  <td width="50%" align="left"><?PHP echo $PREVIOUS_PAGE;?></td>
+	  <td align="right"><?PHP echo $NEXT_PAGE;?></td>
 	</tr>
 </table>
 <table width="100%" border="0" cellpadding="5" cellspacing="2">
@@ -185,8 +185,8 @@ if($TOTLE_PAGES > $p){
 </table>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
     <tr>
-	  <td width="50%" align="left"><?php echo $PREVIOUS_PAGE;?></td>
-	  <td align="right"><?php echo $NEXT_PAGE;?></td>
+	  <td width="50%" align="left"><?PHP echo $PREVIOUS_PAGE;?></td>
+	  <td align="right"><?PHP echo $NEXT_PAGE;?></td>
 	</tr>
 </table>
 <br>

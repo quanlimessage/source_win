@@ -54,5 +54,5 @@ AND
 	(DEL_FLG = '0')
 ";
 
-$fetchCust = $PDO -> fetch($sql);
+$fetchCust = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 ?>

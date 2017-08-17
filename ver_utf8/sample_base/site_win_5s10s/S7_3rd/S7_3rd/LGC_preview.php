@@ -138,7 +138,7 @@ else:
 	";
 
 	// ＳＱＬを実行
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//画像
 	for($i=1;$i<=IMG_CNT;$i++):

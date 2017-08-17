@@ -11,10 +11,7 @@ View：更新画面表示
 #---------------------------------------------------------------
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
-}/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
+}
 if(!$accessChk){
 	header("Location: ../");exit();
 }

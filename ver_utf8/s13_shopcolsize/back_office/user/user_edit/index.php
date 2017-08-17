@@ -27,6 +27,8 @@ $injustice_access_chk = 1;
 require_once("../../../common/INI_config.php");		// 共通設定情報
 require_once("../../../common/INI_ShopConfig.php");	// ショップ用設定情報
 require_once("../../../common/INI_pref_list.php");	// 都道府県＆送料データ（配列）
+require_once("dbOpe.php");							// ＤＢ操作クラスライブラリ
+require_once("util_lib.php");						// 汎用処理クラスライブラリ
 
 #===============================================================================
 # $_POST["status"]の内容により処理を分岐

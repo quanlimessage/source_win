@@ -41,7 +41,7 @@ WHERE
 	(DEL_FLG='0')
 ORDER BY
 	CATEGORY_CODE ASC";
-$fetchCateList = $PDO -> fetch($sql);
+$fetchCateList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 //カテゴリー名の横に登録件数を表示させる
 
@@ -61,7 +61,7 @@ for($i=0;$i<count($fetchCateList);$i++){
 	";
 
 	// ＳＱＬを実行
-	${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+	${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 }
 #===============================================================================
 # $_POST["status"]の内容によりＤＢより取得する情報を分岐
@@ -121,7 +121,7 @@ case "product_edit":case "copy":
 		AND
 			(".CATEGORY_MST.".DEL_FLG = '0')
 		";
-		$fetchProductData = $PDO -> fetch($sql);
+		$fetchProductData = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 
@@ -281,7 +281,7 @@ case "search_result":case "recommend":
 	";
 
 	// 検索SQL実行
-	$fetchProductList = $PDO -> fetch($sql);
+	$fetchProductList = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	// おすすめフラグが立っている商品数を取得
 	$sql = "
@@ -295,7 +295,7 @@ case "search_result":case "recommend":
 		(DEL_FLG = '0')
 	";
 
-	$fetchREC = $PDO -> fetch($sql);
+	$fetchREC = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	break;
 

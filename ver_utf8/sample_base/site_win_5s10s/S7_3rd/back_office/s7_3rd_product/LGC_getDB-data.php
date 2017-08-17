@@ -12,10 +12,6 @@ Logic：ＤＢ情報取得処理ファイル
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
 }
-/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -35,7 +31,7 @@ if(!$accessChk){
 	";
 
 	// ＳＱＬを実行
-	$fetchCA = $PDO -> fetch($sql);
+	$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//カテゴリー名の横に登録件数を表示させる
 	for($i=0;$i<count($fetchCA);$i++){
@@ -54,7 +50,7 @@ if(!$accessChk){
 		";
 
 		// ＳＱＬを実行
-		${'fetchCA_ca'.$i} = $PDO -> fetch(${'sql_ca'.$i});
+		${'fetchCA_ca'.$i} = dbOpe::fetch(${'sql_ca'.$i},DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 	}
 
 #--------------------------------------------------------------------------------
@@ -69,7 +65,7 @@ case "update":case "copy";
 	if($_POST)extract(utilLib::getRequestParams("post",array(8,7,1,4)));
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -195,7 +191,7 @@ default:
 		(".S7_3_VIEW_ORDER_LIST.".C_ID = '')
 	";
 
-	$fetchCNT = $PDO -> fetch($sqlcnt);
+	$fetchCNT = dbOpe::fetch($sqlcnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$sqlcnt = "
 	SELECT
@@ -213,11 +209,11 @@ default:
 		$serch_sql
 	";
 
-	$fetchCNT_CA = $PDO -> fetch($sqlcnt);
+	$fetchCNT_CA = dbOpe::fetch($sqlcnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 endswitch;
 
 // ＳＱＬを実行
-$fetch = $PDO -> fetch($sql);
+$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 ?>

@@ -11,10 +11,6 @@ View：新規登録画面表示
 if( !$_SESSION['LOGIN'] ){
 	header("Location: ../err.php");exit();
 }
-/*
-if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-	header("Location: ../index.php");exit();
-}*/
 if(!$accessChk){
 	header("Location: ../");exit();
 }
@@ -157,7 +153,7 @@ bkLib.onDomLoaded(function() {
 	<tr>
 		<th nowrap class="tdcolored">Youtube：</th>
 		<td class="other-td">
-		<textarea name="youtube" cols="85" rows="10" style="ime-mode:active" onFocus="SaveOBJ(this)"><?php echo $youtube;?></textarea>
+		<textarea name="youtube" cols="85" rows="10" style="ime-mode:inactive" onFocus="SaveOBJ(this)"><?php echo $youtube;?></textarea>
 		</td>
 	</tr>
 	<?php for($i=1;$i<=IMG_CNT;$i++):?>

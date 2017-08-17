@@ -18,7 +18,7 @@ require_once('tmpl2.class.php');// テンプレートクラスライブラリ
 	include("LGC_getDB-data.php");
 
 	// 商品IDが送信されパラメーターが不正でなければ商品詳細を表示
-	if( !isset($_GET['id']) || !preg_match("/^([0-9]{10,})-([0-9]{6})$/", $_GET['id']) ){
+	if( !isset($_GET['id']) || !ereg("^([0-9]{10,})-([0-9]{6})$", $_GET['id']) ){
 
 		include("DISP_List.php");
 

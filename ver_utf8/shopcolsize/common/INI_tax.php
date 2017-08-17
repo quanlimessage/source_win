@@ -7,7 +7,6 @@
 #税率の設定情報をdefine定義で使えるようにする
 #-------------------------------------------------------------------------------
 	function read_shop_tax_config(){
-			global $PDO;
 		//ショッピングの設定情報を取得する
 			$sql_config="
 				SELECT
@@ -16,7 +15,7 @@
 					SHOP_TAX_CONFIG_MST
 			";
 
-			$fetchSConfig = $PDO -> fetch($sql_config);
+			$fetchSConfig = dbOpe::fetch($sql_config, DB_USER, DB_PASS, DB_NAME, DB_SERVER);
 
 		//データベースで取得したデータをdefine定義していく
 			foreach($fetchSConfig[0] as $k => $v){

@@ -92,7 +92,7 @@ switch($_POST["status"]):
 				(".CUSTOMER_LST.".DEL_FLG = '0')
 			";
 
-			$fetchOrderCust = $PDO -> fetch($sql1);
+			$fetchOrderCust = dbOpe::fetch($sql1,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			// 注文情報詳細
 			$sql3 = "
@@ -110,7 +110,7 @@ switch($_POST["status"]):
 			ORDER BY
 				".PURCHASE_ITEM_DATA.".PID ASC
 			";
-			$fetchPerItem = $PDO -> fetch($sql3);
+			$fetchPerItem = dbOpe::fetch($sql3,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		break;
 	case "search_result":
@@ -265,7 +265,7 @@ switch($_POST["status"]):
 			";
 
 			$sql_cnt = $sql_cnt.$addwhere;
-			$fetchPurchaseCNT = $PDO -> fetch($sql_cnt);
+			$fetchPurchaseCNT = dbOpe::fetch($sql_cnt,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 			// ベース抽出SQL文
 			$sql = "
@@ -309,7 +309,7 @@ switch($_POST["status"]):
 				".$st.",".SALES_MAXROW."
 			";
 
-			$fetchPurchase = $PDO -> fetch($sql);
+			$fetchPurchase = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 		break;
 endswitch;

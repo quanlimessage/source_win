@@ -5,8 +5,8 @@
 
 	メニュー画面
 
+2005/4/12 tanaka
 *******************************************************************************/
-session_start();
 require_once("../common/config.php");
 require_once("util_lib.php");		// 汎用処理クラスライブラリ
 
@@ -14,11 +14,8 @@ require_once("util_lib.php");		// 汎用処理クラスライブラリ
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
 #	※厳しく行う場合はIDとPWも一致するかまで行う
 #---------------------------------------------------------------
-if( !$_SESSION['LOGIN'] ){
-	header("Location: ./err.php");exit();
-}
 if(!$_SERVER['PHP_AUTH_USER']||!$_SERVER['PHP_AUTH_PW']){
-//	header("Location: ../");exit();
+	header("HTTP/1.0 404 Not Found");exit();
 }
 
 #=============================================================
@@ -44,41 +41,33 @@ utilLib::httpHeadersPrint("UTF-8",true,true,true,true);
 <p><strong>処理を選択してください</strong></p>
 	<!--メニューテーブル-->
 	<table border="0" cellpadding="0" cellspacing="0" width="90%">
+
 		<tr>
 			<td class="subtitle">
 			・<a href="config/" target="main">管理情報の更新</a>
 			</td>
 		</tr>
+
 		<tr>
 			<td class="explanation">
 			お問合せ用メールアドレスなどを設定します。
+			<!--//お問い合せフォームが無い場合
+			管理ID/パスワードの通知用メールアドレスの設定をします。
+			//-->
 			</td>
 		</tr>
 		<tr>
 			<td class="space">&nbsp;</td>
 		</tr>
 		<tr>
-			<td class="subtitle">
-			・<a href="log/" target="main">アクセス解析</a>
-			</td>
-		</tr>
-		<tr>
 			<td class="explanation">
-			アクセス状況を解析した結果を表示します。
+			サンプルプログラムＡ１(SiteWin10_20_30)<br>
+			こちらはデモ用のサンプルプログラムです。<br>
+			サンプルプログラムのご使用は【sample_base】フォルダーのプログラムをご使用ください。
 			</td>
 		</tr>
 		<tr>
 			<td class="space">&nbsp;</td>
-		</tr>
-		<tr>
-			<td class="subtitle">
-			・<a href="./fmanager/" target="main">ファイルマネージャー</a>
-			</td>
-		</tr>
-		<tr>
-			<td class="explanation">
-			アクセスログファイル管理を行います。
-			</td>
 		</tr>
 	</table>
 	<div class="largespace"></div>

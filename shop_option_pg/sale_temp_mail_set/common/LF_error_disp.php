@@ -25,7 +25,7 @@ function errorDisp($error){
 </body>
 </html>
 
-<?php
+<?
 exit();
 }
 ?>

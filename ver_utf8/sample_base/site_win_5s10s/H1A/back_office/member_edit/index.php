@@ -19,6 +19,7 @@ $accessChk = 1;
 
 // 設定ファイル＆共通ライブラリの読み込み
 require_once("../../common/config_H1A.php");	// 共通設定情報
+require_once("dbOpe.php");					// DB操作クラスライブラリ
 require_once("util_lib.php");				// 汎用処理クラスライブラリ
 require_once('imgOpe.php');					// 画像アップロードクラスライブラリ
 

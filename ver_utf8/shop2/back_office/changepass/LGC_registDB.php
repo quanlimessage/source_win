@@ -43,6 +43,9 @@ if(empty($error_message) && $_POST["status"] == "completion"):
 endif;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB更新に失敗しました<hr>{$db_result}");
+}
 
 ?>

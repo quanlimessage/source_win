@@ -12,14 +12,11 @@ Logic:以下の処理を行う
 #---------------------------------------------------------------
 # 不正アクセスチェック（直接このファイルにアクセスした場合）
 #---------------------------------------------------------------
-if( !$_SESSION['LOGIN'] ){
-	header("Location: ../err.php");exit();
-}
 if( !$_SERVER['PHP_AUTH_USER'] || !$_SERVER['PHP_AUTH_PW'] ){
-//	header("Location: ../");exit();
+	header("Location: ../");exit();
 }
 if(!$accessChk){
-	header("HTTP/1.0 404 Not Found");exit();
+	header("Location: ../");exit();
 }
 
 #----------------------------------------------------------------
@@ -28,7 +25,7 @@ if(!$accessChk){
 extract(utilLib::getRequestParams("post",array(8,7,1,4)));
 
 // 対象記事IDデータのチェック
-if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 	die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 }
 
@@ -41,7 +38,8 @@ case "del_data":
 // 該当データの完全削除
 
 	// SQL実行
-	$PDO -> regist("DELETE FROM S10_PRODUCT_LST WHERE(RES_ID = '$res_id')");
+	$db_result = dbOpe::regist("DELETE FROM S10_PRODUCT_LST WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 	// 記事画像の削除
 	if(file_exists(S10_IMG_PATH.$res_id.".jpg")){
@@ -57,7 +55,8 @@ case "display_change":
 	$up_display = ($display_change == "t")?1:0;
 
 	// SQLを実行
-	$PDO -> regist("UPDATE S10_PRODUCT_LST SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')");
+	$db_result = dbOpe::regist("UPDATE S10_PRODUCT_LST SET DISPLAY_FLG = '$up_display' WHERE(RES_ID = '$res_id')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 endswitch;
 

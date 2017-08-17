@@ -105,14 +105,14 @@ if(!$error_flg):
 			PRODUCT_LST.VIEW_ORDER ASC
 	";
 
-	$fetchCNT = $PDO -> fetch($sql);
+	$fetchCNT = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$sql .= "
 		LIMIT
 			".$st.",".SHOP_MAXROW."
 	";
 
-	$fetch = $PDO -> fetch($sql);
+	$fetch = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	$message  = "検索キーワード : ".$search_word."&nbsp;&nbsp;";
 	$message .= "該当する商品 : ".count($fetchCNT)."件<br>\n";

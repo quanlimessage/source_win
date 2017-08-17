@@ -17,18 +17,12 @@ if(!$injustice_access_chk){
 // POSTデータの受け取りと共通な文字列処理
 if($_POST)extract(utilLib::getRequestParams("post",array(8,7,1,4),true));
 
-$filename = ($term)?$term."_access_log_db":"";
-$SQLITE = access_log_start($filename);
-// 全データ取得
-$total_sql = "
-SELECT
-	ID
-FROM
- ACCESS_LOG
-".$where_term."
-";
-
-$fetch = $SQLITE -> fetch($total_sql);
+if(empty($term)){
+$dbh = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term."_access_log_db";
+$dbh = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 #---------------------------------------------------------------
 # 旧データの削除(4ヶ月以上経過したもの)
@@ -70,8 +64,7 @@ FROM
  ACCESS_LOG
 ".$where_term."
 ";
-
-$fetch = $SQLITE -> fetch($total_sql);
+$fetch = $dbh->fetch($total_sql);
 
 //if($where_term){$total_u_sql =  $total_sql."AND (UNIQUE_FLG == '1')";}else{$total_u_sql = $total_sql."WHERE (UNIQUE_FLG == '1')";}
 
@@ -79,7 +72,7 @@ $fetch = $SQLITE -> fetch($total_sql);
 
 if($where_term){$total_uu_sql =  $total_sql."AND (USER_FLG == '1')";}else{$total_uu_sql = $total_sql."WHERE (USER_FLG == '1')";}
 
-$fetch_uu = $SQLITE -> fetch($total_uu_sql);
+$fetch_uu = $dbh->fetch($total_uu_sql);
 
 // 今日のアクセス件数
 $today_day_time = date('Ymd', mktime(0,0,0,date("n"),date("j"),date("Y")));
@@ -92,7 +85,7 @@ FROM
 WHERE
 	( strftime('%Y%m%d', INS_DATE) = '".$today_day_time."')
 ";
-$TodayCnt = $SQLITE->fetch($today_sql);
+$TodayCnt = $dbh->fetch($today_sql);
 
 #---------------------------------------------------------------
 # 各データ取得関数の定義
@@ -263,7 +256,7 @@ function hour_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -295,7 +288,7 @@ function hour_u_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -327,7 +320,7 @@ function hour_uu_access($where_term,$dbins){
 		ACCESS_LOG
 	".$where_term."
 	GROUP BY
-		TIME
+		strftime('%H', TIME)
 	ORDER BY
 		TIME ASC
 	";
@@ -606,77 +599,84 @@ function state_access($where_term,$dbins){
 	return $fetch_state_u;
 }
 
+// SQL実行
+if(empty($term)){
+$dbh3 = new sqliteOpe(DB_FILEPATH,CREATE_SQL);
+}else{
+$db_filepath = ACCESS_PATH.$term."_access_log_db";
+$dbh3 = new sqliteOpe($db_filepath,CREATE_SQL);
+}
 
 if(empty($kensu))$kensu = 1;
 
 switch ($_POST["mode"]):
 	case "day":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 	case "month":
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
 		break;
 	case "hour":
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
 		break;
 	case "youbi":
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
 		break;
 	case "page":
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
 		break;
 	case "engine":
-			$fetchENGINE = engine_access($where_term,$SQLITE);
+			$fetchENGINE = engine_access($where_term,$dbh3);
 		break;
 	case "query":
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
 		break;
 	case "bro":
-			$fetch_bro = bro_access($where_term,$SQLITE);
+			$fetch_bro = bro_access($where_term,$dbh3);
 		break;
 	case "os":
-			$fetch_os = os_access($where_term,$SQLITE);
+			$fetch_os = os_access($where_term,$dbh3);
 		break;
 	case "ref":
-			$fetch_ref = ref_access($where_term,$SQLITE);
+			$fetch_ref = ref_access($where_term,$dbh3);
 		break;
 	case "state":
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_state_u = state_access($where_term,$dbh3);
 		break;
 	case "all":
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
-			$MonCnt = mon_access($where_term,$SQLITE);
-			//$MonCnt_u = mon_u_access($where_term,$SQLITE);
-			$MonCnt_uu = mon_uu_access($where_term,$SQLITE);
-			$fetch_time = hour_access($where_term,$SQLITE);
-			//$fetch_time_u = hour_u_access($where_term,$SQLITE);
-			$fetch_time_uu = hour_uu_access($where_term,$SQLITE);
-			$fetch_dayofweek = dayofweek_access($where_term,$SQLITE);
-			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$SQLITE);
-			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$SQLITE);
-			$fetchURL = page_access($where_term,$SQLITE);
-			//$fetchURL_u = page_u_access($where_term,$SQLITE);
-			$fetchENGINE = engine_access($where_term,$SQLITE);
-			$fetchQuery = access_query($where_term,$SQLITE,$kensu);
-			$fetch_bro = bro_access($where_term,$SQLITE);
-			$fetch_os = os_access($where_term,$SQLITE);
-			$fetch_ref = ref_access($where_term,$SQLITE);
-			$fetch_state_u = state_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
+			$MonCnt = mon_access($where_term,$dbh3);
+			//$MonCnt_u = mon_u_access($where_term,$dbh3);
+			$MonCnt_uu = mon_uu_access($where_term,$dbh3);
+			$fetch_time = hour_access($where_term,$dbh3);
+			//$fetch_time_u = hour_u_access($where_term,$dbh3);
+			$fetch_time_uu = hour_uu_access($where_term,$dbh3);
+			$fetch_dayofweek = dayofweek_access($where_term,$dbh3);
+			//$fetch_dayofweek_u = dayofweek_u_access($where_term,$dbh3);
+			$fetch_dayofweek_uu = dayofweek_uu_access($where_term,$dbh3);
+			$fetchURL = page_access($where_term,$dbh3);
+			//$fetchURL_u = page_u_access($where_term,$dbh3);
+			$fetchENGINE = engine_access($where_term,$dbh3);
+			$fetchQuery = access_query($where_term,$dbh3,$kensu);
+			$fetch_bro = bro_access($where_term,$dbh3);
+			$fetch_os = os_access($where_term,$dbh3);
+			$fetch_ref = ref_access($where_term,$dbh3);
+			$fetch_state_u = state_access($where_term,$dbh3);
 	default:
-			$fetch_day = day_access($where_term,$SQLITE);
-			//$fetch_day_u = day_u_access($where_term,$SQLITE);
-			$fetch_day_uu = day_uu_access($where_term,$SQLITE);
+			$fetch_day = day_access($where_term,$dbh3);
+			//$fetch_day_u = day_u_access($where_term,$dbh3);
+			$fetch_day_uu = day_uu_access($where_term,$dbh3);
 		break;
 endswitch;
 

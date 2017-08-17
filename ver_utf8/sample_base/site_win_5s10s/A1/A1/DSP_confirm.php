@@ -121,10 +121,7 @@ utilLib::httpHeadersPrint("UTF-8",true,true,false,false);
 		  </tr>
 		  <tr bgcolor="#FFFFFF" align="left">
 			<td>メールアドレス</td>
-			<td>
-				<?php echo ($email)?$email:"&nbsp;";?><input name="email" type="hidden" value="<?php echo $email;?>">
-				<input name="c_email" type="hidden" value="<?php echo $c_email;?>">
-			</td>
+			<td><?php echo ($email)?$email:"&nbsp;";?><input name="email" type="hidden" value="<?php echo $email;?>"></td>
 		  </tr>
 		  <tr bgcolor="#FFFFFF" align="left">
 			<td>コメント</td>

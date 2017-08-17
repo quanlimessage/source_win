@@ -36,7 +36,7 @@ case "select_del_data":
 		if($select_stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$select_stock[$i])||empty($select_stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$select_stock[$i])||empty($select_stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$select_stock[$i]}");
 			}
 
@@ -64,7 +64,7 @@ case "select_don_data":
 		if($select_stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$select_stock[$i])||empty($select_stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$select_stock[$i])||empty($select_stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$select_stock[$i]}");
 			}
 
@@ -89,7 +89,7 @@ case "select_doff_data":
 		if($select_stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$select_stock[$i])||empty($select_stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$select_stock[$i])||empty($select_stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$select_stock[$i]}");
 			}
 

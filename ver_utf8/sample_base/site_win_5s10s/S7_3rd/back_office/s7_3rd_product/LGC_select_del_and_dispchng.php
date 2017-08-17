@@ -36,7 +36,7 @@ case "select_del_data":
 		if($stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$stock[$i])||empty($stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$stock[$i])||empty($stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$stock[$i]}");
 			}
 
@@ -45,16 +45,16 @@ case "select_del_data":
 
 			//データベースから削除
 				//登録データの削除
-				$PDO -> regist("DELETE FROM ".S7_3_PRODUCT_LST." WHERE(RES_ID = '".$stock[$i]."')");
-				
+				$db_result = dbOpe::regist("DELETE FROM ".S7_3_PRODUCT_LST." WHERE(RES_ID = '".$stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 			//並び順の削除
-				$PDO -> regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST." WHERE(RES_ID = '".$stock[$i]."')");
-				
+				$db_result = dbOpe::regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST." WHERE(RES_ID = '".$stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 			//並び順補佐の削除
-				$PDO -> regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST2." WHERE(RES_ID = '".$stock[$i]."')");
-				
+				$db_result = dbOpe::regist("DELETE FROM ".S7_3_VIEW_ORDER_LIST2." WHERE(RES_ID = '".$stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 		}
 
 	}
@@ -72,13 +72,13 @@ case "select_don_data":
 		if($stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$stock[$i])||empty($stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$stock[$i])||empty($stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$stock[$i]}");
 			}
 
 			//表示するに切り替える
-				$PDO -> regist("UPDATE ".S7_3_PRODUCT_LST." SET DISPLAY_FLG = '1' WHERE(RES_ID = '".$stock[$i]."')");
-				
+				$db_result = dbOpe::regist("UPDATE ".S7_3_PRODUCT_LST." SET DISPLAY_FLG = '1' WHERE(RES_ID = '".$stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 		}
 
@@ -97,13 +97,13 @@ case "select_doff_data":
 		if($stock[$i]){//データが存在すれば処理を行う
 
 		// 対象記事IDデータのチェック
-			if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$stock[$i])||empty($stock[$i])){
+			if(!ereg("^([0-9]{10,})-([0-9]{6})$",$stock[$i])||empty($stock[$i])){
 				die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$stock[$i]}");
 			}
 
 			//非表示するに切り替える
-				$PDO -> regist("UPDATE ".S7_3_PRODUCT_LST." SET DISPLAY_FLG = '0' WHERE(RES_ID = '".$stock[$i]."')");
-				
+				$db_result = dbOpe::regist("UPDATE ".S7_3_PRODUCT_LST." SET DISPLAY_FLG = '0' WHERE(RES_ID = '".$stock[$i]."')",DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
 
 		}
 

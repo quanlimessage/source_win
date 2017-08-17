@@ -31,7 +31,7 @@ $sql = "
 		VIEW_ORDER ASC
 ";
 // ＳＱＬを実行
-$fetchCA = $PDO -> fetch($sql);
+$fetchCA = dbOpe::fetch($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 #=================================================================================
 # POSTデータの受取と文字列処理（共通処理）	※汎用処理クラスライブラリを使用
@@ -58,22 +58,28 @@ $youtube = html_tag($_POST['youtube']);
 		//複製する時のVIEW_ORDER
 		if($_POST["copy_type"]=="new"){
 			$vosql_old = "SELECT VIEW_ORDER AS VO FROM ".S7_PRODUCT_LST." WHERE (RES_ID = '$res_id') AND (DEL_FLG = '0')";
-			$fetchVO_old = $PDO -> fetch($vosql_old);
+			$fetchVO_old = dbOpe::fetch($vosql_old,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			$view_order_old = $fetchVO_old[0]["VO"];
 
 			$vosql ="UPDATE ".S7_PRODUCT_LST." SET VIEW_ORDER = VIEW_ORDER+1 WHERE (CATEGORY_CODE = '$ca') AND (VIEW_ORDER > $view_order_old)";
-			$PDO -> regist($vosql);
+			if(!empty($vosql)){
+				$db_result = dbOpe::regist($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = ($fetchVO_old[0]["VO"] + 1);
 		}elseif($_POST["ins_chk"]=="1"){
 		//トップ登録チェックを入れる時
 			$vosql ="UPDATE ".S7_PRODUCT_LST." SET VIEW_ORDER = VIEW_ORDER+1 WHERE (CATEGORY_CODE = '$ca')";
-			$PDO -> regist($vosql);
+			if(!empty($vosql)){
+				$db_result = dbOpe::regist($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+				if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+			}
 			$view_order = 1;
 		}
 		else{
 		//新規登録
 			$vosql = "SELECT MAX(VIEW_ORDER) AS VO FROM ".S7_PRODUCT_LST." WHERE (CATEGORY_CODE = '$ca') AND (DEL_FLG = '0')";
-			$fetchVO = $PDO -> fetch($vosql);
+			$fetchVO = dbOpe::fetch($vosql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 			$view_order = ($fetchVO[0]["VO"] + 1);
 		}
 
@@ -103,7 +109,7 @@ case "update":
 // 対象IDのデータ更新
 
 	// 対象記事IDデータのチェック
-	if(!preg_match("/^([0-9]{10,})-([0-9]{6})$/",$res_id)||empty($res_id)){
+	if(!ereg("^([0-9]{10,})-([0-9]{6})$",$res_id)||empty($res_id)){
 		die("致命的エラー：不正な処理データが送信されましたので強制終了します！<br>{$res_id}");
 	}
 
@@ -145,7 +151,7 @@ case "new":
 
 	// 現在の登録件数が設定した件数未満の場合のみDBに格納
 	$cnt_sql = "SELECT COUNT(*) AS CNT FROM ".S7_PRODUCT_LST." INNER JOIN ".S7_CATEGORY_MST." ON (".S7_PRODUCT_LST.".CATEGORY_CODE = ".S7_CATEGORY_MST.".CATEGORY_CODE) WHERE(".S7_PRODUCT_LST.".DEL_FLG = '0')AND(".S7_CATEGORY_MST.".DEL_FLG = '0')";
-	$fetchCNT = $PDO -> fetch($cnt_sql);
+	$fetchCNT = dbOpe::fetch($cnt_sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
 
 	//最大登録件数に達していない、そして、カテゴリーが存在している場合登録をする
 	if(($fetchCNT[0]["CNT"] < DBMAX_CNT) && count($fetchCA)):
@@ -168,7 +174,11 @@ default:
 endswitch;
 
 // ＳＱＬを実行
-$PDO -> regist($sql);
+if(!empty($sql)){
+	$db_result = dbOpe::regist($sql,DB_USER,DB_PASS,DB_NAME,DB_SERVER);
+	if($db_result)die("DB登録失敗しました<hr>{$db_result}");
+
+}
 
 #=================================================================================
 # 共通処理；画像アップロード処理
