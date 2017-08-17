@@ -1,0 +1,3 @@
+Mac_PowerPC||PowerPC
+Mac OS X||OS X
+68K||68K

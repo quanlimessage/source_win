@@ -1,0 +1,5 @@
+@charset "UTF-8";
+
+.disp_s{
+	position:absolute; left:0px; top:0px; visibility:hidden; FONT-SIZE: 12px; FONT-FAMILY: "ＭＳ Ｐゴシック", Osaka;  color:#333333; background-color:#FFFFFF; filter:Alpha(opacity=100); layer-background-color:#FFFFFF; border:1px solid #CCCCCC; padding:8;
+}

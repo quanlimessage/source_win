@@ -1,0 +1,38 @@
+@charset "shift_jis";
+
+/* ----------------------- トップページ画像位置 ----------------------- */
+div#index_image{
+	text-align: center;
+}
+
+/* ----------------------- 新着情報 ----------------------- */
+div#news {
+	float: left;
+	width: 356px;
+	margin-top: 4px;
+	margin-left: 3px;
+}
+
+/* 新着情報見出し（画像にする場合はmargin,paddin以外は削除） */
+div#news h3 {
+	margin: 0px;
+	padding: 0px;
+	font-weight: normal;	/* フォントの太さ（太いままにする場合は削除） */
+	font-size: 12px;	/* フォントサイズ */
+	color: #FFFFFF;		/* フォントの色 */
+	text-indent: 6px;	/* テキスト左の余白 */
+	background-color: #CCCCCC;	/* 背景色（不必要なら削除） */
+}
+
+/* FLASH位置 */
+div#flash {
+	padding: 4px 0px 8px 6px;
+}
+
+/* ----------------------- フリースペース ----------------------- */
+div#free {
+	float: right;
+	width: 220px;
+	margin-top: 4px;
+	margin-right: 3px;
+}

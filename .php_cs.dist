@@ -1,0 +1,20 @@
+<?php
+$rules = [
+    '@PSR1'=> true,
+];
+
+$excludes = [
+  'common/lib',
+  'ver_utf8/sample_base/site_win_5s10s/A1_html/common/lib',
+  'ver_utf8/sample_base/site_win_5s10s/H1A_html/common/lib',
+];
+
+$finder = PhpCsFixer\Finder::create()
+    ->exclude($excludes)
+    ->in(__DIR__);
+;
+
+return PhpCsFixer\Config::create()
+    ->setRules($rules)
+    ->setFinder($finder)
+;

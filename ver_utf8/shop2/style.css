@@ -1,0 +1,106 @@
+.back01 {
+	background-image: url(common_img/common_img_oth01.jpg);
+}
+.back02 {
+	background-image: url(images/top_oth02.jpg);
+	background-repeat: no-repeat;
+	background-position: left top;
+}
+.font01 {
+	font-family: "ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3";
+	font-size: 12px;
+	color: #FFCC99;
+	line-height: 14px;
+}
+.font02 {
+
+	font-family: "｣ﾍ｣ﾓ ｣ﾐ･ｴ･ｷ･ﾃ･ｯ", Osaka, "･ﾒ･鬣ｮ･ﾎｳﾑ･ｴ Pro W3";
+	font-size: 11px;
+	color: #CCCCCC;
+	line-height: 14px;
+}
+.back03 {
+
+	background-image: url(common_img/common_img_oth04.jpg);
+	background-repeat: repeat-y;
+	background-position: left top;
+}
+.back04 {
+
+	background-image: url(common_img/common_img_oth04.jpg);
+	background-repeat: repeat-y;
+	background-position: left top;
+}
+.back05 {
+
+	background-image: url(common_img/common_img_oth05.jpg);
+	background-repeat: repeat-y;
+	background-position: right top;
+}
+a:link {
+	font-family: "｣ﾍ｣ﾓ ｣ﾐ･ｴ･ｷ･ﾃ･ｯ", Osaka, "･ﾒ･鬣ｮ･ﾎｳﾑ･ｴ Pro W3";
+	font-size: 11px;
+	color: #CC6666;
+}
+a:visited {
+	font-family: "｣ﾍ｣ﾓ ｣ﾐ･ｴ･ｷ･ﾃ･ｯ", Osaka, "･ﾒ･鬣ｮ･ﾎｳﾑ･ｴ Pro W3";
+	font-size: 11px;
+	color: #CC6666;
+}
+a:hover {
+
+	font-family: "｣ﾍ｣ﾓ ｣ﾐ･ｴ･ｷ･ﾃ･ｯ", Osaka, "･ﾒ･鬣ｮ･ﾎｳﾑ･ｴ Pro W3";
+	font-size: 11px;
+	color: #CC6666;
+}
+a:active {
+
+	font-family: "｣ﾍ｣ﾓ ｣ﾐ･ｴ･ｷ･ﾃ･ｯ", Osaka, "･ﾒ･鬣ｮ･ﾎｳﾑ･ｴ Pro W3";
+	font-size: 11px;
+	color: #CC6666;
+}
+.font03 {
+
+	font-family: "ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3";
+	font-size: 12px;
+	color: #FFFFCC;
+	line-height: 18px;
+}
+.back06 {
+
+	background-image: url(shop/images/shop_ill01.jpg);
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+.back07 {
+
+	background-image: url(faq/images/faq_ill01.jpg);
+	background-repeat: repeat;
+	background-position: left top;
+}
+.line_back {
+
+	background-image: url(common_img/common_img_oth10.jpg);
+	background-repeat: no-repeat;
+	background-position: left bottom;
+}
+.font04 {
+
+	font-family: "ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3";
+	font-size: 12px;
+	color: #CCCCCC;
+	line-height: 16px;
+}
+.font05 {
+
+	font-family: "ＭＳ Ｐゴシック", Osaka, "ヒラギノ角ゴ Pro W3";
+	font-size: 12px;
+	color: #FFCC99;
+	line-height: 19px;
+}
+.back08 {
+
+	background-image: url(nagare/images/nagare_oth01.jpg);
+	background-repeat: no-repeat;
+	background-position: left top;
+}

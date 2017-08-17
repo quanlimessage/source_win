@@ -1,0 +1,78 @@
+@charset "shift_jis";
+
+/* 見出し（画像にする場合はmargin,paddin以外は削除）*/
+h3 {
+	margin: 4px auto 1em;	/* マージン */
+	padding: 0px;		/* 余白 */
+	width: 580px;		/* 幅・↓の画像のサイズに合わせる */
+	height: 28px;		/* 縦・↓の画像のサイズに合わせる */
+	background-image: url(../image/h3.jpg);
+	font-size: 12px;	/* フォントサイズ */
+	color: #CC0000;		/* 文字色 */
+	line-height: 28px;	/* heightと同じにする */
+	text-indent: 12px;	/* テキストの左余白 */
+}
+
+h4 {
+	margin: 0.6em 20px;		/* マージン */
+	padding: 0px;			/* 余白 */
+	font-size: 12px;		/* フォントサイズ */
+	color: #CC0000;			/* 文字色 */
+	border-bottom: 1px solid #CC0000;	/* 下ボーダー（要らなかったら削除してください） */
+}
+
+/* 段落 */
+p {
+	margin: 0px 20px 0.8em;	/* マージン */
+	padding: 0px;			/* 余白 */
+}
+
+/* リスト */
+ul,ol {
+	margin: 4px 40px 0.6em;		/* マージン */
+	padding: 0px;			/* 余白 */
+}
+li {
+	margin: 0px;		/* マージン */
+	padding: 0px;		/* 余白 */
+}
+
+dl {
+	margin: 4px 20px 0.6em;		/* マージン */
+	padding: 0px;			/* 余白 */
+}
+dt {
+	margin: 0px;		/* マージン */
+	padding: 0px;		/* 余白 */
+	font-weight: bold;	/* フォントの太さ（不要ならは削除） */
+}
+dd {
+	margin: 0px 0px 0.6em 1em;		/* マージン */
+	padding: 0px;		/* 余白 */
+}
+
+/* 赤文字 */
+.red {
+	color: #993300;
+}
+
+/* ページトップへ */
+p.top {
+	text-align: right;
+}
+p.top a:link {
+	color: #CC0033;		/* リンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:visited{
+	color: #CC0033;		/* 訪問済みリンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:hover{
+	color: #FFCC00;		/* ロールオーバー時・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:active {
+	color: #FFCC00;		/* クリック時・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}

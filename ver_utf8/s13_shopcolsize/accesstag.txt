@@ -1,0 +1,21 @@
+★お問い合わせフォーム以外（入力画面【DSP_input.php】を除く）のページの
+“</body>”の上にソースを貼り付けます。
+　ファイルパスは各自修正の事！
+
+<!-- ここから -->
+<script type="text/javascript" src="https://www.google.com/jsapi?key="></script>
+<script src="https://api.all-internet.jp/accesslog/access.js" language="javascript" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+var s_obj = new _WebStateInvest();
+var _accessurl = setUrl();
+document.write('<img src="' + _accessurl + '/log.php?referrer='+escape(document.referrer)+'&st_id_obj='+encodeURI(String(s_obj._st_id_obj))+'" width="1" height="1">');
+//-->
+</script>
+<!-- ここまで -->
+</body>
+
+★ディレクトリ“db”をパーミッション“777”にしてください
+
+★logconfig.phpファイルの【DBのファイルパスとDB及びテーブルを自動生成するためのSQL文を設定】の項目下に
+　あります設定でデモ用のパスを記入してください。

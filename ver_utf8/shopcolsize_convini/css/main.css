@@ -1,0 +1,253 @@
+@charset "shift_jis";
+
+/* 見出し（画像にする場合はmargin,paddin以外は削除）*/
+h3 {
+	margin: 4px auto 1em;	/* マージン */
+	padding: 0px;		/* 余白 */
+	width: 580px;		/* 幅・↓の画像のサイズに合わせる */
+	height: 28px;		/* 縦・↓の画像のサイズに合わせる */
+	background-image: url(../image/h3.jpg);
+	font-size: 12px;	/* フォントサイズ */
+	color: #CC0000;		/* 文字色 */
+	line-height: 28px;	/* heightと同じにする */
+	text-indent: 12px;	/* テキストの左余白 */
+}
+
+h4 {
+	margin: 0.6em 20px;		/* マージン */
+	padding: 0px;			/* 余白 */
+	font-size: 12px;		/* フォントサイズ */
+	color: #CC0000;			/* 文字色 */
+	border-bottom: 1px solid #CC0000;	/* 下ボーダー（要らなかったら削除してください） */
+}
+
+/* 段落 */
+p {
+	margin: 0px 20px 0.8em;	/* マージン */
+	padding: 0px;			/* 余白 */
+}
+
+/* リスト */
+ul,ol {
+	margin: 4px 40px 0.6em;		/* マージン */
+	padding: 0px;			/* 余白 */
+}
+li {
+	margin: 0px;		/* マージン */
+	padding: 0px;		/* 余白 */
+}
+
+dl {
+	margin: 4px 20px 0.6em;		/* マージン */
+	padding: 0px;			/* 余白 */
+}
+dt {
+	margin: 0px;		/* マージン */
+	padding: 0px;		/* 余白 */
+	font-weight: bold;	/* フォントの太さ（不要ならは削除） */
+}
+dd {
+	margin: 0px 0px 0.6em 1em;		/* マージン */
+	padding: 0px;		/* 余白 */
+}
+
+/* 赤文字 */
+.red {
+	color: #993300;
+}
+
+/* ページトップへ */
+p.top {
+	text-align: right;
+}
+p.top a:link {
+	color: #CC0033;		/* リンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:visited{
+	color: #CC0033;		/* 訪問済みリンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:hover{
+	color: #FFCC00;		/* ロールオーバー時・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+p.top a:active {
+	color: #FFCC00;		/* クリック時・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+
+/* N系一覧テーブル */
+.n_midashi{
+	font-size:14px;
+	color:#333333;
+	padding:0px;
+	text-align:left;
+	margin:50px 0px 20px 0px;
+	font-weight:bold;
+	border-bottom: solid 1px #E6E6E6;
+	width:500px;
+	}
+.n_image{
+	width:200px;
+
+	padding:8px 15px 15px 8px;
+	margin:0px;
+	background-image:url(../image/new-item_haikei.jpg);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.n_text{
+	font-size:12px;
+	color:#666666;
+	padding:0px;
+	text-align:left;
+	margin:0px;
+	font-weight:normal;
+	lign-height:130%;
+	width:260px;
+	}
+.n_day{
+	font-size:10px;
+	color:#666666;
+	padding:0px;
+	text-align:right;
+	margin:20px 0px 0px 0px;
+	font-weight:normal;
+	lign-height:130%;
+	}
+
+/* S系一覧テーブル */
+.s_midashi{
+	font-size:14px;
+	color:#333333;
+	padding:5px 15px;
+	text-align:left;
+	margin:0px;
+	border-bottom: solid 2px #E6E6E6;
+	font-weight:bold;
+	width:480px;
+	}
+
+.s_image{
+	width:220px;
+	padding:15px 10px;
+	margin:0px;
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.s_image2{
+	width:200px;
+	padding:15px 15px 15px 10px;
+	margin:0px;
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.sp_image{
+	width:200px;
+	height:150px;
+	padding:0px;
+	margin:8px 15px 15px 8px;
+	background-image:url(../image/new-item_haikei.jpg);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+.s_text{
+	font-size:12px;
+	color:#666666;
+	padding:5px 15px 5px 0px;
+	text-align:left;
+	margin:0px;
+	font-weight:normal;
+	lign-height:130%;
+	}
+
+.s_text2{
+	font-size:12px;
+	color:#666666;
+	padding:5px 15px;
+	text-align:left;
+	margin:0px;
+	font-weight:normal;
+	lign-height:130%;
+	}
+
+.s_text3{
+	font-size:12px;
+	color:#666666;
+	padding:5px 15px 5px 15px;
+	text-align:left;
+	margin:0px;
+	font-weight:normal;
+	lign-height:130%;
+	width:260px;
+	}
+
+/* S2一覧テーブル */
+.s2_midashi{
+	width:170px;
+	font-size:14px;
+	color:#FFFFFF;
+	background-color:#999999;
+	padding:5px;
+	text-align:left;
+	border-bottom: solid 2px #FFFFFF;
+	margin:0px;
+	font-weight:bold;
+	}
+
+.s2_image{
+	width:120px;
+	margin:5px 29px;
+}
+
+.s2_text{
+	width:170px;
+	font-size:12px;
+	color:#FFFFFF;
+	background-color:#CACACA;
+	padding:5px;
+	text-align:left;
+	margin:0px;
+	font-weight:normal;
+	lign-height:130%;
+	}
+
+/* S系ポップアップ内テキスト */
+.pop_text{
+	font-size:14px;
+	color:#666666;
+	padding:0px;
+	text-align:left;
+	font-weight:normal;
+	lign-height:130%;
+	}
+
+.picup_image{
+	width:572px;
+	height:334px;
+	padding:8px 15px 15px 8px;
+	margin:0px;
+	background-image:url(../image/picup.gif);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+/* ----------------------- テロップ ----------------------- */
+div#tic {
+	float: left;
+	width: 564px;
+	margin: 14px 7px;
+	background-image:url(../image/tic.jpg);
+	background-repeat:no-repeat;
+	background-position:0 0;
+}
+
+/* テロップFLASH位置 */
+div#ticflash {
+	margin: 13px 12px 10px 77px;
+}

@@ -1,0 +1,42 @@
+Windows||windows.gif
+Macintosh||macos.gif
+FreeBSD||netbsd.gif
+Linux||linux.gif
+IRIX||irix.gif
+SunOS||sunos.gif
+WebTV||webtv.gif
+DreamCast||dreamcast.gif
+DoCoMo||docomo.gif
+J-PHONE||j_phone.gif
+EzWeb||au.gif
+InternetExplorer||internetexplorer.gif
+Netscape||netscapenavigator.gif
+Opera||opera.gif
+Firefox||firefox.gif
+Safari||safari.gif
+Mozilla||mozilla.gif
+NetCaptor||netcaptor.gif
+Cuam||cuam.gif
+Sleipnir||sleipnir.gif
+Googlebot||google.gif
+MSNbot||msn.gif
+Yahoo! Slurp||yahoo.gif
+Google||google.gif
+MSN||msn.gif
+Yahoo||yahoo.gif
+goo||goo.gif
+InfoSeek||infoseek.gif
+Excite||excite.gif
+@nifty||nifty.gif
+Biglobe||biglobe.gif
+NaverBot||naver.gif
+Robot||robot.gif
+Unknown OS||unknown.gif
+Unknown Browser||unknown.gif
+UP.Browser||up_browser.gif
+WWWC||wwwc.gif
+WebAuto||webauto.gif
+So-net||so_net.gif
+OCN||ocn.gif
+DION||dion.gif
+ODN||odn.gif

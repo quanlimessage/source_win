@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-language" content="ja">
+<meta http-equiv="Content-script-type" content="text/javascript">
+<meta http-equiv="Content-style-type" content="text/css">
+<meta http-equiv="imagetoolbar" content="no">
+<meta name="description" content="ＳＥＯワード">
+<meta name="keywords" content="キーワード">
+<meta name="robots" content="index,follow">
+<title>Winシリーズ-更新プログラム|サンプルサイト|</title>
+<link href="../css/base.css" rel="stylesheet" type="text/css">
+<link href="../css/index.css" rel="stylesheet" type="text/css">
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body onLoad="MM_preloadImages('../image/shop_bt2.gif','../common_img/common_img_btnon18.jpg')">
+<div id="stage">
+<div id="content">
+
+	<h1>ＳＥＯワード</h1>
+	<h2><img src="../image/header.jpg" alt="" width="760" height="55"></h2>
+
+   <ul id="menu">
+   <li><b>ショッピングプログラム</b></li>
+		<li><a href="./">カラー・サイズあり</a></li>
+	</ul>
+
+	<div id="main">
+		<div id="index_image">
+		<br>
+		<table width="564" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td colspan="2" valign="top">
+			<table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td width="112" align="center"><a href="./?ca=1">カテゴリー1</a></td>
+                <td width="112" align="center"><a href="./?ca=2">カテゴリー2</a></td>
+                </tr>
+            </table>
+			</td>
+            </tr>
+		</table>
+		<br>
+		<table width="522" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+                <td width="33%" align="center"><a href="kiyaku.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image37','','../common_img/common_img_btnon13.jpg',1)">利用規約</a></td>
+                <td width="33%" align="center"><a href="kaimono.html" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image38','','../common_img/common_img_btnon14.jpg',1)">お買物方法</a></td>
+                <td width="33%" align="center"><a href="../regist/" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('Image39','','../common_img/common_img_btnon15.jpg',1)">カートの中身</a></td>
+             </tr>
+		</table>
+		<br>
+		<form action="../search/" method="get" class="kensakuform02">
+			<div align="left"><table width="480" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td width="160" class="text01">■商品名による検索はこちら</td>
+					<td width="130"><input name="search_word" type="text" class="search_inbox"></td>
+				  <td width="190"><input type="submit" name="kensaku" width="45" value="検索"></td>
+				</tr>
+		  </table>
+			</div>
+		</form>
+		<br>
+		<table align="center" width="522" border="0" cellspacing="1" cellpadding="0" bgcolor="#333333">
+		  <!--<tr>
+            <td colspan="2" align="left"><img src="../image/shop_tit0%cn%.gif" alt="Stole＆Muffler ストール＆マフラー" width="352" height="44"><br></td>
+          </tr>-->
+          <tr>
+            <td><table width="522" border="0" cellspacing="4" cellpadding="0">
+			<!--メニューテーブル-->
+			   %disp_no_data%
+			<!-- ↓ここから商品表示のループ開始 -->
+			<!-- tmpl:loop %product_list% -->
+	        <tr>
+				<td align="center" valign="top" width="261">
+				%table1%
+				<td>
+				<td align="center" valign="top" width="261">
+				%table2%
+				<td>
+			<tr>
+			<!-- tmpl:endloop %product_list% -->
+			<!--↑ここまで商品表示のループ終了 -->
+              </table></td>
+          </tr>
+		  <tr>
+            <td colspan="2">
+	<table width="522" border="0" cellpadding="5" cellspacing="0">
+              <tr>
+                <td align="left" width="50%">%pr%</td>
+                <td align="right" width="50%">%nx%</td>
+              </tr>
+            </table>
+			</td>
+		  </tr>
+        </table>
+		<br>
+		<br>
+	</div>
+	</div>
+
+	<div id="footer">Copyright(c)2005 ○○○.All Rights Reserved.</div>
+
+</div>
+</div>
+
+<div id="banner"><a href="http://www.all-internet.jp/" target="_blank"><img src="../image/banner.gif" alt="ホームページ制作はオールインターネット"></a></div>
+%access_tag%
+</body>
+</html>

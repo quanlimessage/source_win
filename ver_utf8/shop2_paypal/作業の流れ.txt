@@ -1,0 +1,114 @@
+
+■制作の流れ
+--------------------------------------------------------
+・店舗情報の設定(新規案件なら設定はここだけでOK)
+INI_ShopConfig.php
+237行目　決済サイト（PayPal）で必要な情報の設定
+
+定数にUsername,Password,Signatureを設定
+例）下記は設定済みテストアカウント
+テスト時はSANDBOX_FLGの定数をTRUEにする
+define('SANDBOX_FLG',TRUE);
+define('PAYPAL_USER', 'ljtalkjeacpoe983k5-facilitator_api1.gmail.com');	//ユーザー名
+define('PAYPAL_PWD', 'LBVLGVYGUA29AMD9');			//パスワード
+define('PAYPAL_SIGNATURE', 'AFcWxV21C7fd0v3bYYYRCpSSRl31AYae11nTW53cOgzznJ9bQMxkOo5Z');	//署名
+
+
+・既存サイトにPaypal機能を追加
+■下記のファイルを参考にPaypalの処理を追加
+/regist.php
+/back_office/sales/DISP_purchase_Details.php
+/back_office/sales/DISP_serch_input.php
+/back_office/sales/DISP_serch_result.php
+/back_office/user/DISP_custDetailesData.php
+/back_office/user/DISP_purchase_Details.php
+/common/INI_config.php
+/common/INI_ShopConfig.php
+/regist/DISP_completion.php
+/regist/DISP_confirm.php
+/regist/DISP_inputStep.php
+/regist/index.php
+/regist/LGC_inputChk.php
+/regist/LGC_registDB.php
+/regist/TMPL_completion.html
+/regist/TMPL_input.html
+
+■下記のファイルの設置
+/common_img/paypal_logo.jpg
+/regist/credit_completion.html
+/regist/expresscheckout.php
+/regist/order_complete.php
+/regist/paypalfunctions.php
+/regist/images/paypal.png
+/regist/mail_tmpl/INI_mailbody_payPAYPAL.dat
+
+■Paypal側の画面で表示されるデザインを設定
+/common/INI_ShopConfig.php　236行目付近を修正
+
+//デザイン設定
+define('LOGOIMG','common_img/paypal_logo.jpg'); //ロゴ画像 90px×60px固定サイズ
+define('CARTBORDERCOLOR','097EC3'); //16進数のカラーコード指定
+
+
+■EUC案件
+・PaypalはUTF-8なので文字コードの変換処理を追加
+/regist/paypalfunctions.php 450行目付近
+$get_detail = mb_convert_encoding($get_detail,"sjis-win","EUC-JP");
+$get_detail = mb_convert_encoding($get_detail,"UTF-8","sjis-win");
+
+
+
+■動作チェック
+--------------------------------------------------------
+・購入者
+①クレジット決済と同じ様に購入を進め、完了画面でPayPal決済のボタンを押す。
+②配送先住所に間違いがなければID、パスワードを入力する
+③続行ボタンを押して先に進む
+④名前、メールアドレス、金額が出るので「注文する」ボタンを押して先に進む
+⑤決済完了
+--------------------------------------------------------
+
+■決済完了後のチェック
+--------------------------------------------------------
+・管理画面で決済完了になっているか確認。
+・店舗、購入者がwinのshopのプログラムからのメールが送られているか、内容が正しいか確認。
+・PayPalからのメールをチェック
+開発者向けページ > Applications > Sandbox accounts > 各メールアドレス > Notifications
+
+https://developer.paypal.com/
+で【■ペイパルアカウント】でログイン
+https://developer.paypal.com/webapps/developer/applications/accounts
+でメールが確認できます。
+
+決済完了メールが来るので購入詳細や送料が正しいか確認
+
+--------------------------------------------------------
+
+
+■ペイパルアカウント（用途：テストアカウント作成）
+--------------------------------------------------------
+PayPalID：ljtalkjeacpoe983k5@gmail.com
+PW：953zjeI4
+--------------------------------------------------------
+
+
+■ペイパル購入者テストアカウント（用途：ペイパル決済で決済をするアカウント）
+--------------------------------------------------------
+PayPalID：ljtalkjeacpoe983k5@gmail.com
+PW：953zjeI4
+
+Credit card number: 4525917550202728 
+Credit card type: Visa 
+Expiration date: 8/2019 
+--------------------------------------------------------
+
+
+■ペイパル店舗テストアカウント（用途：ペイパル決済で振り込まれるアカウント）
+--------------------------------------------------------
+PayPalID：ljtalkjeacpoe983k5-facilitator@gmail.com 
+PW：903ghxA5
+
+Username: ljtalkjeacpoe983k5-facilitator_api1.gmail.com
+Password: LBVLGVYGUA29AMD9
+Signature: AFcWxV21C7fd0v3bYYYRCpSSRl31AYae11nTW53cOgzznJ9bQMxkOo5Z
+--------------------------------------------------------

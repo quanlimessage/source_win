@@ -1,0 +1,120 @@
+<?php
+/*******************************************************************************
+
+	トップページお勧め商品表示
+
+*******************************************************************************/
+
+// 設定ファイル＆共通ライブラリの読み込み
+require_once("./common/INI_config.php");		// 共通設定情報
+require_once("./common/INI_ShopConfig.php");	// ショップ用設定情報
+
+// DBよりデータを取得（開始位置と終了位置を指定）
+$sql = "
+SELECT
+	PRODUCT_LST.PRODUCT_ID,
+	PRODUCT_LST.PRODUCT_NAME,
+	PRODUCT_LST.SELLING_PRICE
+FROM
+	".PRODUCT_LST."
+WHERE
+	(RECOMMEND_FLG = '1')
+AND
+	(PRODUCT_LST.DEL_FLG = '0')
+AND
+	(PRODUCT_LST.DISPLAY_FLG = '1')
+AND
+	(PRODUCT_LST.SALE_START_DATE <= NOW() || PRODUCT_LST.SALE_START_DATE = '0000-00-00 00:00:00')
+AND
+	(PRODUCT_LST.SALE_END_DATE > NOW() || PRODUCT_LST.SALE_END_DATE = '0000-00-00 00:00:00')
+ORDER BY
+	PRODUCT_LST.RECOMMEND_VO ASC
+LIMIT
+	0 , ".RECOMMEND_DBMAX_CNT."
+";
+$fetch = $PDO -> fetch($sql);
+
+#-------------------------------------------------------------
+# HTTPヘッダーを出力
+#	１．文字コードと言語：utf8で日本語
+#	２．ＪＳとＣＳＳの設定：する
+#	３．有効期限：設定しない
+#	４．キャッシュ拒否：設定する
+#	５．ロボット拒否：設定しない
+#-------------------------------------------------------------
+utilLib::httpHeadersPrint("UTF-8",true,false,true,false);
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html401/loose.dtd">
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-language" content="ja">
+<meta http-equiv="Content-script-type" content="text/javascript">
+<meta http-equiv="Content-style-type" content="text/css">
+<meta http-equiv="imagetoolbar" content="no">
+<meta name="description" content="ＳＥＯワード">
+<meta name="keywords" content="キーワード">
+<meta name="robots" content="index,follow">
+<title>Winシリーズ-更新プログラム|サンプルサイト|</title>
+<link href="css/base.css" rel="stylesheet" type="text/css">
+<link href="css/index.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div id="stage">
+<div id="content">
+
+	<h1>ＳＥＯワード</h1>
+	<h2><a href="../"><img src="image/header.jpg" alt="" width="760" height="55"></a></h2>
+
+   <ul id="menu">
+   <li><b>ショッピングプログラム</b></li>
+		<li><a href="./shopping/">通常ショップ</a></li>
+		<li><a href="./back_office/" target="_blank">通常ショップ管理画面</a></li>
+	</ul>
+
+	<div id="main">
+		<div id="index_image"><table width="593" border="0" cellpadding="5" cellspacing="2">
+		<tr>
+		<td width="430" align="center">
+		<br><br><br><br><br><br><br><br><br><br><br><br><h5>Winシリーズ★更新プログラム<br><br>サンプルサイト<br><br>Shop Win版<br><br><br><br><br><br><br><br><br><br></h5>
+	 <br><br><br>←確認したいカテゴリーボタンをクリックしてください<br>
+	 </td>
+	 <td width="163" valign="top"><table width="163" border="0" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" style="border: 1px solid #999999;">
+	 	<tr>
+			<td align="center"><strong>お勧め商品</strong></td>
+		</tr>
+		<?php for($i=0;$i<count($fetch);$i++):?>
+	 	<tr>
+			<td align="center"><div><?php
+				// 画像がある場合は表示
+				if(search_file_flg("./shopping/product_img/",$fetch[$i+$j]['PRODUCT_ID']."_s.*")){
+					$img_path = search_file_disp("./shopping/product_img/",$fetch[$i+$j]['PRODUCT_ID']."_s.*","",2);
+					echo "<a href=\"./shopping/?pid={$fetch[$i]['PRODUCT_ID']}\"><img src=\"{$img_path}?r=".rand()."\" width=\"".(IMG_SIZE_SX/2)."\" height=\"".(IMG_SIZE_SY/2)."\" border=\"0\"></a>\n";
+				}else{
+					echo "&nbsp;\n";
+				};?></div>
+				<div><a href="./shopping/?pid=<?php echo $fetch[$i]['PRODUCT_ID'];?>"><?php echo ($fetch[$i]["PRODUCT_NAME"])?$fetch[$i]["PRODUCT_NAME"]:"";?></a></div></td>
+		</tr>
+		<?php endfor;?>
+	 </table>
+	 </td>
+	 </tr>
+	 </table>
+	 </div>
+	</div>
+
+	<div id="footer">Copyright(c)2005 ○○○.All Rights Reserved.</div>
+
+</div>
+</div>
+
+<div id="banner"><a href="http://www.all-internet.jp/" target="_blank"><img src="image/banner.gif" alt="ホームページ制作はオールインターネット"></a></div>
+
+</body>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<img src="log.php?referrer='+escape(document.referrer)+'" width="1" height="1">');
+//-->
+</script>
+</html>

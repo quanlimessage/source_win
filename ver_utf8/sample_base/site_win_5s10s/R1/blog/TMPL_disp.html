@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="%ca_title% %e_title% " />
+	<meta name="keywords" content="%ca_title% %e_title% " />
+	<meta http-equiv="Content-Style-Type" content="text/css" />
+	<meta http-equiv="Content-Script-Type" content="text/javascript" />
+
+	<script language="JavaScript" type="text/javascript" src="%php_self%common.js"></script>
+	<link rel="stylesheet" href="%dir%/styles-index.css" type="text/css" />
+	<title>%title%</title>
+	%rss_blog%
+</head>
+<body>
+
+	<div id="container">
+		<div id="bannerbg">
+
+			<div id="banner" style="background-image:url(%head_img%);%height%">
+
+				<div id="bannertitle">
+
+				<h1><a href="%php_self%" style="text-decoration:none;">%title%</a></h1>
+
+				<span class="description">%sub_title%</span>
+
+				</div>
+
+			</div>
+
+			<div class="navi">
+				%query_comment%
+				%disp_no_data%
+				%main%
+			</div>
+
+		</div>
+
+		<div id="content">
+
+		<!-- tmpl:loop %entry_list% -->
+
+			<div class="blog">
+				<a name="%res%"></a>
+				<h2 class="date">%date%</h2>
+
+				<div class="blogbody">
+					<h3 class="title">%entry_title%</h3>
+					<div class="text">%entry_comment%<p>%entry_img%</p></div>
+					<div class="text">ﾄﾗｯｸﾊﾞｯｸ(%tb_num%)&nbsp;ｺﾒﾝﾄ(%cm_num%)&nbsp;</div>
+
+					%comment_data%
+
+					<div class="posted2">%comment%</div>
+
+				</div>
+				<div id="paramarea">
+
+				%trackback_area%
+				</div>
+
+			</div>
+
+			<!-- tmpl:endloop %entry_list% -->
+
+			%com_form%
+
+			<div class="page">%page%</div>
+
+		</div>
+
+		<div id="links">
+			%prof_data%
+
+			<form action="%php_self%" method="post">
+				<div class="sidetitle">記事検索</div>
+				<div class="side">検索語句<br />
+					<input value="" name="query" type="text" size="20" style="ime-mode:active" />
+					<input type="hidden" name="search" value="str">
+					<input value="検索" type="submit" class="input-submit"  />
+				</div>
+			</form>
+
+			<!-- リンク div -->
+				%link%
+
+			<!-- カレンダー div -->
+				%calendar%
+
+			<!-- カテゴリー div -->
+				<div class="sidetitle">カテゴリ</div>
+				<div class="side">
+				%category%
+				</div>
+
+			<!-- 新着 div -->
+				<div class="sidetitle">新着記事</div>
+				<div class="side">
+				%new_entry%
+				</div>
+
+			<!-- 過去ログ div -->
+				<div class="sidetitle">過去ログ</div>
+				<div class="side">
+				%kako_log%
+				</div>
+
+			<!-- RSS div -->
+				<div class="sidetitle">RSS</div>
+				<div class="side">
+				<a href="%php_self2%blog_rss.php" target="_blank"><img src="%php_self%rss.gif" border="0" style="float:left;padding:0px 5px;">ブログをリーダで読む</a>
+				</div>
+		</div>
+
+		<div id="footer"></div>
+
+	</div>
+	<div style="width:760px;text-align:right;margin-top:15px;padding-right:5px;" align="center"><a href="http://www.all-internet.jp/" target="_blank" style="font-size:10px;color:#FFFFFF;text-decoration:none;">ホームページ制作はオールインターネット</a></div>
+%access_log%
+</body>
+</html>

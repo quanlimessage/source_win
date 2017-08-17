@@ -1,0 +1,18 @@
+SetEnvIf User-Agent "iPhone" UA=sp
+SetEnvIf User-Agent "iPod" UA=sp
+SetEnvIf User-Agent "Android.*Mobile" UA=sp
+
+RewriteCond %{ENV:UA} ^sp$
+RewriteCond %{HTTP_COOKIE} !mode=pc [NC]
+RewriteCond %{REQUEST_URI} !^/sp/.*$ [NC]
+RewriteCond %{QUERY_STRING} !mode=pc [NC]
+RewriteCond %{QUERY_STRING} !mode=sp [NC]
+
+RewriteCond %{SCRIPT_FILENAME} !/sp/ [NC]
+RewriteCond %{SCRIPT_FILENAME} !/back_office/ [NC]
+RewriteCond %{SCRIPT_FILENAME} !/common/ [NC]
+RewriteCond %{SCRIPT_FILENAME} !/404/ [NC]
+RewriteCond %{SCRIPT_FILENAME} !/common_img/ [NC]
+
+RewriteCond %{REQUEST_FILENAME} !^(.*)\.(js|css|jpg|jpeg|png|gif)$ [NC]
+RewriteRule ^(.*) http://mx.zeeksdg.net/zeeksdg/_.co.jp/sp/$1 [R,QSA,L]

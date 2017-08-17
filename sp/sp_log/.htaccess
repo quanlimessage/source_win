@@ -1,0 +1,8 @@
+#セッションの有効期限（秒単位 1分=60 1時間=3600 12時間=43200 1日=86400）
+php_value session.gc_maxlifetime 3600
+
+#gc_probability　ガーベッジコレクタの分子
+#gc_divisor　ガーベッジコレクタの分母
+#分子を1,分母を100とした場合,1/100の確立で有効期限が切れたファイルが削除される。
+php_value session.gc_probability 1
+php_value session.gc_divisor 100

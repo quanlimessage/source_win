@@ -1,0 +1,215 @@
+@charset "shift_jis";
+
+/* -------------------- 全体レイアウト -------------------- */
+/* BODY設定 */
+body {
+	margin: 0px;
+	padding :0px;
+	text-align: center;
+	background-color: #ffffff;	/* 全体の背景色 */
+}
+
+/* 外枠の影（必要なければ削除） */
+div#stage {
+	width: 800px;
+	margin: 0 auto;
+
+	background-image: url(../image/stage_back.gif);
+}
+
+/* 全体幅 */
+div#content{
+	margin: 0px auto;
+	width: 760px;
+	text-align: left;
+	background-color: #CCCCCC;	/* メニューの背景色 */
+}
+
+/* -------------------- ヘッダー -------------------- */
+/* SEOワード */
+h1 {
+	margin: 0px;
+	padding :0px;
+	font-weight: normal;	/* フォントの太さ（太いままにする場合は削除） */
+	font-size: 10px;	/* フォントサイズ */
+	color: #999999;		/* フォントの色 */
+	text-indent: 8px;	/* テキストの左余白 */
+	background-color: #FFFFFF;	/* 背景色 */
+}
+
+/* ヘッダー */
+h2 {
+	margin: 0px;
+	padding :0px;
+}
+
+h5 {
+	margin: 0.6em 20px;		/* マージン */
+	padding: 0px;			/* 余白 */
+	font-size: 22px;		/* フォントサイズ */
+	color: #333333;			/* 文字色 */
+	border-bottom: 1px solid #CC0000;	/* 下ボーダー（要らなかったら削除してください） */
+}
+
+/* -------------------- メニュー -------------------- */
+/* メニュー全体位置 */
+ul#menu {
+	width: 162px;
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+/* +++++++ 各メニュー設定 +++++++ */
+/* ボタン設定 */
+ul#menu li {
+	width: 162px;
+	height: 35px;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 35px;
+	text-indent: 20px;	/* テキスト左の余白 */
+	color: #3300CC;		/* 文字色 */
+	background-image: url(../image/menu_back_over.jpg);
+}
+
+/* リンク有りボタン設定 */
+ul#menu li a {
+	width: 162px;
+	height: 35px;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 35px;
+	text-indent: 20px;	/* テキスト左の余白・liと同じにする */
+	text-decoration: none;
+}
+/* リンク・通常時 */
+ul#menu li a:link,ul#menu li a:visited {
+	background-image: url(../image/menu_back.jpg);
+	color: #333333;		/* 文字色 */
+}
+
+/* リンク・ロールオーバー時 */
+ul#menu li a:hover,ul#menu li a:active {
+	background-image: url(../image/menu_back_over.jpg);
+	color: #FFFFFF;		/* 文字色 */
+}
+
+/* -------------------- メイン部分 -------------------- */
+
+#main{
+	float:right;
+	width:598px;
+	margin: 0px;
+	background-color:#FFFFFF;	/* 背景色 */
+	background-image: url(../image/title_n.jpg);
+}
+
+div#bgspace {
+	height:1000px;
+}
+
+/* -------------------- フッター -------------------- */
+/* コピーライト */
+#footer {
+	clear: both;
+	margin: 0px auto;
+	width: 760px;
+	padding: 1px;
+	text-align: center;
+	color: #ffffff;		/* 文字色 */
+	background-color: #999999;	/* 背景色 */
+}
+/* オールインターネットバナー */
+#banner{
+	margin: 0px auto;
+	width: 760px;
+	text-align: right;
+}
+
+/* オールインターネットバナー */
+#banner{
+	margin: 0px auto;
+	width: 760px;
+	text-align: right;
+}
+
+#picup{
+	width:572px;
+	height:334px;
+	padding:0px;
+	margin:50px 0px 50px 20px;
+}
+
+.picup_table{
+	margin:20px 0px 20px 0px;
+}
+.picup_image1{
+	width:134px;
+	height:104px;
+	background-image:url(../image/pic_img.gif);
+	background-repeat:no-repeat;
+
+}
+.picup_image2{
+	width:120px;
+	height:90px;
+	margin:2px 0px 0px 2px;
+
+}
+.picup_text1{
+	color:#FFFFFF;
+	margin:6px 6px 6px 28px;
+}
+.picup_text2{
+	width:120px;
+	color:#FFFFFF;
+	margin:2px 4px 2px 4px;
+}
+
+.picup_image3{
+	width:120px;
+	height:90px;
+	margin:2px 6px 6px 28px;
+
+}
+.picup_image4{
+	width:120px;
+	height:90px;
+	margin:2px 6px 6px 7px;
+
+}
+
+/* -------------------- テキスト関係 -------------------- */
+/* フォント全体 */
+* {
+	font-size: 12px;	/* フォントサイズ */
+	color: #333333;		/* フォントの色 */
+	line-height: 1.5em;	/* 行間 */
+}
+
+/* 文章中のリンク */
+a:link {
+	color: #666666;		/* リンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+a:visited{
+	color: #999999;		/* 訪問済みリンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+a:hover{
+	color: #FFCC00;		/* ロールオーバー時・フォントの色 */
+	text-decoration: underline;	/* リンク線 */
+}
+a:active {
+	color: #FFFF00;		/* クリック時・フォントの色 */
+	text-decoration: overline underline;	/* リンク線 */
+}
+
+/* 画像 */
+img {
+	border: 0px none;
+}

@@ -1,0 +1,10 @@
+FreeBSD||FreeBSD
+Linux||Linux
+IRIX||IRIX
+SunOS||SunOS
+OS/2||OS/2
+WebTV||WebTV
+DreamPassport||DreamCast
+DoCoMo||DoCoMo
+J-PHONE||J-PHONE
+UP.Browser||EzWeb

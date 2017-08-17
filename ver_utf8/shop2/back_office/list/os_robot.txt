@@ -1,0 +1,13 @@
+Googlebot||bot01
+Mediapartners-Google||bot02
+Yahoo! Slurp||bot03
+msnbot||bot04
+NaverBot||bot05
+Scooter/2.0||bot06
+ia_archiver||bot07
+Ask Jeeves||bot08
+ArchitextSpider||bot09
+moget||bot10
+ZyBorg||bot11
+InfoSeek||bot12
+Hatena Antenna||bot13

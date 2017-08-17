@@ -1,0 +1,25 @@
+■PC側
+・back_officeにスマホ用のアクセス解析ページとファイルマネージャ追加
+・上記追加ページへのリンクをmenu.phpに追加
+
+■sp側
+・アクセスログの取得に必要なファイルを置く
+・各ページのアクセスログ取得処理の、log.phpへのパスを修正
+  「_accessurl + '/log.php」→「_accessurl + '/sp/log.php」
+
+■注意事項
+・旧WINのSP版制作でも、必ず新アクセス解析を組み込んでください。
+  （検索エンジンや、検索キーワードがとれません）
+
+■アクセスログの記述
+<!-- ここから -->
+<script type="text/javascript" src="https://www.google.com/jsapi?key="></script>
+<script src="https://api.all-internet.jp/accesslog/access.js" language="javascript" type="text/javascript"></script>
+<script language="JavaScript" type="text/javascript">
+<!--
+var s_obj = new _WebStateInvest();
+var _accessurl = setUrl();
+document.write('<img src="' + _accessurl + '/sp/log.php?referrer='+escape(document.referrer)+'&st_id_obj='+encodeURI(String(s_obj._st_id_obj))+'" width="1" height="1">');
+//-->
+</script>
+<!-- ここまで -->

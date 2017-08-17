@@ -1,0 +1,50 @@
+Google||q||www.google.com
+Google||q||google.co.jp
+Yahoo||p||search.yahoo.co.jp
+Yahoo/Google||p||google.yahoo.co.jp
+ODN||search||odn.excite.co.jp
+DION||search||dion.excite.co.jp
+Excite.com||search||search.excite.com
+Excite||search||www.excite.co.jp
+OCNブログ||MT||ocn.blog.goo.ne.jp
+gooブログ||MT||blog.goo.ne.jp
+OCN||MT||ocnsearch.goo.ne.jp
+So-net||MT||so-net.search.goo.ne.jp
+goo||MT||goo.ne.jp
+@Search||q||asearch.cab.infoweb.ne.jp
+InfoSeek||qt||infoseek.co.jp
+InfoSeek||qt||infoseek.com
+Lycos||query||www.lycos.co.jp
+MSN||q||search.msn.co.jp
+MSN||MT||search.msn.co.jp
+MSN||q||search.msn.com
+MSN||MT||search.msn.com
+bing||q||bing.com
+Livedoor||q||livedoor.com
+Fresheye||kw||search.fresheye.com
+kensaku.org||key||kensaku.org
+Biglobe||q||biglobe.ne.jp
+alltheweb||q||www.alltheweb.com
+AltaVista||query||www.altavista.com
+Fast Search||query||www.alltheweb.com
+GO.com||qt||www.go.com
+@nifty||Text||search.nifty.com
+NAVER||query||websearch.naver.co.jp
+フレッシュアイ||kw||fresheye.com
+Netscape Search||query||netscape.com
+AOL||query||aol.com
+overture||Keywords||overture.com
+AltaVista||q||altavista.com
+looksmart||QueryString||looksmart.co.jp
+looksmart||qt||looksmart.com
+Metcha Search||q||bach.istc.kobe-u.ac.jp
+alltheweb||q||alltheweb.com
+ask.jp||q||ask.jp
+hotbot.com||query||hotbot.com
+All About||qs||allabout.co.jp
+CSJ||query||csj.co.jp
+J.O.Y.||key||joyjoy.com
+Bulkfeeds||q||bulkfeeds.net
+ココログ||textfield||cocolog-nifty.com
+はてなダイアリー||word||hatena.ne.jp
+What'sBest||query||www.csj.co.jp

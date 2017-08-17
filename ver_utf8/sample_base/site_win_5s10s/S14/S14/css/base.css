@@ -1,0 +1,149 @@
+@charset "shift_jis";
+
+/* -------------------- 全体レイアウト -------------------- */
+/* BODY設定 */
+body {
+	margin: 0px;
+	padding :0px;
+	text-align: center;
+	background-color: #ffffff;	/* 全体の背景色 */
+}
+
+/* 外枠の影（必要なければ削除） */
+div#stage {
+	width: 800px;
+	margin: 0 auto;
+	background-image: url(../image/stage_back.gif);
+}
+
+/* 全体幅 */
+div#content{
+	margin: 0px auto;
+	width: 760px;
+	text-align: left;
+	background-color: #CCCCCC;	/* メニューの背景色 */
+}
+
+/* -------------------- ヘッダー -------------------- */
+/* SEOワード */
+h1 {
+	margin: 0px;
+	padding :0px;
+	font-weight: normal;	/* フォントの太さ（太いままにする場合は削除） */
+	font-size: 10px;	/* フォントサイズ */
+	color: #999999;		/* フォントの色 */
+	text-indent: 8px;	/* テキストの左余白 */
+	background-color: #FFFFFF;	/* 背景色 */
+}
+
+/* ヘッダー */
+h2 {
+	margin: 0px;
+	padding :0px;
+}
+
+/* -------------------- メニュー -------------------- */
+/* メニュー全体位置 */
+ul#menu {
+	width: 162px;
+	float: left;
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+/* +++++++ 各メニュー設定 +++++++ */
+/* ボタン設定 */
+ul#menu li {
+	width: 162px;
+	height: 35px;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 35px;
+	text-indent: 20px;	/* テキスト左の余白 */
+	color: #3300CC;		/* 文字色 */
+	background-image: url(../image/menu_back_over.jpg);
+}
+
+/* リンク有りボタン設定 */
+ul#menu li a {
+	width: 162px;
+	height: 35px;
+	display: block;
+	margin: 0px;
+	padding: 0px;
+	line-height: 35px;
+	text-indent: 20px;	/* テキスト左の余白・liと同じにする */
+	text-decoration: none;
+}
+/* リンク・通常時 */
+ul#menu li a:link,ul#menu li a:visited {
+	background-image: url(../image/menu_back.jpg);
+	color: #3300CC;		/* 文字色 */
+}
+
+/* リンク・ロールオーバー時 */
+ul#menu li a:hover,ul#menu li a:active {
+	background-image: url(../image/menu_back_over.jpg);
+	color: #FFFFFF;		/* 文字色 */
+}
+
+/* -------------------- メイン部分 -------------------- */
+
+#main{
+	float:right;
+	width:598px;
+	margin: 0px;
+	background-color:#ffffff;	/* 背景色 */
+}
+
+/* -------------------- フッター -------------------- */
+/* コピーライト */
+#footer {
+	clear: both;
+	margin: 0px auto;
+	width: 760px;
+	padding: 1px;
+	text-align: center;
+	color: #ffffff;		/* 文字色 */
+	background-color: #999999;	/* 背景色 */
+
+}
+/* オールインターネットバナー */
+#banner{
+	margin: 0px auto;
+	width: 760px;
+	text-align: right;
+}
+
+/* -------------------- テキスト関係 -------------------- */
+/* フォント全体 */
+* {
+	font-size: 12px;	/* フォントサイズ */
+	color: #333333;		/* フォントの色 */
+	line-height: 1.5em;	/* 行間 */
+}
+
+/* 文章中のリンク */
+a:link {
+	color: #3300CC;		/* リンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+a:visited{
+	color: #999999;		/* 訪問済みリンク・フォントの色 */
+	text-decoration: none;	/* リンク線 */
+}
+a:hover{
+	color: #FFCC00;		/* ロールオーバー時・フォントの色 */
+	text-decoration: underline;	/* リンク線 */
+}
+a:active {
+	color: #FFFF00;		/* クリック時・フォントの色 */
+	text-decoration: overline underline;	/* リンク線 */
+}
+
+/* 画像 */
+img {
+	border: 0px none;
+}
